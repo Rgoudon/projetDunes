@@ -1,0 +1,261 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Interfaces.ResultatsAxes &#8212; Documentation ProjetDunes 1.3</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de Interfaces.ResultatsAxes</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="n">ttk</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">ImageTk</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">shape</span>
+<span class="kn">from</span> <span class="nn">Interfaces</span> <span class="k">import</span> <span class="n">VisualiserProfil</span>
+<span class="kn">from</span> <span class="nn">TraitementImage</span> <span class="k">import</span> <span class="n">AlgorithmeAxe</span><span class="p">,</span> <span class="n">ExportTXT</span>
+
+<span class="n">ListeCouleurs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;sienna&quot;</span><span class="p">,</span> <span class="s2">&quot;chartreuse&quot;</span><span class="p">,</span> <span class="s2">&quot;darkgreen&quot;</span><span class="p">,</span> <span class="s2">&quot;deepskyblue&quot;</span><span class="p">,</span> <span class="s2">&quot;crimson&quot;</span><span class="p">,</span> <span class="s2">&quot;darkorange&quot;</span><span class="p">,</span> <span class="s2">&quot;yellow&quot;</span><span class="p">,</span> <span class="s2">&quot;purple&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="ResultatsAxes"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ResultatsAxes.ResultatsAxes">[docs]</a><span class="k">class</span> <span class="nc">ResultatsAxes</span><span class="p">(</span><span class="n">Frame</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Classe de gestion des resultats des axes. \n</span>
+<span class="sd">	Gère à la fois l&#39;affichage et le traitement des axes tracés. \n</span>
+<span class="sd">	La classe ResultatsAxes hérite de la classe tkinter Frame. \n</span>
+<span class="sd">	cf ci-après pour des informations sur le traitement des axes : :func:`AlgorithmeAxe.DetectionDunes`. \n</span>
+<span class="sd">	</span>
+<span class="sd">	:param fenetre: Objet de la classe frame, fenetre affiché à l&#39;utilisateur. </span>
+<span class="sd">	:type fenetre: Frame</span>
+<span class="sd">	</span>
+<span class="sd">	:param MonImage: Objet de la classe ImageDune contenant le fichier image.</span>
+<span class="sd">	:type MonImage: ImageDune</span>
+
+<span class="sd">	:param SeuilDetectionDunes: Entier correspondant au seuil de detection des petites dunes en cm.</span>
+<span class="sd">	:type SeuilDetectionPetiteDune: int</span>
+<span class="sd">	</span>
+<span class="sd">	:param ImageAffiche: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l&#39;image à afficher dans la fenetre principale.</span>
+<span class="sd">	:type ImageAffiche: PhotoImage</span>
+<span class="sd">	</span>
+<span class="sd">	:param LesAxes: Objet de la classe gestionAxes contenant les axes tracés par l&#39;utilisateur.</span>
+<span class="sd">	:type LesAxes: GestionAxes</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fenetre</span><span class="p">,</span> <span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffiche</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>    
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span> <span class="o">=</span> <span class="n">MonImage</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ImageAffichage</span> <span class="o">=</span> <span class="n">ImageAffiche</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">DetectionDune</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">SeuilDetectionDune</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span> <span class="o">=</span> <span class="n">LesAxes</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ImageAAfficher</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># variable ne pouvant être une variable locale, sinon l&#39;image n&#39;apparaît pas à l&#39;affichage</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span>
+		
+		<span class="c1"># Création d&#39;une sous frame pour placer correctement les divers éléments sur la moitié gauche de la fenêtre</span>
+		<span class="n">FrameMenu</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">fenetre</span><span class="p">)</span>
+		<span class="n">FrameMenu</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+		
+		<span class="c1"># Création de nos widgets (à placer dans la moitié gauche de la fenêtre)</span>
+		<span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Export de tous les résultats&quot;</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportTxt</span><span class="p">())</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		
+		<span class="c1"># On crée une nouvelle sous-frame afn de pouvoir placer les 4 éléments graphique suivant sous forme d&#39;un table 2*2 emplacements</span>
+		<span class="n">FrameChoixAxe</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">)</span>
+		<span class="n">FrameChoixAxe</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">Y</span><span class="p">)</span>
+		
+		<span class="n">Label</span><span class="p">(</span><span class="n">FrameChoixAxe</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Numéro de l&#39;axe choisi&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="c1"># Pour que le spinBox puisse fonctionner, il faut qu&#39;il propose 2 valeurs au minimum</span>
+		<span class="c1"># On regarde donc si l&#39;utilisateur n&#39;a fait qu&#39;un seul axe</span>
+		<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">):</span>
+			<span class="c1"># Si c&#39;est le cas, on désactive le spinBox, ainsi on force la valeur à 0</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxeChoisi</span> <span class="o">=</span> <span class="n">Spinbox</span><span class="p">(</span><span class="n">FrameChoixAxe</span><span class="p">,</span> <span class="n">from_</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxeChoisi</span> <span class="o">=</span> <span class="n">Spinbox</span><span class="p">(</span><span class="n">FrameChoixAxe</span><span class="p">,</span> <span class="n">from_</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;readonly&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxeChoisi</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="n">Button</span><span class="p">(</span><span class="n">FrameChoixAxe</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Export résultats axe&quot;</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportTxtAxe</span><span class="p">())</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">Button</span><span class="p">(</span><span class="n">FrameChoixAxe</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Visualisation profil axe&quot;</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">VisualiserProfil</span><span class="p">())</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+		<span class="c1"># On place une frame pour y placer notre treeview (gauche) avec sa barre de défilement vertical (droite)</span>
+		<span class="c1"># fill = BOTH + exppand = 1 → permet d&#39;étendre le tableau au reste de la moitié gauche de la fenêtre restante</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">FrameTable</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">255</span><span class="p">,</span> <span class="n">bd</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">relief</span><span class="o">=</span><span class="n">SUNKEN</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">FrameTable</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+		
+		<span class="c1"># on crée notre treeview</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">FrameTable</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;IdDune&#39;</span><span class="p">,</span> <span class="s1">&#39;LongOnde&#39;</span><span class="p">,</span> <span class="s1">&#39;HautDune&#39;</span><span class="p">))</span>
+		<span class="c1"># On lui associe une barre de défilement vertical</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">VerticalBarreTable</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Scrollbar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">FrameTable</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;vertical&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">yview</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">yscrollcommand</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">VerticalBarreTable</span><span class="o">.</span><span class="n">set</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">VerticalBarreTable</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">Y</span><span class="p">)</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;#0&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>  <span class="c1"># la colonne #0 correspond à celle où se trouve les + pour dérouler</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;IdDune&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s1">&#39;IdDune&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;ID Dune&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;LongOnde&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s1">&#39;LongOnde&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Longueur d&#39;onde (m)&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;HautDune&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s1">&#39;HautDune&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Hauteur dune (cm)&quot;</span><span class="p">)</span>
+		
+		<span class="c1"># On créé notre canvas permettant d&#39;afficher l&#39;image et on demande de la placer sur la moitié droite de la fenêtre</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">fenetre</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ImageAAfficher</span> <span class="o">=</span> <span class="n">ImageTk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ImageAffichage</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">anchor</span><span class="o">=</span><span class="n">NW</span><span class="p">,</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImageAAfficher</span><span class="p">)</span>
+		<span class="c1"># On redéfini la taille du caneva associé à la miniature de l&#39;image sur l&#39;interface graphique</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ImageAffichage</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ImageAffichage</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">RIGHT</span><span class="p">)</span>
+		
+		<span class="c1"># On place les axes sur la miniatures, mais on les colorie d&#39;une couleur différentes afin de les différencier</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">PlacementAxes</span><span class="p">()</span>
+		
+		<span class="c1"># On rempli le tableau des résultats par les données obtenues par analyse de tous les axes tracés par l&#39;utilisateur</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span> <span class="o">=</span> <span class="n">AlgorithmeAxe</span><span class="o">.</span><span class="n">DetectionDunes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImageAffichage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DetectionDune</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BilanDunesAxe</span> <span class="o">=</span> <span class="n">AlgorithmeAxe</span><span class="o">.</span><span class="n">BilanDunesParAxe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">RemplirTableauResultats</span><span class="p">()</span>
+		
+<div class="viewcode-block" id="ResultatsAxes.PlacementAxes"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ResultatsAxes.ResultatsAxes.PlacementAxes">[docs]</a>	<span class="k">def</span> <span class="nf">PlacementAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de tracé des axes.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">CoordonneesAxe</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="n">ListeCouleurs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ResultatsAxes.ExportTxt"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ResultatsAxes.ResultatsAxes.ExportTxt">[docs]</a>	<span class="k">def</span> <span class="nf">ExportTxt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction d&#39;export des résultats de tout les axes au format .txt.</span>
+<span class="sd">		L&#39;utilisateur peut choisir l&#39;emplacement de création du fichier ainsi que son nom. </span>
+<span class="sd">		</span>
+<span class="sd">		.. note::</span>
+<span class="sd">			Le format des résultats est précisé dans le fichier texte.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">ExportTXT</span><span class="o">.</span><span class="n">ExportResultatsDunesAxes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">BilanDunesAxe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DetectionDune</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="ResultatsAxes.ExportTxtAxe"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ResultatsAxes.ResultatsAxes.ExportTxtAxe">[docs]</a>	<span class="k">def</span> <span class="nf">ExportTxtAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction d&#39;export des resultats d&#39;un seul axes choisi par l&#39;utilisateur au format .txt.</span>
+<span class="sd">		L&#39;utilisateur peut choisir l&#39;emplacement de création du fichier ainsi que son nom. </span>
+<span class="sd">		</span>
+<span class="sd">		.. note::</span>
+<span class="sd">			Le format des résultats est précisé dans le fichier texte.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">AxeChoisi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxeChoisi</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+		<span class="n">ExportTXT</span><span class="o">.</span><span class="n">ExportResultatsDunesAxe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="p">,</span> <span class="n">AxeChoisi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">InfosAxe</span><span class="p">(</span><span class="n">AxeChoisi</span><span class="p">)</span><span class="o">.</span><span class="n">getCoordonneesAxe</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">BilanDunesAxe</span><span class="p">[</span><span class="n">AxeChoisi</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">DetectionDune</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="ResultatsAxes.VisualiserProfil"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ResultatsAxes.ResultatsAxes.VisualiserProfil">[docs]</a>	<span class="k">def</span> <span class="nf">VisualiserProfil</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction d&#39;affichage du profil de l&#39;axe sélectionné par l&#39;utilisateur.</span>
+<span class="sd">		L&#39;utilisateur peut passer la souris sur le profil pour avoir des informations précise sur le point survolé.</span>
+<span class="sd">		</span>
+<span class="sd">		Utilise la classe :class:`VisualiserProfil.VisualiserProfil`.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">AxeChoisi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxeChoisi</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+		<span class="n">XCoordonnee</span><span class="p">,</span> <span class="n">YCoordonnee</span> <span class="o">=</span> <span class="n">AlgorithmeAxe</span><span class="o">.</span><span class="n">TableauAltitudeDistance</span><span class="p">(</span><span class="n">AxeChoisi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImageAffichage</span><span class="p">)</span>
+		<span class="n">NombreDuneAxe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BilanDunesAxe</span><span class="p">[</span><span class="n">AxeChoisi</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">MoyenneLongeurOndeAxe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BilanDunesAxe</span><span class="p">[</span><span class="n">AxeChoisi</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+		<span class="n">MoyenneHauteurAxe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BilanDunesAxe</span><span class="p">[</span><span class="n">AxeChoisi</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+		<span class="n">fenVisualiseAxe</span> <span class="o">=</span> <span class="n">Toplevel</span><span class="p">()</span>
+		<span class="n">fenVisualiseAxe</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Profil de l&#39;axe &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">AxeChoisi</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; - Analyse dunes 2018&quot;</span><span class="p">)</span>
+		<span class="n">VisualiserProfil</span><span class="o">.</span><span class="n">VisualiserProfil</span><span class="p">(</span><span class="n">fenVisualiseAxe</span><span class="p">,</span> <span class="n">AxeChoisi</span><span class="p">,</span> <span class="n">ListeCouleurs</span><span class="p">[</span><span class="n">AxeChoisi</span><span class="p">],</span> <span class="n">XCoordonnee</span><span class="p">,</span> <span class="n">YCoordonnee</span><span class="p">,</span> <span class="n">NombreDuneAxe</span><span class="p">,</span> <span class="n">MoyenneLongeurOndeAxe</span><span class="p">,</span> <span class="n">MoyenneHauteurAxe</span><span class="p">)</span></div>
+				   
+<div class="viewcode-block" id="ResultatsAxes.RemplirTableauResultats"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ResultatsAxes.ResultatsAxes.RemplirTableauResultats">[docs]</a>	<span class="k">def</span> <span class="nf">RemplirTableauResultats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de remplissage du tableau des résultats par axe.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Axe &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">tags</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Color&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">tag_configure</span><span class="p">(</span><span class="s1">&#39;Color&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">background</span><span class="o">=</span><span class="n">ListeCouleurs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+		
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span><span class="p">)[</span><span class="mi">0</span><span class="p">]):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TableauAnalyseImageAxe</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">])))</span></div></div>
+			
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ProjetDunes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Autodoc.html">Page d’autodocumentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ecalle_Rebillard_Lastennet_Goudon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

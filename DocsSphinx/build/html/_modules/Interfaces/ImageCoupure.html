@@ -1,0 +1,259 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Interfaces.ImageCoupure &#8212; Documentation ProjetDunes 1.3</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de Interfaces.ImageCoupure</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="n">filedialog</span><span class="p">,</span> <span class="n">messagebox</span><span class="p">,</span> <span class="n">ttk</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageTk</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">TraitementImage</span> <span class="k">import</span> <span class="n">Coupure</span><span class="p">,</span> <span class="n">Point</span><span class="p">,</span> <span class="n">GestionAxes</span><span class="p">,</span> <span class="n">ImageDune</span>
+<span class="kn">from</span> <span class="nn">Interfaces</span> <span class="k">import</span> <span class="n">CalculLPE</span>
+
+<div class="viewcode-block" id="ImageCoupure"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ImageCoupure.ImageCoupure">[docs]</a><span class="k">class</span> <span class="nc">ImageCoupure</span><span class="p">(</span><span class="n">Frame</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Classe de gestion de la coupure sur l&#39;image. \n</span>
+<span class="sd">	La classe ResultatsAxes hérite de la classe tkinter Frame. \n</span>
+<span class="sd">	</span>
+<span class="sd">	:param fenetre: Objet de la classe frame, fenetre affiché à l&#39;utilisateur. </span>
+<span class="sd">	:type fenetre: Frame</span>
+<span class="sd">	</span>
+<span class="sd">	:param MonImage: Objet de la classe ImageDune contenant le fichier image.</span>
+<span class="sd">	:type MonImage: ImageDune</span>
+<span class="sd">	</span>
+<span class="sd">	:param ImageAffiche: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l&#39;image à afficher dans la fenetre principale.</span>
+<span class="sd">	:type ImageAffiche: PhotoImage</span>
+<span class="sd">	</span>
+<span class="sd">	:param SeuilDetection: Entier correspondant au seuil de detection des petites dunes en cm.</span>
+<span class="sd">	:type SeuilDetectionPetiteDune: int</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fenetre</span><span class="p">,</span> <span class="n">monImage</span><span class="p">,</span> <span class="n">imageAffiche</span><span class="p">,</span> <span class="n">seuilDetection</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">monImage</span> <span class="o">=</span> <span class="n">monImage</span><span class="o">.</span><span class="n">getImage</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">resolution</span> <span class="o">=</span> <span class="n">monImage</span><span class="o">.</span><span class="n">getResolutionAltitude</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">monImageListe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asmatrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">monImage</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">miniature</span> <span class="o">=</span> <span class="n">imageAffiche</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">seuilDetection</span> <span class="o">=</span> <span class="n">seuilDetection</span>
+
+		<span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">monImage</span><span class="p">)</span>
+		<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span> <span class="o">=</span> <span class="n">GestionAxes</span><span class="o">.</span><span class="n">GestionAxes</span><span class="p">()</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="kc">True</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">PointsCanvas</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">LignesCanvas</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">coupure</span> <span class="o">=</span> <span class="n">Coupure</span><span class="o">.</span><span class="n">coupure</span><span class="p">()</span>
+
+		<span class="n">FrameMenu</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">fenetre</span><span class="p">)</span>
+		<span class="n">FrameMenu</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">fenetre</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ImageAAfficher</span> <span class="o">=</span> <span class="n">ImageTk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">anchor</span><span class="o">=</span><span class="n">NW</span><span class="p">,</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImageAAfficher</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">height</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cursor</span><span class="o">=</span><span class="s2">&quot;crosshair&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button-1&gt;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Calcul</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+
+		<span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Reset&#39;</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">())</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+
+	<span class="c1">#Place un point à l&#39;endroit on l&#39;on appuie. Si quatre points sont placés lance la calcul de la LPE</span>
+<div class="viewcode-block" id="ImageCoupure.Calcul"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ImageCoupure.ImageCoupure.Calcul">[docs]</a>	<span class="k">def</span> <span class="nf">Calcul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de tracé de la coupure(rectangle) dans l&#39;image.</span>
+<span class="sd">		</span>
+<span class="sd">		.. warning:: </span>
+<span class="sd">			20/10/2018 : bug détecté, l&#39;utilisateur peut toujours tracer des points après que la coupure ait été tracée.</span>
+<span class="sd">			Le bug ne gène pas la fonction qui lance l&#39;algorithme de la LPE avec le premier rectangle tracé.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">PositionX</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">PositionY</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span>
+
+		<span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coupure</span><span class="o">.</span><span class="n">coordonnees</span><span class="p">(</span><span class="n">PositionX</span><span class="p">,</span> <span class="n">PositionY</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">PointsCanvas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
+		
+		<span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">)</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">size</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">LignesCanvas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="n">size</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">(),</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+			<span class="n">xTemp1</span><span class="p">,</span> <span class="n">yTemp1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+			<span class="n">xTemp2</span><span class="p">,</span> <span class="n">yTemp2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">xTemp1</span> <span class="o">==</span> <span class="n">xTemp2</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="kc">True</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="kc">False</span>
+
+		<span class="k">if</span><span class="p">(</span><span class="n">size</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+			<span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+			<span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+
+			<span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">PointsCanvas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y1</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">x2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y2</span><span class="p">))</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">PointsCanvas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y2</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">x1</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">y2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">LignesCanvas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">(),</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">LignesCanvas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">(),</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span>
+			<span class="n">imageResultat</span> <span class="o">=</span> <span class="p">[]</span>
+
+			<span class="n">xMin</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="n">xMax</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="n">yMin</span> <span class="o">=</span> <span class="mi">0</span>
+			<span class="n">yMax</span> <span class="o">=</span> <span class="mi">0</span>
+			
+			<span class="k">if</span><span class="p">(</span><span class="n">y1</span><span class="o">&lt;</span><span class="n">y2</span><span class="p">):</span>
+				<span class="n">yMin</span> <span class="o">=</span> <span class="n">y1</span>
+				<span class="n">yMax</span> <span class="o">=</span> <span class="n">y2</span>
+			<span class="k">else</span> <span class="p">:</span> 
+				<span class="n">yMin</span> <span class="o">=</span> <span class="n">y2</span>
+				<span class="n">yMax</span> <span class="o">=</span> <span class="n">y1</span>
+
+			<span class="c1">#print(x1, x2, yMin, yMax)</span>
+
+			<span class="k">while</span><span class="p">(</span><span class="n">yMin</span><span class="o">&lt;=</span><span class="n">yMax</span><span class="p">):</span>
+				<span class="n">imageResultat</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+				<span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">imageResultat</span><span class="p">)</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">x1</span><span class="o">&lt;</span><span class="n">x2</span><span class="p">):</span>
+					<span class="n">xMin</span> <span class="o">=</span> <span class="n">x1</span>
+					<span class="n">xMax</span> <span class="o">=</span> <span class="n">x2</span>
+				<span class="k">else</span> <span class="p">:</span> 
+					<span class="n">xMin</span> <span class="o">=</span> <span class="n">x2</span>
+					<span class="n">xMax</span> <span class="o">=</span> <span class="n">x1</span>
+				<span class="k">while</span><span class="p">(</span><span class="n">xMin</span><span class="o">&lt;=</span><span class="n">xMax</span><span class="p">):</span>
+					<span class="n">imageResultat</span><span class="p">[</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">monImageListe</span><span class="p">[</span><span class="n">yMin</span><span class="p">][</span><span class="n">xMin</span><span class="p">])</span>
+					<span class="n">xMin</span> <span class="o">+=</span> <span class="mi">1</span>
+				<span class="n">yMin</span> <span class="o">+=</span> <span class="mi">1</span>
+
+			<span class="n">ImageAEnvoyee</span> <span class="o">=</span> <span class="n">ImageDune</span><span class="o">.</span><span class="n">ImageDune</span><span class="p">()</span>
+			<span class="n">ImageAEnvoyee</span><span class="o">.</span><span class="n">setImage</span><span class="p">(</span><span class="n">imageResultat</span><span class="p">)</span>
+			<span class="n">ImageAEnvoyee</span><span class="o">.</span><span class="n">setResolution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="p">)</span>
+			<span class="n">fenTraitementImage</span> <span class="o">=</span> <span class="n">Toplevel</span><span class="p">()</span>
+			<span class="n">fenTraitementImage</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Demande des données - Analyse dunes 2018&quot;</span><span class="p">)</span>
+			<span class="n">CalculLPE</span><span class="o">.</span><span class="n">CalculLPE</span><span class="p">(</span><span class="n">fenTraitementImage</span><span class="p">,</span> <span class="n">ImageAEnvoyee</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">miniature</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seuilDetection</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+	<span class="c1">#Efface tous points et traits sur l&#39;image. </span>
+<div class="viewcode-block" id="ImageCoupure.reset"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.ImageCoupure.ImageCoupure.reset">[docs]</a>	<span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction qui efface lous les points tracés sur l&#39;image.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">ligne</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">LignesCanvas</span> <span class="p">:</span> 
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">ligne</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">LignesCanvas</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointsCanvas</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">PointsCanvas</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">coupure</span> <span class="o">=</span> <span class="n">Coupure</span><span class="o">.</span><span class="n">coupure</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ProjetDunes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Autodoc.html">Page d’autodocumentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ecalle_Rebillard_Lastennet_Goudon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

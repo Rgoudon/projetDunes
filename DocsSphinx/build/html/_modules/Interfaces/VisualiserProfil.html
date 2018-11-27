@@ -1,0 +1,236 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Interfaces.VisualiserProfil &#8212; Documentation ProjetDunes 1.3</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de Interfaces.VisualiserProfil</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">array</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_tkagg</span> <span class="k">import</span> <span class="n">FigureCanvasTkAgg</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">searchsorted</span>
+
+<span class="n">ListeCouleurs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;sienna&quot;</span><span class="p">,</span> <span class="s2">&quot;chartreuse&quot;</span><span class="p">,</span> <span class="s2">&quot;darkgreen&quot;</span><span class="p">,</span> <span class="s2">&quot;deepskyblue&quot;</span><span class="p">,</span> <span class="s2">&quot;crimson&quot;</span><span class="p">,</span> <span class="s2">&quot;darkorange&quot;</span><span class="p">,</span> <span class="s2">&quot;yellow&quot;</span><span class="p">,</span> <span class="s2">&quot;purple&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="VisualiserProfil"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.VisualiserProfil.VisualiserProfil">[docs]</a><span class="k">class</span> <span class="nc">VisualiserProfil</span><span class="p">(</span><span class="n">Frame</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Classe de gestion de l&#39;affichage des profils des axes. \n</span>
+<span class="sd">	La classe ResultatsAxes hérite de la classe tkinter Frame. \n</span>
+<span class="sd">	Cette classe ne peut pas être instancié sans avoir fait un traitement des axes. \n</span>
+<span class="sd">	cf ci-après pour des informations sur le traitement des axes : :func:`AlgorithmeAxe.DetectionDunes`. \n</span>
+<span class="sd">	</span>
+<span class="sd">	:param fenetre: Objet de la classe frame, fenetre affiché à l&#39;utilisateur. </span>
+<span class="sd">	:type fenetre: Frame</span>
+<span class="sd">	</span>
+<span class="sd">	:param NumeroAxe: Objet de la classe ImageDune contenant le fichier image.</span>
+<span class="sd">	:type NumeroAxe: ImageDune</span>
+
+<span class="sd">	:param CouleurAssocie: Entier correspondant au seuil de detection des petites dunes en cm.</span>
+<span class="sd">	:type CouleurAssocie: int</span>
+<span class="sd">	</span>
+<span class="sd">	:param CoordonneesProfilX: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l&#39;image à afficher dans la fenetre principale.</span>
+<span class="sd">	:type CoordonneesProfilX: PhotoImage</span>
+<span class="sd">	</span>
+<span class="sd">	:param CoordonneesProfilY: Objet de la classe gestionAxes contenant les axes tracés par l&#39;utilisateur.</span>
+<span class="sd">	:type CoordonneesProfilY: GestionAxes</span>
+<span class="sd">	</span>
+<span class="sd">	:param NombreDunes: </span>
+<span class="sd">	:type NombreDunes: </span>
+<span class="sd">	</span>
+<span class="sd">	:param LongeurOndeMoyenne: </span>
+<span class="sd">	:type LongeurOndeMoyenne: </span>
+<span class="sd">	</span>
+<span class="sd">	:param HauteurMoyenne: </span>
+<span class="sd">	:type HauteurMoyenne: </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fenetre</span><span class="p">,</span> <span class="n">NumeroAxe</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">CouleurAssocie</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">CoordonneesProfilX</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">CoordonneesProfilY</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">NombreDunes</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LongeurOndeMoyenne</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">HauteurMoyenne</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">window</span> <span class="o">=</span> <span class="n">fenetre</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilX</span> <span class="o">=</span> <span class="n">CoordonneesProfilX</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilY</span> <span class="o">=</span> <span class="n">CoordonneesProfilY</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxe</span> <span class="o">=</span> <span class="n">NumeroAxe</span>
+		
+		<span class="c1"># Cette donnée est sauvegardée pour éviter de la recalculer à chaque fois</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">MaxX</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilX</span><span class="p">)</span>
+		
+		<span class="c1"># Création de nos widgets</span>
+		<span class="n">Label</span><span class="p">(</span><span class="n">fenetre</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Profil dunes axe &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxe</span><span class="p">),</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Courier&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">fg</span> <span class="o">=</span> <span class="n">CouleurAssocie</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		<span class="n">Button</span><span class="p">(</span><span class="n">fenetre</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Export profil&quot;</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ExportProfil</span><span class="p">(),</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">25</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		<span class="n">Label</span><span class="p">(</span><span class="n">fenetre</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Nombre de dunes: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">NombreDunes</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;    Longeur d&#39;onde moyenne: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LongeurOndeMoyenne</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;m    Hauteur moyenne: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">HauteurMoyenne</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;cm&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+
+
+		<span class="n">MaFrame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">fenetre</span><span class="p">)</span>
+		<span class="n">MaFrame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+		
+		<span class="c1"># Comment afficher correctement son graphique</span>
+		<span class="c1"># https://python4astronomers.github.io/plotting/advanced.html</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">CoordonneesProfilX</span><span class="p">,</span> <span class="n">CoordonneesProfilY</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Distance (m)&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Altitude (m)&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Vue de profil axe &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxe</span><span class="p">))</span>
+		
+		<span class="c1"># On change les valeurs min/max pour la légende du graphique afin d&#39;éviter d&#39;occuper de la place pour des valeurs qui ne sont pas atteinte (comme 0m d&#39;altitude par exemple)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">CoordonneesProfilY</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">CoordonneesProfilY</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">)</span>
+		 
+		<span class="c1"># On affiche le graphe matplotlib, et on le praramètre pour que ces dimensions s&#39;adaptent à la taille de la fenêtre</span>
+		<span class="n">graph</span> <span class="o">=</span> <span class="n">FigureCanvasTkAgg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span> <span class="n">master</span><span class="o">=</span><span class="n">MaFrame</span><span class="p">)</span>
+		<span class="n">graph</span><span class="o">.</span><span class="n">get_tk_widget</span><span class="p">()</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		
+		<span class="c1"># On prépare de quoi faire les lignes horizonale/verticale pour cibler la valeur du graphe que l&#39;on cible avec le curseur de la souris</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># the horiz line</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># the vert line</span>
+		<span class="c1"># Localisation du texte qui affichera les valeurs numériques du point ciblé</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">txt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+		
+		<span class="c1"># On associe un évènement quand l&#39;on déplace le curseur de la souris sur le graphique matplotlib</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">mpl_connect</span> <span class="p">(</span><span class="s1">&#39;motion_notify_event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouse_move</span><span class="p">)</span>
+		
+	<span class="c1"># Évènement inspiré par celui sur https://matplotlib.org/gallery/user_interfaces/embedding_in_tk_sgskip.html</span>
+<div class="viewcode-block" id="VisualiserProfil.mouse_move"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.VisualiserProfil.VisualiserProfil.mouse_move">[docs]</a>	<span class="k">def</span> <span class="nf">mouse_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de ciblage sur la courbe du profil.</span>
+<span class="sd">		L&#39;utilisateur peut suivre la courbe du profil afin d&#39;obtenir des informations supplémentaires sur un point de la courbe.</span>
+<span class="sd">		</span>
+<span class="sd">		:param event: contient les coordonées du clic sur le canevas</span>
+<span class="sd">		:type event: objet event </span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">event</span><span class="o">.</span><span class="n">inaxes</span><span class="p">):</span>
+			<span class="k">return</span>
+
+		<span class="n">x</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">xdata</span>
+		
+		<span class="c1"># Ce texte est pour éviter les erreurs si l&#39;on place le curseur de la souris (dans sa coordonnée X)</span>
+		<span class="c1"># à des valeurs plus grande que celle utilisées dans le tableau de valeur générant le graphique</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MaxX</span><span class="p">):</span>
+			<span class="k">return</span>
+
+		<span class="c1"># La recherche du point de la courbe dont sa coordonnée en X et la plus proche de celle pointée par le curseur de la souris</span>
+		<span class="n">indx</span> <span class="o">=</span> <span class="n">searchsorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilX</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilX</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+		<span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilY</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+		<span class="c1"># Mise à jour de la position des lignes horizontale/verticale</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lx</span><span class="o">.</span><span class="n">set_ydata</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ly</span><span class="o">.</span><span class="n">set_xdata</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s1">&#39;Dist = </span><span class="si">%1.2f</span><span class="s1">, Alti = </span><span class="si">%1.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
+		
+<div class="viewcode-block" id="VisualiserProfil.ExportProfil"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.VisualiserProfil.VisualiserProfil.ExportProfil">[docs]</a>	<span class="k">def</span> <span class="nf">ExportProfil</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction d&#39;export des resultats du profill.</span>
+<span class="sd">		Ouvre une boite de dialogue à l&#39;utilisateur pour qu&#39;il séléctionne un repertoire où stcoker le fichier.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">f</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">asksaveasfilename</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+			<span class="c1"># Avant de sauvegarder, nous allons enlever les lignes horizontale/verticale</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">lx</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">ly</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+			
+			<span class="c1"># On sauvegarde l&#39;image</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+			
+			<span class="c1"># On remet les traits</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">lx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>  <span class="c1"># the horiz line</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">ly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>  <span class="c1"># the vert line</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ProjetDunes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Autodoc.html">Page d’autodocumentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ecalle_Rebillard_Lastennet_Goudon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

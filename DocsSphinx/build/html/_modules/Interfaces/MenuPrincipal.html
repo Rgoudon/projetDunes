@@ -1,0 +1,545 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Interfaces.MenuPrincipal &#8212; Documentation ProjetDunes 1.3</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de Interfaces.MenuPrincipal</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="n">filedialog</span><span class="p">,</span> <span class="n">messagebox</span><span class="p">,</span> <span class="n">ttk</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageTk</span>
+<span class="kn">from</span> <span class="nn">Interfaces</span> <span class="k">import</span> <span class="n">ResultatsAxes</span>
+<span class="kn">from</span> <span class="nn">Interfaces</span> <span class="k">import</span> <span class="n">ResultatsImage</span>
+<span class="kn">from</span> <span class="nn">Interfaces</span> <span class="k">import</span> <span class="n">CalculLPE</span>
+<span class="kn">from</span> <span class="nn">Interfaces</span> <span class="k">import</span> <span class="n">ImageCoupure</span>
+<span class="kn">from</span> <span class="nn">TraitementImage</span> <span class="k">import</span> <span class="n">ImageDune</span>
+<span class="kn">from</span> <span class="nn">TraitementImage</span> <span class="k">import</span> <span class="n">GestionAxes</span>
+
+
+<span class="c1"># Faire en sorte que l&#39;application prenne en compte la mise à  l&#39;échelle (scaling) de l&#39;écran</span>
+<span class="c1"># ! Attention ! Changer le scaling de l&#39;écran en pleine exécution du programme ne permet plus d&#39;afficher l&#39;image en X sur Y pixels → cela ne peut PAS être corrigé (mais la prise en compte des coordonnées des pixels correspond toujours)</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1"># Si nous sommes sur une machine Windows</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>
+	<span class="kn">from</span> <span class="nn">ctypes</span> <span class="k">import</span> <span class="n">windll</span>
+	<span class="n">user32</span> <span class="o">=</span> <span class="n">windll</span><span class="o">.</span><span class="n">user32</span>
+	<span class="n">user32</span><span class="o">.</span><span class="n">SetProcessDPIAware</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MenuPrincipal"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal">[docs]</a><span class="k">class</span> <span class="nc">MenuPrincipal</span><span class="p">(</span><span class="n">Frame</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Classe pour la gestion de la fenetre principale. \n</span>
+<span class="sd">	Permet de créer la fenetre principale du programme. \n</span>
+<span class="sd">	La classe MenuPrincipal hérite de la classe tkinter Frame.</span>
+<span class="sd">			</span>
+<span class="sd">	:param fenetre: Objet de la classe frame, fenetre affiché à l&#39;utilisateur. </span>
+<span class="sd">	:type fenetre: Frame</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+<div class="viewcode-block" id="MenuPrincipal.__init__"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.__init__">[docs]</a>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fenetre</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Constructeur de la classe MenuPrincipal.</span>
+<span class="sd">		</span>
+<span class="sd">		**Paramètres d&#39;instance :**</span>
+<span class="sd">		</span>
+<span class="sd">		:param MonImage: Objet de la classe ImageDune contenant le fichier image.</span>
+<span class="sd">		:type MonImage: ImageDune	</span>
+<span class="sd">		</span>
+<span class="sd">		:param LesAxes: Objet de la classe gestionAxes contenant les axes tracés par l&#39;utilisateur</span>
+<span class="sd">		:type LesAxes: GestionAxes	</span>
+<span class="sd">						</span>
+<span class="sd">		:param ResolutionAltitude: Correspont à la résolution de l&#39;altitude de l&#39;image (différence d&#39;altitude entre deux niveaux de gris en cm).</span>
+<span class="sd">		:type ResolutionAltitude: int 		</span>
+<span class="sd">						</span>
+<span class="sd">		:param ImageAffiche: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l&#39;image à afficher dans la fenetre principale.</span>
+<span class="sd">		:type ImageAffiche: PhotoImage</span>
+<span class="sd">		</span>
+<span class="sd">		:param PrecedentChoixResolutionImage: Chaine de caractères permettant de sauvegarder le précédent choix dans la comboBox, pour éventuellement le remettre (si l&#39;utilisateur annule son nouveau choix de résolution d&#39;affichage de l&#39;image).</span>
+<span class="sd">		:type PrecedentChoixResolutionImage: string</span>
+<span class="sd">		</span>
+<span class="sd">		:param DessinPoint: Contient la liste des identifiants objet retournés par le constucteur tktinter lors de la contruction des points par l&#39;utilisateur, permet de garder une référence sur l&#39;objet en vue d&#39;une suppresion.</span>
+<span class="sd">		:type DessinLigne: liste d&#39;entier </span>
+<span class="sd">						</span>
+<span class="sd">		:param DessinLigne: Contient la liste des identifiants objet retournés par le constucteur tktinter lors de la contruction des axes par l&#39;utilisateur, permet de garder une référence sur l&#39;objet en vue d&#39;une suppresion.</span>
+<span class="sd">		:type DessinLigne: liste d&#39;entier </span>
+
+<span class="sd">		:param CourantVersLaGauche: Donne le sens de lecture du courant de l&#39;image.</span>
+<span class="sd">		:type CourantVersLaGauche: Booleen</span>
+<span class="sd">		</span>
+<span class="sd">		:param SeuilDetectionPetiteDune: Objet de la classe spinbox permettant la selection de la taille des petites dunes.</span>
+<span class="sd">		:type SeuilDetectionPetiteDune: Spinbox</span>
+<span class="sd">		</span>
+<span class="sd">		:param SeuilDetectionGrosseDune: Objet de la classe spinbox permettant la selection de la taille des grosses dunes.</span>
+<span class="sd">		:type SeuilDetectionGrosseDune: Spinbox</span>
+<span class="sd">		</span>
+<span class="sd">		:param BoutonDupliquerAxe: Objet de la classe button permettant d&#39;appeler la fonction de duplication d&#39;un axe.</span>
+<span class="sd">		:type BoutonDupliquerAxe: Button</span>
+<span class="sd">						</span>
+<span class="sd">		:param BoutonSupprimerDernierElement: Objet de la classe button permettant d&#39;appeler la fonction de suppresion du dernier axe crée.</span>
+<span class="sd">		:type BoutonSupprimerDernierElement: Button</span>
+
+<span class="sd">		:param BoutonSupprimerAxes: Objet de la classe button permettant d&#39;appeler la fonction de duplication d&#39;un axe.</span>
+<span class="sd">		:type BoutonSupprimerAxes: Button</span>
+<span class="sd">		</span>
+<span class="sd">		:param BoutonTraitementAxes: Objet de la classe button permettant d&#39;appeler la fonction de traitemement des axes.</span>
+<span class="sd">		:type BoutonTraitementAxes: Button</span>
+<span class="sd">						</span>
+<span class="sd">		:param BoutonTraitementImage: Objet de la classe button permettant d&#39;appeler la fonction de traitement de l&#39;image complete.</span>
+<span class="sd">		:type BoutonTraitementImage: Button</span>
+
+<span class="sd">		:param BoutonCoupure: Objet de la classe button permettant d&#39;appeler la fonction de coupure sur l&#39;image</span>
+<span class="sd">		:type BoutonCoupure: Button</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		
+		<span class="n">Frame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fenetre</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">)</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span> <span class="o">=</span> <span class="n">ImageDune</span><span class="o">.</span><span class="n">ImageDune</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span> <span class="o">=</span> <span class="n">GestionAxes</span><span class="o">.</span><span class="n">GestionAxes</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ResolutionAltitude</span> <span class="o">=</span> <span class="mi">0</span> 
+		<span class="bp">self</span><span class="o">.</span><span class="n">ImageAffiche</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">PrecedentChoixResolutionImage</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> 
+		<span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span> <span class="o">=</span> <span class="p">[]</span> 
+		<span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span> <span class="o">=</span> <span class="p">[]</span> 
+		<span class="bp">self</span><span class="o">.</span><span class="n">CourantVersLaGauche</span> <span class="o">=</span> <span class="kc">True</span> 
+		
+		<span class="c1"># Création d&#39;un sous frame pour placer correctement les divers éléments sur la moitié gauche de la fenêtre</span>
+		<span class="n">FrameMenu</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="n">FrameMenu</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+		
+		<span class="c1"># Création de nos widgets</span>
+		<span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Charger image&#39;</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ChargerImage</span><span class="p">())</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		
+		<span class="n">FrameInfoImage</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">)</span>
+		<span class="n">FrameInfoImage</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		
+		<span class="n">Label</span><span class="p">(</span><span class="n">FrameInfoImage</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Seuil détection des petites dunes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="c1"># L&#39;intervalle de choix de seuil de détection des petites dunes est un entier entre 0 et 100 (par défaut 10)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionPetiteDune</span> <span class="o">=</span> <span class="n">Spinbox</span><span class="p">(</span><span class="n">FrameInfoImage</span><span class="p">,</span> <span class="n">from_</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionPetiteDune</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionPetiteDune</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c1"># On enlève la valeur par défaut dans la Spinbox (qui est de base la valeur minimum)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionPetiteDune</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">)</span>  <span class="c1"># On place maintenant la valeur 10 comme valeur par défaut</span>
+		<span class="c1"># pour récupérer la valeur de la Spinbox, il suffit de faire SeuilDetectionPetiteDune.get()</span>
+		<span class="n">Label</span><span class="p">(</span><span class="n">FrameInfoImage</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;cm&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+		
+		<span class="n">Label</span><span class="p">(</span><span class="n">FrameInfoImage</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Seuil détection des grandes dunes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="c1"># L&#39;intervalle de choix de seuil de détection des grandes dunes est un entier entre 0 et 100 (par défaut 50)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionGrosseDune</span> <span class="o">=</span> <span class="n">Spinbox</span><span class="p">(</span><span class="n">FrameInfoImage</span><span class="p">,</span> <span class="n">from_</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionGrosseDune</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionGrosseDune</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>    <span class="c1"># On enlève la valeur par défaut dans la Spinbox (qui est de base la valeur minimum)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionGrosseDune</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;50&quot;</span><span class="p">)</span>  <span class="c1"># On place maintenant la valeur 50 comme valeur par défaut</span>
+		<span class="c1"># pour récupérer la valeur de la Spinbox, il suffit de faire SeuilDetectionGrosseDune.get()</span>
+		<span class="n">Label</span><span class="p">(</span><span class="n">FrameInfoImage</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;cm&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+		
+		<span class="n">Label</span><span class="p">(</span><span class="n">FrameInfoImage</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Sens du courant&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixSensCourant</span><span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Combobox</span><span class="p">(</span><span class="n">FrameInfoImage</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixSensCourant</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Vers la gauche&quot;</span><span class="p">,</span> <span class="s2">&quot;Vers la droite&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixSensCourant</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Vers la gauche&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixSensCourant</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixSensCourant</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;ComboboxSelected&gt;&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ChoisirSensCourant</span><span class="p">())</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonDupliquerAxe</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Dupliquer axe&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">DupliquerAxe</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonDupliquerAxe</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerDernierElement</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Supprimer dernier axe / point&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">SupprimerDernierAxeOuPoint</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerDernierElement</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerAxes</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Supprimer axe(s)&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">SupprimerAxes</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerAxes</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonTraitementAxes</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Traitement axe(s)&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">TraitementAxes</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonTraitementAxes</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonTraitementImage</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Traitement image&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">TraitementImage</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonTraitementImage</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonCoupure</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">FrameMenu</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Coupure Image&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">CoupureImage</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonCoupure</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		
+		<span class="n">FrameImage</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="n">FrameImage</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+		
+		<span class="n">FrameResolutionImage</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">FrameImage</span><span class="p">)</span>
+		<span class="n">FrameResolutionImage</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">)</span>
+		
+		<span class="n">Label</span><span class="p">(</span><span class="n">FrameResolutionImage</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Résolution maximum d&#39;affichage de l&#39;image&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">)</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixResolutionImage</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Combobox</span><span class="p">(</span><span class="n">FrameResolutionImage</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixResolutionImage</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;854 x 480&quot;</span><span class="p">,</span> <span class="s2">&quot;1280 x 720&quot;</span><span class="p">,</span> <span class="s2">&quot;1920 x 1080&quot;</span><span class="p">,</span> <span class="s2">&quot;Natives&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">PrecedentChoixResolutionImage</span> <span class="o">=</span> <span class="s2">&quot;1280 x 720&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixResolutionImage</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PrecedentChoixResolutionImage</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixResolutionImage</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">RIGHT</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ChoixResolutionImage</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;ComboboxSelected&gt;&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">AffichageImage</span><span class="p">())</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">FrameImage</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">anchor</span><span class="o">=</span><span class="n">NW</span><span class="p">)</span>            <span class="c1"># Règle l&#39;emplacement du milieu de l&#39;image, ici dans le coin Nord Ouest (NW) de la fenetre</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">cursor</span><span class="o">=</span><span class="s2">&quot;crosshair&quot;</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Button-1&gt;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PlacementPoint</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> </div>
+		
+	
+<div class="viewcode-block" id="MenuPrincipal.ChargerImage"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.ChargerImage">[docs]</a>	<span class="k">def</span> <span class="nf">ChargerImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de chargement d&#39;une image.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># On ouvre une boite de dialogue ou l&#39;utilisateur va choisir son image</span>
+		<span class="n">path</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">askopenfilename</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Ouvrir une image&quot;</span><span class="p">,</span><span class="n">filetypes</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;tif&#39;</span><span class="p">,</span><span class="s1">&#39;.tif&#39;</span><span class="p">),(</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span><span class="s1">&#39;.jpg&#39;</span><span class="p">),(</span><span class="s1">&#39;bmp&#39;</span><span class="p">,</span><span class="s1">&#39;.bmp&#39;</span><span class="p">),(</span><span class="s1">&#39;all files&#39;</span><span class="p">,</span><span class="s1">&#39;.*&#39;</span><span class="p">)])</span> 
+		<span class="c1"># On vérifie que l&#39;image est apte au traitements</span>
+		<span class="k">if</span> <span class="n">path</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="p">:</span>
+			<span class="n">ImageValide</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">AttribuerImage</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+			
+			<span class="k">if</span><span class="p">(</span><span class="n">ImageValide</span><span class="p">):</span>
+				<span class="c1"># On affiche l&#39;image dans l&#39;interface</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">AffichageImage</span><span class="p">()</span>
+				<span class="c1"># On rend possible le bouton pour le traitement sur l&#39;image</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">BoutonTraitementImage</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normal&#39;</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">BoutonCoupure</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normal&#39;</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Erreur&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;L&#39;image ouverte en paramètre ne respecte pas la convention de nommage pour utiliser le programme.</span>
+<span class="s2">Les niveaux d&#39;altitude minimum et maximum (m) doivent être indiqués dans le nom de l&#39;image séparé par le caractère &#39;_&#39;.        </span>
+<span class="s2">Exemples de noms valides :</span>
+<span class="s2">A_5,284_9,21.tif</span>
+<span class="s2">Exemple_-3,1_-8,867.tif</span>
+<span class="s2">Projet_de_PRD_4,26_-8,141.tif&quot;&quot;&quot;</span><span class="p">)</span></div>
+			
+	
+<div class="viewcode-block" id="MenuPrincipal.AffichageImage"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.AffichageImage">[docs]</a>	<span class="k">def</span> <span class="nf">AffichageImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction d&#39;affichage d&#39;une image</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		
+		<span class="c1">#self.lab[&#39;text&#39;] = str(self.winfo_screenwidth()) + &quot; &quot; + str(self.winfo_screenheight())</span>
+		   
+		<span class="c1"># Il faut définir la variable au préalable (et par défaut à  false, pour correspondre à  la logique émise)</span>
+		<span class="n">ChoixPoursuivre</span> <span class="o">=</span> <span class="kc">False</span>
+		
+		<span class="c1"># Avant d&#39;afficher la nouvelle image (ou de changer la résolution d&#39;affichage de celle actuelle),</span>
+		<span class="c1"># on vérifie si l&#39;utilisateur a pas déjà  posé des points, et si c&#39;est le cas,</span>
+		<span class="c1"># Alors on l&#39;avertie signalant que les points posés seront supprimés</span>
+		<span class="c1"># (bien évidemment, il n&#39;est pas possible d&#39;ajouter des points si aucune image est affichée)</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">ChoixPoursuivre</span> <span class="o">=</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">askquestion</span><span class="p">(</span><span class="s2">&quot;Attention&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;Au moins un point est placé sur l&#39;image actuelle</span>
+<span class="s2">Poursuivre entrainerai leur suppression.</span>
+<span class="s2">Voulez-vous poursuivre ?&quot;&quot;&quot;</span><span class="p">)</span>
+			
+			<span class="c1"># Si l&#39;utilisateur a demandé de poursuivre, on supprime alors les points et tracés (axes) établis</span>
+			<span class="k">if</span> <span class="n">ChoixPoursuivre</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span> <span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">SupprimerAxes</span><span class="p">()</span>
+			<span class="k">else</span> <span class="p">:</span>
+				<span class="c1"># Comme nous annulons la suppression des points, on réaffiche la résolution de référence dans la comboBox</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">ChoixResolutionImage</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PrecedentChoixResolutionImage</span><span class="p">)</span>
+		
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getCheminImage</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+			
+			<span class="c1"># On récupère la taille voulue (maximal) pour l&#39;affichage de l&#39;image</span>
+			<span class="n">LargeurMaxAffiche</span><span class="p">,</span> <span class="n">HauteurMaxAffiche</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DimensionMaxChoisi</span><span class="p">()</span>
+	
+			<span class="c1"># Attention, le ratio de mise à  l&#39;echelle de l&#39;écran doit aussi être prit en compte → bug de Pillow</span>
+			<span class="c1"># par exemple sur mon poste, afficher une image en 1280x720 pixels s&#39;affichée réellement en 1600x900, et cela dà» à  la mise à l&#39;échelle de 125%</span>
+			<span class="c1"># Plus d&#39;info: https://github.com/python-pillow/Pillow/issues/2438</span>
+			<span class="n">ratio</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getLargeurImage</span><span class="p">()</span><span class="o">/</span><span class="n">LargeurMaxAffiche</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getHauteurImage</span><span class="p">()</span><span class="o">/</span><span class="n">HauteurMaxAffiche</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">MiniatureImage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getImage</span><span class="p">()</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getLargeurImage</span><span class="p">()</span> <span class="o">/</span> <span class="n">ratio</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getHauteurImage</span><span class="p">()</span> <span class="o">/</span> <span class="n">ratio</span><span class="p">)),</span> <span class="n">Image</span><span class="o">.</span><span class="n">ANTIALIAS</span><span class="p">)</span>
+			
+			<span class="bp">self</span><span class="o">.</span><span class="n">ImageAffiche</span> <span class="o">=</span> <span class="n">ImageTk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MiniatureImage</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">anchor</span><span class="o">=</span><span class="n">NW</span><span class="p">,</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImageAffiche</span><span class="p">)</span>
+			<span class="c1"># On redéfini la taille du caneva associé à  la miniature de l&#39;image sur l&#39;interface graphique</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MiniatureImage</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MiniatureImage</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+			
+			<span class="c1"># Comme nous utilisons la résolution indiquée dans la comboBox, elle devient celle de référence</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">PrecedentChoixResolutionImage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ChoixResolutionImage</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="MenuPrincipal.ChoisirSensCourant"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.ChoisirSensCourant">[docs]</a>	<span class="k">def</span> <span class="nf">ChoisirSensCourant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Setter pour l&#39;attribut stockant le sens du courant.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">Choix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ChoixSensCourant</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">Choix</span> <span class="o">==</span> <span class="s2">&quot;Vers la gauche&quot;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">setSensCourantGauche</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">setSensCourantGauche</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+			
+<div class="viewcode-block" id="MenuPrincipal.AjoutPointAffichage"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.AjoutPointAffichage">[docs]</a>	<span class="k">def</span> <span class="nf">AjoutPointAffichage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">PositionX</span><span class="p">,</span> <span class="n">PositionY</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction qui ajoute la réference du point tracé dans la liste DessinPoint.                               </span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="n">PositionX</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">PositionY</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">PositionX</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">PositionY</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span></div>
+		
+<div class="viewcode-block" id="MenuPrincipal.AjoutLigneAffichage"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.AjoutLigneAffichage">[docs]</a>	<span class="k">def</span> <span class="nf">AjoutLigneAffichage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction qui ajoute la réference de la ligne tracé dans la liste DessinLigne.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">CoordonneesDernierAxe</span><span class="p">(),</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span></div>
+	
+<div class="viewcode-block" id="MenuPrincipal.PlacementPoint"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.PlacementPoint">[docs]</a>	<span class="k">def</span> <span class="nf">PlacementPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>    
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction d&#39;ajout d&#39;un point lors d&#39;un clic souris sur l&#39;image.</span>
+<span class="sd">		</span>
+<span class="sd">		:param event: contient les coordonées du clic sur le canevas</span>
+<span class="sd">		:type event: objet event </span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Si une image valide est référencée</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">CheminValide</span><span class="p">():</span>
+			<span class="c1"># On peux tracer 10 axes au maximum (pour garantir une couleur différente lors du traitement sur les axes)</span>
+			<span class="c1">#On regarde donc si on en a plus de 9 et que le dernier (le dixième) est complets</span>
+			<span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">9</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">DernierAxeComplet</span><span class="p">()):</span>
+				<span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Erreur&quot;</span><span class="p">,</span> <span class="s2">&quot;10 Tracés au maximum (limite atteinte).&quot;</span><span class="p">)</span>
+				<span class="k">return</span>
+				
+			<span class="c1"># On récupère la position du point que l&#39;on va placer sur le canevas</span>
+			<span class="n">PositionXPoint</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span>
+			<span class="n">PositionYPoint</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span>
+			<span class="c1">#print(&quot;X = &quot; + str(PositionXPoint) + &quot; Y = &quot; + str(PositionYPoint))</span>
+			
+			<span class="c1"># on ajoute le point dans la liste des axe (GestionAxes)</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">AjouterPoint</span><span class="p">(</span><span class="n">PositionXPoint</span><span class="p">,</span> <span class="n">PositionYPoint</span><span class="p">):</span>
+				<span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Erreur&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;Les 2 points de l&#39;axe sont placés au même endroit.</span>
+<span class="s2">Impossible de créer un axe dont la longueur est nulle.&quot;&quot;&quot;</span><span class="p">)</span>
+				<span class="k">return</span>
+			
+			<span class="c1"># On rajoute le point sur le canevas</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">AjoutPointAffichage</span><span class="p">(</span><span class="n">PositionXPoint</span><span class="p">,</span> <span class="n">PositionYPoint</span><span class="p">)</span>
+			<span class="c1"># On permet de supprimer le dernier élément</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerDernierElement</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normal&#39;</span>
+			
+			<span class="c1"># Si on vient d&#39;ajouter le deuxième point pour le tracé d&#39;un axe</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">DernierAxeComplet</span><span class="p">():</span>
+				<span class="c1"># On trace la ligne entre les deux points tracés (avec la couleur rouge)                </span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">AjoutLigneAffichage</span><span class="p">()</span>
+				
+				<span class="c1"># On rend actif le bouton de traitement sur les axes (et de duplication des axes)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">BoutonTraitementAxes</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normal&#39;</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">BoutonDupliquerAxe</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normal&#39;</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerAxes</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normal&#39;</span>
+				
+				<span class="c1"># On change la couleur du dernier axe précédent → mettre en valeur le dernier tracé (celui qui peut être supprimé ou dupliqué)</span>
+				<span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">itemconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">],</span> <span class="n">fill</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="MenuPrincipal.DupliquerAxe"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.DupliquerAxe">[docs]</a>	<span class="k">def</span> <span class="nf">DupliquerAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de duplication d&#39;un axe.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
+			<span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Erreur&quot;</span><span class="p">,</span> <span class="s2">&quot;Aucun axe n&#39;est encore tracé.&quot;</span><span class="p">)</span>
+		<span class="c1"># S&#39;il y a un point non utilisé pour un tracé (le dernier axe n&#39;est pas complet)</span>
+		<span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">DernierAxeComplet</span><span class="p">():</span>
+				<span class="c1"># Le tracé qui se fait dupliqué n&#39;est plus le dernier effectué → il passe donc en bleu</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">itemconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">],</span> <span class="n">fill</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+				<span class="c1"># Calcul des coordonnées du deuxième point en se basant sur le vecteur entre les deux points du tracé précédent</span>
+				<span class="n">VecteurAncienAxe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">VecteurDernierAxe</span><span class="p">()</span>
+				<span class="n">PointDepart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">PositionDernierPointDepart</span><span class="p">()</span>
+				<span class="n">NouveauPointX</span> <span class="o">=</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">VecteurAncienAxe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="n">NouveauPointY</span> <span class="o">=</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">VecteurAncienAxe</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+				<span class="c1"># On regarde si le 2ème point de l&#39;axe ne sera pas en dehors de l&#39;image</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">NouveauPointX</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">NouveauPointX</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getLargeurImage</span><span class="p">()</span> <span class="ow">or</span> <span class="n">NouveauPointY</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">NouveauPointY</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getHauteurImage</span><span class="p">()):</span>
+					<span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Erreur&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;Le deuxième point serait en dehors de l&#39;image&quot;&quot;&quot;</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="c1"># On place maintenant le deuxième point, ainsi que le tracé les reliant</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">AjoutPointAffichage</span><span class="p">(</span><span class="n">NouveauPointX</span><span class="p">,</span> <span class="n">NouveauPointY</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">AjouterPoint</span><span class="p">(</span><span class="n">NouveauPointX</span><span class="p">,</span> <span class="n">NouveauPointY</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">AjoutLigneAffichage</span><span class="p">()</span>
+		<span class="k">else</span> <span class="p">:</span>
+			<span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Information&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;Placer le premier point d&#39;abord</span>
+<span class="s2">puis cliquer sur ce même bouton&quot;&quot;&quot;</span><span class="p">)</span></div>
+			
+<div class="viewcode-block" id="MenuPrincipal.SupprimerDernierAxeOuPoint"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.SupprimerDernierAxeOuPoint">[docs]</a>	<span class="k">def</span> <span class="nf">SupprimerDernierAxeOuPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de suppresion du dernier axe ou point placé.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Si tous les axes sont complet (pas de point tout seul → on supprime le dernier tracé (la ligne et les 2 points)</span>
+		<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">DernierAxeComplet</span><span class="p">()):</span>
+			<span class="c1"># On enlève les points + la ligne sur l&#39;affichage du canevas</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+			<span class="c1"># On supprime les supprimer de leur liste</span>
+			<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+			
+			<span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">SupprimerDernierAxe</span><span class="p">()</span>
+			<span class="c1"># Si il reste encore au moins 1 tracé sur l&#39;image, l&#39;avant dernier tracé effectué repasse en rouge (il devient celui qui peut être supprimé / dupliqué) </span>
+			<span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">itemconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fill</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1"># On désactive le bouton de traitement sur les axes</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">BoutonTraitementAxes</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">BoutonDupliquerAxe</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerAxes</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span>
+	
+			<span class="c1"># Si un point a été placé sans qu&#39;il soit utilisé par un tracé → on supprime le point en question</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+			<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">SupprimerDernierAxe</span><span class="p">()</span>
+				
+		<span class="c1"># si il n&#39;y a plus de point placé par l&#39;utilisateur → désactiver le bouton</span>
+		<span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerDernierElement</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span></div>
+			
+<div class="viewcode-block" id="MenuPrincipal.SupprimerAxes"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.SupprimerAxes">[docs]</a>	<span class="k">def</span> <span class="nf">SupprimerAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de suppresion de tout les axes placés.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># On supprime toutes les lignes sur le canevas</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="p">)):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+		
+		<span class="c1"># on supprime tous les points sur le canevas</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">)):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Canevas</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+			
+		<span class="c1"># On vide les tableaus référencant les éléments graphiques lignes et points</span>
+		<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinLigne</span><span class="p">[:]</span>
+		<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">DessinPoint</span><span class="p">[:]</span>
+			
+		<span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">SupprimerTousAxes</span><span class="p">()</span>
+		
+		<span class="c1"># On désactive le bouton de traitement sur les axes</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonTraitementAxes</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonDupliquerAxe</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerDernierElement</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">BoutonSupprimerAxes</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;disabled&#39;</span></div>
+			   
+<div class="viewcode-block" id="MenuPrincipal.DimensionMaxChoisi"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.DimensionMaxChoisi">[docs]</a>	<span class="k">def</span> <span class="nf">DimensionMaxChoisi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de selection de la resolution de l&#39;image.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">Resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ChoixResolutionImage</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+		
+		<span class="c1"># Cas particulier, on a choisi d&#39;afficher l&#39;image dans sa résolution d&#39;origine</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">ResolutionLargeur</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Resolution</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+			<span class="n">ResolutionHauteur</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Resolution</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+		<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+			<span class="n">ResolutionLargeur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getLargeurImage</span><span class="p">()</span>
+			<span class="n">ResolutionHauteur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getHauteurImage</span><span class="p">()</span>
+				
+		<span class="k">return</span> <span class="n">ResolutionLargeur</span><span class="p">,</span> <span class="n">ResolutionHauteur</span></div>
+	
+<div class="viewcode-block" id="MenuPrincipal.TraitementAxes"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.TraitementAxes">[docs]</a>	<span class="k">def</span> <span class="nf">TraitementAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de traitement des axes. </span>
+<span class="sd">		Appelle la foncion de traitement, cf ci-après : :func:`ResultatsAxes.ResultatsAxes`.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># Si il y a un point non utilisé pour un axe on le supprime, avant d&#39;en envoyer le tableau à  la fenêtre suivante</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">DernierAxeComplet</span><span class="p">():</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">SupprimerDernierAxeOuPoint</span><span class="p">()</span>
+			
+		<span class="n">fenTraitementAxes</span> <span class="o">=</span> <span class="n">Toplevel</span><span class="p">()</span>
+		<span class="n">fenTraitementAxes</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Résultats issus des axes - Analyse dunes 2018&quot;</span><span class="p">)</span>
+		<span class="n">ResultatsAxes</span><span class="o">.</span><span class="n">ResultatsAxes</span><span class="p">(</span><span class="n">fenTraitementAxes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MiniatureImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionPetiteDune</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MenuPrincipal.TraitementImage"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.TraitementImage">[docs]</a>	<span class="k">def</span> <span class="nf">TraitementImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de traitement de l&#39;image complète. </span>
+<span class="sd">		Appelle l&#39;algorithme de la LPE, cf ci-après : :func:`ResultatsAxes.ResultatsAxes`.</span>
+<span class="sd">		</span>
+<span class="sd">		.. note::</span>
+<span class="sd">			Le traitement de l&#39;image complète peut être long. Il est préférable d&#39;utiliser une coupure sur l&#39;image, cf : :func:`CoupureImage`.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">fenTraitementImage</span> <span class="o">=</span> <span class="n">Toplevel</span><span class="p">()</span>
+		<span class="n">fenTraitementImage</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Demande des données - Analyse dunes 2018&quot;</span><span class="p">)</span>
+		<span class="n">CalculLPE</span><span class="o">.</span><span class="n">CalculLPE</span><span class="p">(</span><span class="n">fenTraitementImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MiniatureImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionPetiteDune</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span> <span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MenuPrincipal.CoupureImage"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.CoupureImage">[docs]</a>	<span class="k">def</span> <span class="nf">CoupureImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction d&#39;affichage de la fenetre de sélection pour une coupure sur l&#39;image. </span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">fenTraitementImage</span> <span class="o">=</span> <span class="n">Toplevel</span><span class="p">()</span>
+		<span class="n">fenTraitementImage</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Coupure Image - Analyse dunes 2018&quot;</span><span class="p">)</span>
+		<span class="n">ImageCoupure</span><span class="o">.</span><span class="n">ImageCoupure</span><span class="p">(</span><span class="n">fenTraitementImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MonImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">MiniatureImage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SeuilDetectionPetiteDune</span><span class="o">.</span><span class="n">get</span><span class="p">())</span></div></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ProjetDunes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Autodoc.html">Page d’autodocumentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ecalle_Rebillard_Lastennet_Goudon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

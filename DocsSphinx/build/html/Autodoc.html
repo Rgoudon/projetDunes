@@ -1,0 +1,440 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Page d’autodocumentation &#8212; Documentation ProjetDunes 1.3</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="prev" title="Page de documentation du projet de reconnaissance de dunes" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="page-d-autodocumentation">
+<h1>Page d’autodocumentation<a class="headerlink" href="#page-d-autodocumentation" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="section" id="projetdunes-interfaces">
+<h2>ProjetDunes Interfaces<a class="headerlink" href="#projetdunes-interfaces" title="Lien permanent vers ce titre">¶</a></h2>
+<span class="target" id="module-Interfaces.MenuPrincipal"></span><dl class="class">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal">
+<em class="property">class </em><code class="descclassname">Interfaces.MenuPrincipal.</code><code class="descname">MenuPrincipal</code><span class="sig-paren">(</span><em>fenetre</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe pour la gestion de la fenetre principale.</p>
+<p>Permet de créer la fenetre principale du programme.</p>
+<p>La classe MenuPrincipal hérite de la classe tkinter Frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>fenetre</strong> (<em>Frame</em>) – Objet de la classe frame, fenetre affiché à l’utilisateur.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>fenetre</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.__init__" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Constructeur de la classe MenuPrincipal.</p>
+<p><strong>Paramètres d’instance :</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>LesAxes</strong> (<em>GestionAxes</em>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur</li>
+<li><strong>ResolutionAltitude</strong> (<em>int</em>) – Correspont à la résolution de l’altitude de l’image (différence d’altitude entre deux niveaux de gris en cm).</li>
+<li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
+<li><strong>PrecedentChoixResolutionImage</strong> (<em>string</em>) – Chaine de caractères permettant de sauvegarder le précédent choix dans la comboBox, pour éventuellement le remettre (si l’utilisateur annule son nouveau choix de résolution d’affichage de l’image).</li>
+<li><strong>DessinPoint</strong> – Contient la liste des identifiants objet retournés par le constucteur tktinter lors de la contruction des points par l’utilisateur, permet de garder une référence sur l’objet en vue d’une suppresion.</li>
+<li><strong>DessinLigne</strong> (<em>liste d'entier</em>) – Contient la liste des identifiants objet retournés par le constucteur tktinter lors de la contruction des axes par l’utilisateur, permet de garder une référence sur l’objet en vue d’une suppresion.</li>
+<li><strong>CourantVersLaGauche</strong> (<em>Booleen</em>) – Donne le sens de lecture du courant de l’image.</li>
+<li><strong>SeuilDetectionPetiteDune</strong> (<em>Spinbox</em>) – Objet de la classe spinbox permettant la selection de la taille des petites dunes.</li>
+<li><strong>SeuilDetectionGrosseDune</strong> (<em>Spinbox</em>) – Objet de la classe spinbox permettant la selection de la taille des grosses dunes.</li>
+<li><strong>BoutonDupliquerAxe</strong> (<em>Button</em>) – Objet de la classe button permettant d’appeler la fonction de duplication d’un axe.</li>
+<li><strong>BoutonSupprimerDernierElement</strong> (<em>Button</em>) – Objet de la classe button permettant d’appeler la fonction de suppresion du dernier axe crée.</li>
+<li><strong>BoutonSupprimerAxes</strong> (<em>Button</em>) – Objet de la classe button permettant d’appeler la fonction de duplication d’un axe.</li>
+<li><strong>BoutonTraitementAxes</strong> (<em>Button</em>) – Objet de la classe button permettant d’appeler la fonction de traitemement des axes.</li>
+<li><strong>BoutonTraitementImage</strong> (<em>Button</em>) – Objet de la classe button permettant d’appeler la fonction de traitement de l’image complete.</li>
+<li><strong>BoutonCoupure</strong> (<em>Button</em>) – Objet de la classe button permettant d’appeler la fonction de coupure sur l’image</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.AffichageImage">
+<code class="descname">AffichageImage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.AffichageImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.AffichageImage" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’affichage d’une image</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.AjoutLigneAffichage">
+<code class="descname">AjoutLigneAffichage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.AjoutLigneAffichage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.AjoutLigneAffichage" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction qui ajoute la réference de la ligne tracé dans la liste DessinLigne.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.AjoutPointAffichage">
+<code class="descname">AjoutPointAffichage</code><span class="sig-paren">(</span><em>PositionX</em>, <em>PositionY</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.AjoutPointAffichage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.AjoutPointAffichage" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction qui ajoute la réference du point tracé dans la liste DessinPoint.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.ChargerImage">
+<code class="descname">ChargerImage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.ChargerImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.ChargerImage" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de chargement d’une image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.ChoisirSensCourant">
+<code class="descname">ChoisirSensCourant</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.ChoisirSensCourant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.ChoisirSensCourant" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Setter pour l’attribut stockant le sens du courant.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.CoupureImage">
+<code class="descname">CoupureImage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.CoupureImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.CoupureImage" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’affichage de la fenetre de sélection pour une coupure sur l’image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.DimensionMaxChoisi">
+<code class="descname">DimensionMaxChoisi</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.DimensionMaxChoisi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.DimensionMaxChoisi" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de selection de la resolution de l’image.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.DupliquerAxe">
+<code class="descname">DupliquerAxe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.DupliquerAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.DupliquerAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de duplication d’un axe.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.PlacementPoint">
+<code class="descname">PlacementPoint</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.PlacementPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.PlacementPoint" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’ajout d’un point lors d’un clic souris sur l’image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>event</strong> (<em>objet event</em>) – contient les coordonées du clic sur le canevas</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.SupprimerAxes">
+<code class="descname">SupprimerAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.SupprimerAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.SupprimerAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de suppresion de tout les axes placés.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.SupprimerDernierAxeOuPoint">
+<code class="descname">SupprimerDernierAxeOuPoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.SupprimerDernierAxeOuPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.SupprimerDernierAxeOuPoint" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de suppresion du dernier axe ou point placé.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.TraitementAxes">
+<code class="descname">TraitementAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.TraitementAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.TraitementAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de traitement des axes. 
+Appelle la foncion de traitement, cf ci-après : <code class="xref py py-func docutils literal notranslate"><span class="pre">ResultatsAxes.ResultatsAxes()</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.MenuPrincipal.MenuPrincipal.TraitementImage">
+<code class="descname">TraitementImage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.TraitementImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.TraitementImage" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de traitement de l’image complète. 
+Appelle l’algorithme de la LPE, cf ci-après : <code class="xref py py-func docutils literal notranslate"><span class="pre">ResultatsAxes.ResultatsAxes()</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Le traitement de l’image complète peut être long. Il est préférable d’utiliser une coupure sur l’image, cf : <a class="reference internal" href="#Interfaces.MenuPrincipal.MenuPrincipal.CoupureImage" title="Interfaces.MenuPrincipal.MenuPrincipal.CoupureImage"><code class="xref py py-func docutils literal notranslate"><span class="pre">CoupureImage()</span></code></a>.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Interfaces.ResultatsAxes"></span><dl class="class">
+<dt id="Interfaces.ResultatsAxes.ResultatsAxes">
+<em class="property">class </em><code class="descclassname">Interfaces.ResultatsAxes.</code><code class="descname">ResultatsAxes</code><span class="sig-paren">(</span><em>fenetre, MonImage=None, ImageAffiche=[0], SeuilDetectionDune=0, LesAxes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe de gestion des resultats des axes.</p>
+<p>Gère à la fois l’affichage et le traitement des axes tracés.</p>
+<p>La classe ResultatsAxes hérite de la classe tkinter Frame.</p>
+<p>cf ci-après pour des informations sur le traitement des axes : <code class="xref py py-func docutils literal notranslate"><span class="pre">AlgorithmeAxe.DetectionDunes()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fenetre</strong> (<em>Frame</em>) – Objet de la classe frame, fenetre affiché à l’utilisateur.</li>
+<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>SeuilDetectionDunes</strong> – Entier correspondant au seuil de detection des petites dunes en cm.</li>
+<li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
+<li><strong>LesAxes</strong> (<em>GestionAxes</em>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Interfaces.ResultatsAxes.ResultatsAxes.ExportTxt">
+<code class="descname">ExportTxt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes.ExportTxt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes.ExportTxt" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’export des résultats de tout les axes au format .txt.
+L’utilisateur peut choisir l’emplacement de création du fichier ainsi que son nom.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Le format des résultats est précisé dans le fichier texte.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.ResultatsAxes.ResultatsAxes.ExportTxtAxe">
+<code class="descname">ExportTxtAxe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes.ExportTxtAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes.ExportTxtAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’export des resultats d’un seul axes choisi par l’utilisateur au format .txt.
+L’utilisateur peut choisir l’emplacement de création du fichier ainsi que son nom.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Le format des résultats est précisé dans le fichier texte.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.ResultatsAxes.ResultatsAxes.PlacementAxes">
+<code class="descname">PlacementAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes.PlacementAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes.PlacementAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de tracé des axes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.ResultatsAxes.ResultatsAxes.RemplirTableauResultats">
+<code class="descname">RemplirTableauResultats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes.RemplirTableauResultats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes.RemplirTableauResultats" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de remplissage du tableau des résultats par axe.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.ResultatsAxes.ResultatsAxes.VisualiserProfil">
+<code class="descname">VisualiserProfil</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes.VisualiserProfil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes.VisualiserProfil" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’affichage du profil de l’axe sélectionné par l’utilisateur.
+L’utilisateur peut passer la souris sur le profil pour avoir des informations précise sur le point survolé.</p>
+<p>Utilise la classe <code class="xref py py-class docutils literal notranslate"><span class="pre">VisualiserProfil.VisualiserProfil</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Interfaces.VisualiserProfil"></span><dl class="class">
+<dt id="Interfaces.VisualiserProfil.VisualiserProfil">
+<em class="property">class </em><code class="descclassname">Interfaces.VisualiserProfil.</code><code class="descname">VisualiserProfil</code><span class="sig-paren">(</span><em>fenetre</em>, <em>NumeroAxe=0</em>, <em>CouleurAssocie='black'</em>, <em>CoordonneesProfilX=array([0])</em>, <em>CoordonneesProfilY=array([0])</em>, <em>NombreDunes=0</em>, <em>LongeurOndeMoyenne=0</em>, <em>HauteurMoyenne=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/VisualiserProfil.html#VisualiserProfil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.VisualiserProfil.VisualiserProfil" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe de gestion de l’affichage des profils des axes.</p>
+<p>La classe ResultatsAxes hérite de la classe tkinter Frame.</p>
+<p>Cette classe ne peut pas être instancié sans avoir fait un traitement des axes.</p>
+<p>cf ci-après pour des informations sur le traitement des axes : <code class="xref py py-func docutils literal notranslate"><span class="pre">AlgorithmeAxe.DetectionDunes()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fenetre</strong> (<em>Frame</em>) – Objet de la classe frame, fenetre affiché à l’utilisateur.</li>
+<li><strong>NumeroAxe</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>CouleurAssocie</strong> (<em>int</em>) – Entier correspondant au seuil de detection des petites dunes en cm.</li>
+<li><strong>CoordonneesProfilX</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
+<li><strong>CoordonneesProfilY</strong> (<em>GestionAxes</em>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur.</li>
+<li><strong>NombreDunes</strong> – </li>
+<li><strong>LongeurOndeMoyenne</strong> – </li>
+<li><strong>HauteurMoyenne</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Interfaces.VisualiserProfil.VisualiserProfil.ExportProfil">
+<code class="descname">ExportProfil</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/VisualiserProfil.html#VisualiserProfil.ExportProfil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.VisualiserProfil.VisualiserProfil.ExportProfil" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’export des resultats du profill.
+Ouvre une boite de dialogue à l’utilisateur pour qu’il séléctionne un repertoire où stcoker le fichier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.VisualiserProfil.VisualiserProfil.mouse_move">
+<code class="descname">mouse_move</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/VisualiserProfil.html#VisualiserProfil.mouse_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.VisualiserProfil.VisualiserProfil.mouse_move" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de ciblage sur la courbe du profil.
+L’utilisateur peut suivre la courbe du profil afin d’obtenir des informations supplémentaires sur un point de la courbe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>event</strong> (<em>objet event</em>) – contient les coordonées du clic sur le canevas</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Interfaces.ImageCoupure"></span><dl class="class">
+<dt id="Interfaces.ImageCoupure.ImageCoupure">
+<em class="property">class </em><code class="descclassname">Interfaces.ImageCoupure.</code><code class="descname">ImageCoupure</code><span class="sig-paren">(</span><em>fenetre</em>, <em>monImage</em>, <em>imageAffiche</em>, <em>seuilDetection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ImageCoupure.html#ImageCoupure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ImageCoupure.ImageCoupure" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe de gestion de la coupure sur l’image.</p>
+<p>La classe ResultatsAxes hérite de la classe tkinter Frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fenetre</strong> (<em>Frame</em>) – Objet de la classe frame, fenetre affiché à l’utilisateur.</li>
+<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
+<li><strong>SeuilDetection</strong> – Entier correspondant au seuil de detection des petites dunes en cm.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Interfaces.ImageCoupure.ImageCoupure.Calcul">
+<code class="descname">Calcul</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ImageCoupure.html#ImageCoupure.Calcul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ImageCoupure.ImageCoupure.Calcul" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de tracé de la coupure(rectangle) dans l’image.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Avertissement</p>
+<p class="last">20/10/2018 : bug détecté, l’utilisateur peut toujours tracer des points après que la coupure ait été tracée.
+Le bug ne gène pas la fonction qui lance l’algorithme de la LPE avec le premier rectangle tracé.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Interfaces.ImageCoupure.ImageCoupure.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ImageCoupure.html#ImageCoupure.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ImageCoupure.ImageCoupure.reset" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction qui efface lous les points tracés sur l’image.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Interfaces.ResultatsImage"></span><dl class="class">
+<dt id="Interfaces.ResultatsImage.ResultatsImage">
+<em class="property">class </em><code class="descclassname">Interfaces.ResultatsImage.</code><code class="descname">ResultatsImage</code><span class="sig-paren">(</span><em>fenetre, origine=None, MonImage=None, separation=None, ImageAffiche=[0], SeuilDetectionDune=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsImage.html#ResultatsImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsImage.ResultatsImage" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe de gestion de la fenetre des résultats.</p>
+<p>La classe ResultatsAxes hérite de la classe tkinter Frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fenetre</strong> (<em>Frame</em>) – Objet de la classe frame, fenetre affiché à l’utilisateur.</li>
+<li><strong>origine</strong> – <p>?</p>
+</li>
+<li><strong>MonImage</strong> – <p>?</p>
+</li>
+<li><strong>separation</strong> – <p>?</p>
+</li>
+<li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
+<li><strong>SeuilDetection</strong> – Entier correspondant au seuil de detection des petites dunes en cm.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Algorithme.LPE">
+<span id="projetdunes-algorithme"></span><h2>ProjetDunes Algorithme<a class="headerlink" href="#module-Algorithme.LPE" title="Lien permanent vers ce titre">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ProjetDunes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Page d’autodocumentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#projetdunes-interfaces">ProjetDunes Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Algorithme.LPE">ProjetDunes Algorithme</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="Chapitre précédent">Page de documentation du projet de reconnaissance de dunes</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ecalle_Rebillard_Lastennet_Goudon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Autodoc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
