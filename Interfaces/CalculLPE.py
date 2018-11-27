@@ -4,14 +4,26 @@ from Interfaces import ResultatsImage
 from tkinter import *
 import numpy as np
 
-#Fenetre pour rentrer les informations pour la LPE
 class CalculLPE(Frame):
-	#Initialisation de la fenêtre
-	#@param fenetre : fenetre 
-	#@param monImage : image
-	#@param imageAffiche : image
-	#@param seuilDetetion : int
-	#@param bCoupure : boolean
+	"""Classe de gestion de la fenetre des informations pour le calcul de la LPE. \n
+	La classe ResultatsAxes hérite de la classe tkinter Frame. \n
+	
+	:param fenetre: Objet de la classe frame, fenetre affiché à l'utilisateur. 
+	:type fenetre: Frame
+	
+	:param MonImage: Objet de la classe ImageDune contenant le fichier image.
+	:type MonImage: ImageDune
+	
+	:param ImageAffiche: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l'image à afficher dans la fenetre principale.
+	:type ImageAffiche: PhotoImage
+	
+	:param SeuilDetection: Entier correspondant au seuil de detection des petites dunes en cm.
+	:type SeuilDetectionPetiteDune: int
+	
+	:param bCoupure: Booléen indiquant si une coupure sur l'image à été faite ou non
+	:type bCoupure: bool
+	"""
+	
 	def __init__(self, fenetre, monImage, imageAffiche, seuilDetection, bCoupure):
 		self.monImage = monImage
 		self.miniature = imageAffiche
@@ -55,9 +67,12 @@ class CalculLPE(Frame):
 			self.gauche['state'] = 'disabled'
 			self.droite['state'] = 'disabled'
 	
-	#Pour creer une nouvelle fenêtre où est afficher l'image de résultat
-	#Methode appellee par bouton
 	def LPE(self):
+		"""
+		Fonction qui crée une nouvelle fenêtre où est affichée l'image résultat. \n
+		La fonction est appelée par un bouton. \n
+		La fonction utilise l'algorithme de la LPE pour calculer les résultats. cf. ci-après : :func:`AlgorithmeAxe.RunLPE`
+		"""
 		seuil = int(self.saisi.get())
 		haut = int(self.haut.get())
 		bas = int(self.bas.get())

@@ -5,13 +5,23 @@ import numpy as np
 from TraitementImage import Coupure, Point, GestionAxes, ImageDune
 from Interfaces import CalculLPE
 
-#Classe pour afficher la fenêtre où la coupure se fait
 class ImageCoupure(Frame):
-	#Initialiser la fenetre
-	#@param fenetre : fenetre
-	#@param monImage : image
-	#@param imageAffiche : image
-	#@param seuilDetection : int
+	"""Classe de gestion de la coupure sur l'image. \n
+	La classe ResultatsAxes hérite de la classe tkinter Frame. \n
+	
+	:param fenetre: Objet de la classe frame, fenetre affiché à l'utilisateur. 
+	:type fenetre: Frame
+	
+	:param MonImage: Objet de la classe ImageDune contenant le fichier image.
+	:type MonImage: ImageDune
+	
+	:param ImageAffiche: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l'image à afficher dans la fenetre principale.
+	:type ImageAffiche: PhotoImage
+	
+	:param SeuilDetection: Entier correspondant au seuil de detection des petites dunes en cm.
+	:type SeuilDetectionPetiteDune: int
+	"""
+	
 	def __init__(self, fenetre, monImage, imageAffiche, seuilDetection):
 		self.monImage = monImage.getImage()
 		self.resolution = monImage.getResolutionAltitude()
@@ -47,6 +57,13 @@ class ImageCoupure(Frame):
 
 	#Place un point à l'endroit on l'on appuie. Si quatre points sont placés lance la calcul de la LPE
 	def Calcul(self, event):
+		"""
+		Fonction de tracé de la coupure(rectangle) dans l'image.
+		
+		.. warning:: 
+			20/10/2018 : bug détecté, l'utilisateur peut toujours tracer des points après que la coupure ait été tracée.
+			Le bug ne gène pas la fonction qui lance l'algorithme de la LPE avec le premier rectangle tracé.
+		"""
 		PositionX = event.x
 		PositionY = event.y
 
@@ -122,6 +139,9 @@ class ImageCoupure(Frame):
 
 	#Efface tous points et traits sur l'image. 
 	def reset(self):
+		"""
+		Fonction qui efface lous les points tracés sur l'image.
+		"""
 		self.DessinPoint[:] = []
 		for ligne in self.LignesCanvas : 
 			self.Canevas.delete(ligne)
