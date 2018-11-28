@@ -1,0 +1,422 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>TraitementImage.AlgorithmeAxe &#8212; Documentation ProjetDunes 1.3</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de TraitementImage.AlgorithmeAxe</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">ceil</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">asmatrix</span>
+<span class="kn">from</span> <span class="nn">TraitementImage</span> <span class="k">import</span> <span class="n">ImageDune</span><span class="p">,</span> <span class="n">GestionAxes</span>
+
+<div class="viewcode-block" id="TableauAltitudeDistance"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.TableauAltitudeDistance">[docs]</a><span class="k">def</span> <span class="nf">TableauAltitudeDistance</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Fonction donnant les listes ListeDistance et ListeAltitude utilisé dans l&#39;algorithme : :func:`DetectionDunesAxe`. \n</span>
+<span class="sd">	</span>
+<span class="sd">	</span>
+<span class="sd">	:param NumeroAxe: Indice de l&#39;axe devant être traité.</span>
+<span class="sd">	:type NumeroAxe: int</span>
+<span class="sd">	</span>
+<span class="sd">	:param MonImage:</span>
+<span class="sd">	:type MonImage:</span>
+<span class="sd">	</span>
+<span class="sd">	:param LesAxes: Liste contenant tous les axes tracés par l&#39;utilisateur.</span>
+<span class="sd">	:type LesAxes: Liste d&#39;objets axes</span>
+<span class="sd">	</span>
+<span class="sd">	:param ImageAffichage:</span>
+<span class="sd">	:type ImageAffichage:</span>
+<span class="sd">	</span>
+<span class="sd">	:return: ListeDistance, ListeAltitude : liste des hauteurs en cm pour chaque pixel de l&#39;axe, liste des distances entre le point de départ de l&#39;axe et chaque pixel de l&#39;axe</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># On prepare les listes des coordonnées X et Y (distance par rapport au point de départ et altitude respectivement)</span>
+	<span class="n">ListeDistance</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">ListeAltitude</span> <span class="o">=</span> <span class="p">[]</span>
+		
+	<span class="n">ImageOrigine</span> <span class="o">=</span> <span class="n">asmatrix</span><span class="p">(</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getImage</span><span class="p">())</span>
+	<span class="n">AltitudeMinimum</span> <span class="o">=</span> <span class="n">MonImage</span><span class="o">.</span><span class="n">AltitudeMin</span>
+	<span class="n">ResolutionImage</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getResolutionAltitude</span><span class="p">())</span>
+		
+	<span class="c1"># On prélève les deux points définissant le tracé de l&#39;axe</span>
+	<span class="n">PointA</span> <span class="o">=</span> <span class="n">LesAxes</span><span class="o">.</span><span class="n">InfosAxe</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">)</span><span class="o">.</span><span class="n">getPointDepart</span><span class="p">()</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+	<span class="n">PointB</span> <span class="o">=</span> <span class="n">LesAxes</span><span class="o">.</span><span class="n">InfosAxe</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">)</span><span class="o">.</span><span class="n">getPointArrive</span><span class="p">()</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+	
+	<span class="c1"># Si le courant va de droite à gauche (vers la gauche), le point A est celui le plus à droite des 2 (à verticalité égale, il est le plus en bas)</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getSensCourantGauche</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">PointA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">PointB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="p">(</span><span class="n">PointA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">PointB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">PointA</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">PointB</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+			<span class="n">PointA</span> <span class="o">=</span> <span class="n">PointB</span>
+			<span class="n">PointB</span> <span class="o">=</span> <span class="n">LesAxes</span><span class="o">.</span><span class="n">InfosAxe</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">)</span><span class="o">.</span><span class="n">getPointDepart</span><span class="p">()</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="c1"># Sinon (courant de gauche à droite) on fait en sorte que le point A à gauche de B</span>
+		<span class="c1"># (il est le plus haut placé des 2. Et si ils sont à la même hauteur, c&#39;est celui le plus à gauche)     </span>
+		<span class="k">if</span><span class="p">(</span><span class="n">PointA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">PointB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="p">(</span><span class="n">PointA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">PointB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">PointA</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">PointB</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+			<span class="n">PointA</span> <span class="o">=</span> <span class="n">PointB</span>
+			<span class="n">PointB</span> <span class="o">=</span> <span class="n">LesAxes</span><span class="o">.</span><span class="n">InfosAxe</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">)</span><span class="o">.</span><span class="n">getPointDepart</span><span class="p">()</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+		
+	<span class="c1"># Nous avons maintenant les points de départ et d&#39;arrivée (sur la miniature)</span>
+	<span class="c1"># transposons les coordonnées des points de la miniature affichée sur l&#39;image en taille réelle</span>
+	<span class="c1"># le ratio de l&#39;image étant conservé, on n&#39;a pas besoin de regarder le nombre de lignes et colonne de l&#39;image d&#39;origine et sa miniature</span>
+	<span class="c1"># seuls les nombres de lignes OU de colonnes suffisent (pour les 2 images bien évidemment)</span>
+	<span class="n">PointDepart</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">PointArrive</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">PointDepart</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">PointA</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ImageOrigine</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">ImageAffichage</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="n">PointDepart</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">PointA</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ImageOrigine</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">ImageAffichage</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="n">PointArrive</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">PointB</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ImageOrigine</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">ImageAffichage</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+	<span class="n">PointArrive</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">PointB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ImageOrigine</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">ImageAffichage</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+		
+	<span class="c1">#print(&quot;Départ : &quot; + str(PointDepart))</span>
+	<span class="c1">#print(&quot;Arrivé : &quot; + str(PointArrive))</span>
+		
+	<span class="c1"># Regardons le nombre de pixels à l&#39;horizontal/vertical pour passer du point de départ à l&#39;arrivée</span>
+	<span class="n">DistanceX</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">PointArrive</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">DistanceY</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">PointArrive</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+	
+	<span class="k">if</span><span class="p">(</span><span class="n">DistanceX</span> <span class="o">&gt;=</span> <span class="n">DistanceY</span><span class="p">):</span>       
+		<span class="c1"># Notre point de référence (ici vertical) correspond à l&#39;initialisation à la position verticale du point de départ</span>
+		<span class="n">PositionYReference</span> <span class="o">=</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="c1"># Ces deux variables sont pour définir le premier et dernier pixels horizontaux pour la boucle (initialisation et condition de sortie)</span>
+		<span class="n">PositionXDepart</span> <span class="o">=</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">PositionXArrive</span> <span class="o">=</span> <span class="n">PointArrive</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="c1"># Cette variable indique de combien devrait-on se déplacer sur la vertical si l&#39;on se déplace de 1 en horizontal</span>
+		<span class="c1"># comme il y a de forte chance que ce nombre ne soit pas un entier, on se retrouvera avec des décalages de 0.4 pixel par exemple</span>
+		<span class="c1"># il sera utilisé avec la position verticale de référence pour déterminer le niveau vertical du pixel le plus adapté à prendre</span>
+		<span class="n">IncrementVertical</span> <span class="o">=</span> <span class="n">DistanceY</span> <span class="o">/</span> <span class="n">DistanceX</span>
+
+		<span class="c1"># Cette valeur permet de seuiller quand le passage à la ligne suivante ou non pour le pixel à la colonne X</span>
+		<span class="n">SeuilPassageSuivant</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">IncrementVertical</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+		<span class="n">DirectionIncremet</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="n">DirectionBoucle</span> <span class="o">=</span> <span class="mi">1</span>
+			
+		<span class="c1"># Si le point de départ est verticalement plus faible (positionné plus haut dans l&#39;image) que le point d&#39;arrivé</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">PointArrive</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>             
+			<span class="n">DirectionIncremet</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+		
+		<span class="c1"># Si le sens du courant est de la droite vers la gauche, le pixel de départ est alors plus à droite que celui d&#39;arrivé (Depart[0] &gt; Arive[0])</span>
+		<span class="c1"># pour la boucle for on effectue une décrémentation</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getSensCourantGauche</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+			<span class="n">DirectionBoucle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+			
+		<span class="k">for</span> <span class="n">X</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">PositionXDepart</span><span class="p">,</span> <span class="n">PositionXArrive</span><span class="p">,</span> <span class="n">DirectionBoucle</span><span class="p">):</span>
+			<span class="c1"># On caste donc en int pour avoir une coordonnées vertiale du tableau de l&#39;image</span>
+			<span class="c1"># c&#39;est la coordonnée choisie de base pour détermniter sur quelle ligne (verticalité) prendre le pixel sur la colonne X de l&#39;image</span>
+			<span class="n">PositionPixelVertiChoisi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">PositionYReference</span><span class="p">)</span>
+			<span class="c1"># Comme PointDepart[1] &lt; PointArrive[1]</span>
+			<span class="c1"># notre position de référence est donc augmenté de la valeur incrémentale</span>
+			<span class="c1"># Ainsi nous obtenons la position théorique du pixel que l&#39;on doit prendre (c&#39;est un nombre flottant)</span>
+			<span class="n">PositionYReference</span> <span class="o">+=</span> <span class="n">IncrementVertical</span> <span class="o">*</span> <span class="n">DirectionIncremet</span>
+				   
+			<span class="c1"># Comme notre position théorique est un nombre flottant, nous allons savoir si le pixel que l&#39;on doit prendre est sur le même niveau vertical précédemment ou non</span>
+			<span class="k">if</span> <span class="n">PositionYReference</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">PositionPixelVertiChoisi</span> <span class="o">+</span> <span class="n">SeuilPassageSuivant</span> <span class="o">*</span> <span class="n">DirectionIncremet</span><span class="p">):</span>
+				<span class="n">PositionPixelVertiChoisi</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">DirectionIncremet</span>
+					
+			<span class="c1"># On ajoute la valeur du pixel de l&#39;image dans sa liste dédiée</span>
+			<span class="n">ListeAltitude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AltitudeMinimum</span> <span class="o">+</span> <span class="n">ResolutionImage</span> <span class="o">*</span> <span class="n">ImageOrigine</span><span class="p">[</span><span class="n">PositionPixelVertiChoisi</span><span class="p">,</span> <span class="n">X</span><span class="p">])</span>
+			<span class="c1"># On ajoute la distance entre le point de départ, et celui du pixel que l&#39;on vient d&#39;ajouter ci-dessus (pythagore)</span>
+			<span class="n">ListeDistance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sqrt</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">PositionPixelVertiChoisi</span> <span class="o">-</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+		
+	<span class="k">else</span><span class="p">:</span>
+		<span class="c1"># Ici c&#39;est que le nombre de pixels à parcourir sur la verticale est plus grand que le nombre pour l&#39;horizontal</span>
+		<span class="c1"># Notre point de référence (ici horizontal) correspond donc à l&#39;initialisation à la position horizontale du point de départ</span>
+		<span class="n">PositionXReference</span> <span class="o">=</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="c1"># C&#39;est deux variables sont pour définir le premier et dernier pixels verticaux pour la boucle (initialisation et condition de sortie)</span>
+		<span class="n">PositionYDepart</span> <span class="o">=</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">PositionYArrive</span> <span class="o">=</span> <span class="n">PointArrive</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="c1"># Cette variable indique de combien devrait-on se déplacer à l&#39;horizontal si l&#39;on se déplace de 1 en vertical</span>
+		<span class="c1"># comme il y a de forte chance que ce nombre ne soit pas un entier, on se retrouvera avec des décalages de 0.4 pixel par exemple</span>
+		<span class="c1"># il sera utilisé avec la position de référence pour déterminer le niveau horizontal du pixel le plus adapté</span>
+		<span class="n">IncrementHorizontal</span> <span class="o">=</span> <span class="n">DistanceX</span> <span class="o">/</span> <span class="n">DistanceY</span>
+		
+		<span class="c1"># Cette valeur permet de seuiller quand le passage à la colonne suivante ou non pour le pixel à la ligne Y</span>
+		<span class="n">SeuilPassageSuivant</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">IncrementHorizontal</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+		<span class="n">DirectionBoucle</span> <span class="o">=</span> <span class="mi">1</span>
+		<span class="n">DirectionIncremet</span> <span class="o">=</span> <span class="mi">1</span>
+			
+		<span class="k">if</span><span class="p">(</span><span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">PointArrive</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+			<span class="n">DirectionBoucle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+		
+		<span class="c1"># Si le sens du courant est de la droite vers la gauche, c&#39;est que horizontalement les pixels choisi aurant des valeurs de + en + faible</span>
+		<span class="c1"># pour tester la position horizon du pixel à prendre, on effectue une décrémentation</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getSensCourantGauche</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+			<span class="n">DirectionIncremet</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+			
+		<span class="k">for</span> <span class="n">Y</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="n">PositionYDepart</span><span class="p">,</span> <span class="n">PositionYArrive</span><span class="p">,</span> <span class="n">DirectionBoucle</span><span class="p">):</span>
+			<span class="c1"># On suppose que le pixel que l&#39;on va prendre sera sur le même niveau (horizontal ou vertical, celui qui n&#39;est pas concerné par la boucle for)</span>
+			<span class="c1"># On caste donc en int pour avoir une coordonnées dadu tableau de l&#39;image</span>
+			<span class="n">PositionPixelHoriChoisi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">PositionXReference</span><span class="p">)</span>
+			<span class="c1"># Comme nous sommes dans le cas du courant qui se déplace vers la gauche,</span>
+			<span class="c1"># notre position de référence est donc réduite de la valeur incrémentale</span>
+			<span class="c1"># Ainsi nous obtenons la position théorique du pixel que l&#39;on doit prendre (c&#39;est un nombre flottant)</span>
+			<span class="n">PositionXReference</span> <span class="o">+=</span> <span class="n">IncrementHorizontal</span> <span class="o">*</span> <span class="n">DirectionIncremet</span>
+					
+			<span class="c1"># Comme notre position théorique est un nombre flottant, nous allons savoir si le pixel que l&#39;on doit prendre est sur le même niveau que précédemment ou non                    </span>
+			<span class="k">if</span> <span class="n">PositionXReference</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">PositionPixelHoriChoisi</span> <span class="o">+</span> <span class="n">SeuilPassageSuivant</span> <span class="o">*</span> <span class="n">DirectionIncremet</span><span class="p">):</span>
+				<span class="n">PositionPixelHoriChoisi</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">DirectionIncremet</span>
+					
+			<span class="c1"># On ajoute la valeur du pixel de l&#39;image dans sa liste dédiée</span>
+			<span class="n">ListeAltitude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AltitudeMinimum</span> <span class="o">+</span> <span class="n">ResolutionImage</span> <span class="o">*</span> <span class="n">ImageOrigine</span><span class="p">[</span><span class="n">Y</span><span class="p">,</span> <span class="n">PositionPixelHoriChoisi</span><span class="p">])</span>
+			<span class="c1"># On ajoute la distance entre le point de départ, et celui du pixel que l&#39;on vient d&#39;ajouter ci-dessus (pythagore)</span>
+			<span class="n">ListeDistance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sqrt</span><span class="p">((</span><span class="n">PositionPixelHoriChoisi</span> <span class="o">-</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">))</span>
+	
+	<span class="c1"># On retourne les deux listes de données</span>
+	<span class="k">return</span> <span class="n">ListeDistance</span><span class="p">,</span> <span class="n">ListeAltitude</span></div>
+	
+<div class="viewcode-block" id="DetectionDunesAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.DetectionDunesAxe">[docs]</a><span class="k">def</span> <span class="nf">DetectionDunesAxe</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ListeDune</span> <span class="o">=</span> <span class="p">[]):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Algorithme de detection des dunes sur l&#39;axe sélectionné par l&#39;utilisateur parmis les axes tracés par l&#39;utilisateur.</span>
+<span class="sd">	</span>
+<span class="sd">	:param NumeroAxe: Axe sélectionné par l&#39;utilisateur.</span>
+<span class="sd">	:type NumeroAxe: int</span>
+<span class="sd">	</span>
+<span class="sd">	:param MonImage: ?</span>
+<span class="sd">	:type MonImage: ?</span>
+<span class="sd">	</span>
+<span class="sd">	:param LesAxes: Liste des arcs tracés par l&#39;utilisateur.</span>
+<span class="sd">	:type LesAxes: liste d&#39;objets Arc</span>
+<span class="sd">	</span>
+<span class="sd">	:param ImageAffichage: ?</span>
+<span class="sd">	:type ImageAffichage: ?</span>
+<span class="sd">	</span>
+<span class="sd">	:param SeuilDetectionDune: </span>
+<span class="sd">	:type SeuilDetectionDune:</span>
+<span class="sd">	</span>
+<span class="sd">	:param ListeDune: ?</span>
+<span class="sd">	:type ListeDune: liste d&#39;objets Dune ?</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">AltitudeMinimum</span> <span class="o">=</span> <span class="n">MonImage</span><span class="o">.</span><span class="n">getAltitudeMin</span><span class="p">()</span>
+	<span class="n">ResolutionImage</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getResolutionAltitude</span><span class="p">())</span>
+	
+	<span class="c1">#print(&quot;ResolutionImage = &quot; + str(ResolutionImage))</span>
+		
+	<span class="c1"># Le seuil de hauteur minimum pour qualifier de dune</span>
+	<span class="c1"># On ne peut pas directement exploiter la données renseignées par l&#39;utilisateur du programme</span>
+	<span class="c1"># On utilise donc le plus petit multiple de la résolution de l&#39;image qui puisse au moins faire la hauteur désignée</span>
+	<span class="n">SeuilDetection</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">SeuilDetectionDune</span> <span class="o">/</span> <span class="n">ResolutionImage</span><span class="p">)</span> <span class="o">*</span> <span class="n">ResolutionImage</span>
+	<span class="c1"># On calcul la valeur de l&#39;altitude maximum, celle qui signifie que l&#39;on est en surface</span>
+	<span class="n">AltitudeMax</span> <span class="o">=</span> <span class="n">AltitudeMinimum</span> <span class="o">+</span> <span class="n">ResolutionImage</span> <span class="o">*</span> <span class="mi">255</span>
+	<span class="n">ListeDistance</span><span class="p">,</span> <span class="n">ListeAltitude</span> <span class="o">=</span> <span class="n">TableauAltitudeDistance</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span><span class="p">,</span> <span class="n">LesAxes</span><span class="p">,</span> <span class="n">ImageAffichage</span><span class="p">)</span>
+		
+	<span class="n">IdDune</span> <span class="o">=</span> <span class="mi">0</span>
+		
+	<span class="c1"># indice de parcours des tableaux</span>
+	<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="n">NombreElements</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ListeAltitude</span><span class="p">)</span>
+	<span class="n">PrecedenteValeur</span> <span class="o">=</span> <span class="mi">255</span>
+		
+	<span class="c1"># On enlève toutes les valeurs d&#39;altitude maximal au debut (ne sont pas associé à des dunes, c&#39;est du blanc → la surface)</span>
+	<span class="k">while</span><span class="p">(</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NombreElements</span> <span class="ow">and</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">AltitudeMax</span><span class="p">):</span>
+		<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+		
+	<span class="c1"># On cherche ensuite à atteindre un minimum (qui sera le premier creux de la dune)</span>
+	<span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">NombreElements</span> <span class="ow">and</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">PrecedenteValeur</span><span class="p">):</span>
+		<span class="n">PrecedenteValeur</span> <span class="o">=</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+		<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+			
+	<span class="c1"># Maintenant pour toutes les autres données restantes du tableau</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">NombreElements</span><span class="p">):</span>
+			
+		<span class="n">ProfondeurDune1</span> <span class="o">=</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># &#39;i - 1&#39; car à l&#39;indice &#39;i&#39; on ne respecte plus la condition (du while au dessus consistant à obtenir des valeurs toujours plus petite)</span>
+		<span class="n">Dist1</span> <span class="o">=</span> <span class="n">ListeDistance</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="c1"># Connaître à quelle distance (par rapport au début de l&#39;axe) se trouve le premier creux de la dune</span>
+			
+		<span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">NombreElements</span> <span class="ow">and</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">PrecedenteValeur</span><span class="p">):</span>
+			<span class="n">PrecedenteValeur</span> <span class="o">=</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+			<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+			
+		<span class="n">PicDune</span> <span class="o">=</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># &#39;i - 1&#39; car à l&#39;indice &#39;i&#39; on ne respecte plus la condition (la valeur mesuré augmente continuellement)</span>
+		<span class="n">DistPic</span> <span class="o">=</span> <span class="n">ListeDistance</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="c1"># La distance où se trouve le pic</span>
+			
+		<span class="c1"># Si le pic de la dune possède le niveau d&#39;altitude maximal, c&#39;est que nous sommes en surface → ce n&#39;est pas une dune ! </span>
+		<span class="k">if</span><span class="p">(</span><span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">AltitudeMax</span><span class="p">):</span>
+			<span class="n">DistPic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># On met la distance à -1 pour signaler que c&#39;est pas une dune</span>
+		
+		
+		<span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">NombreElements</span> <span class="ow">and</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">PrecedenteValeur</span><span class="p">):</span>
+			<span class="n">PrecedenteValeur</span> <span class="o">=</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+			<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+			
+		<span class="n">ProfondeurDune2</span> <span class="o">=</span> <span class="n">ListeAltitude</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># &#39;i - 1&#39; car à l&#39;indice &#39;i&#39; on ne respecte plus la condition (la valeur mesuré diminue continuellement)</span>
+		<span class="n">Dist2</span> <span class="o">=</span> <span class="n">ListeDistance</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="c1"># La distance où se trouve le 2ème creux</span>
+	
+		<span class="c1"># On calcule les distance entre les creux (1/2) et le pic de la dune</span>
+		<span class="n">Dist1</span> <span class="o">=</span> <span class="n">DistPic</span> <span class="o">-</span> <span class="n">Dist1</span>
+		<span class="n">Dist2</span> <span class="o">-=</span> <span class="n">DistPic</span> <span class="c1"># Dist2 = Dist2 - DistPic</span>
+		
+		<span class="c1"># Pour que l&#39;on puisse juger si ce que l&#39;on vient d&#39;inspecter peut-être une dune, on peut déjà vérifier les distances mesurés</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">DistPic</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">Dist1</span> <span class="o">&lt;</span> <span class="n">Dist2</span><span class="p">):</span> <span class="c1"># si le 1er creux est plus proche du pic que le 2ème creux</span>
+				<span class="n">HauteurDune</span> <span class="o">=</span> <span class="n">PicDune</span> <span class="o">-</span> <span class="n">ProfondeurDune1</span>
+			<span class="k">elif</span><span class="p">(</span><span class="n">Dist1</span> <span class="o">&gt;</span> <span class="n">Dist2</span><span class="p">):</span>
+				<span class="n">HauteurDune</span> <span class="o">=</span> <span class="n">PicDune</span> <span class="o">-</span> <span class="n">ProfondeurDune2</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">HauteurDune</span> <span class="o">=</span> <span class="n">PicDune</span> <span class="o">-</span> <span class="p">((</span><span class="n">ProfondeurDune1</span> <span class="o">+</span> <span class="n">ProfondeurDune2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+			
+			<span class="n">LongeurOnde</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">Dist1</span><span class="p">,</span> <span class="n">Dist2</span><span class="p">)</span>
+			
+			<span class="c1">#print(&quot;Distance1 = &quot; + str(Dist1) + &quot; Distance2 = &quot; + str(Dist2))</span>
+			<span class="c1">#print(&quot;HautPic = &quot; + str(PicDune) + &quot; ProfondeurDune1 = &quot; + str(ProfondeurDune1) + &quot; ProfondeurDune2 = &quot; + str(ProfondeurDune2))</span>
+			<span class="c1">#print(&quot;Hauteur dune = &quot; + str(HauteurDune) + &quot; Longueur d&#39;onde = &quot; + str(LongeurOnde))</span>
+				
+			<span class="k">if</span><span class="p">(</span><span class="n">HauteurDune</span> <span class="o">&gt;=</span> <span class="n">SeuilDetection</span><span class="p">):</span>
+				<span class="c1"># * 100 pour mettre en cm</span>
+				<span class="n">ListeDune</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">IdDune</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">LongeurOnde</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">HauteurDune</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">ProfondeurDune1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">PicDune</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">ProfondeurDune2</span><span class="p">,</span><span class="mi">2</span><span class="p">)])</span>
+				<span class="n">IdDune</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># On incrémente l&#39;identifiant de la dune</span>
+					
+	<span class="k">return</span> <span class="n">ListeDune</span></div>
+
+<div class="viewcode-block" id="BilanDunesParAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.BilanDunesParAxe">[docs]</a><span class="k">def</span> <span class="nf">BilanDunesParAxe</span><span class="p">(</span><span class="n">ListeDesDunes</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">NombreAxes</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Fonction permettant de regrouper ensemble les resultats de tous les axes tracés.</span>
+<span class="sd">	</span>
+<span class="sd">	:param ListeDesDunes: ?</span>
+<span class="sd">	:type ListeDesDunes: liste d&#39;objets Dune ?</span>
+<span class="sd">	</span>
+<span class="sd">	:param NombreAxes: Nombre d&#39;axes tracés par l&#39;utilisateur.</span>
+<span class="sd">	:type NombreAxes: int</span>
+<span class="sd">	</span>
+<span class="sd">	:return: liste des informations sur les dunes par axe.</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="c1"># Si il y a au moins une dune de référencé dans le tableau</span>
+	<span class="n">TableauBilanParAxe</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Tableau qui contiendra le nombre de dunes, la longeur d&#39;onde et la hauteur moyenne des dunes par par axe</span>
+	
+	<span class="n">NombreDeDunesTotal</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ListeDesDunes</span><span class="p">)</span>
+	<span class="n">j</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Indice de la dune que l&#39;on lit dans le tableau</span>
+	
+	<span class="k">if</span> <span class="p">(</span><span class="n">NombreDeDunesTotal</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+		<span class="n">IdAxe</span> <span class="o">=</span> <span class="n">ListeDesDunes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># On commence par lire les dunes faisant partie de celles qui sont rattachées au premier axe ayant au moins une dune</span>
+		
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">NombreAxes</span><span class="p">):</span> <span class="c1"># Pour chacun des axes pouvant être répertorié</span>
+			<span class="c1"># Si nous sommes sur un axe qui ne possède pas de dune, Le tableau contiendra une ligne associé à cet axe avec des 0 comme résultats (nombre de dune, longeur d&#39;onde moyenne, hauteur moyenne)</span>
+			<span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">IdAxe</span><span class="p">:</span>
+				<span class="n">TableauBilanParAxe</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1"># On prépare de quoi calculer les paramètres des dunes de l&#39;axe concerné</span>
+				<span class="n">NombreDuneAxe</span> <span class="o">=</span> <span class="mi">0</span>
+				<span class="n">LongueurOndeMoyenneAxe</span> <span class="o">=</span> <span class="mi">0</span>
+				<span class="n">HauteurMoyenneAxe</span> <span class="o">=</span> <span class="mi">0</span>
+				<span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">IdAxe</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">NombreDeDunesTotal</span><span class="p">):</span>
+					<span class="n">NombreDuneAxe</span> <span class="o">+=</span> <span class="mi">1</span>
+					<span class="n">LongueurOndeMoyenneAxe</span> <span class="o">+=</span> <span class="n">ListeDesDunes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+					<span class="n">HauteurMoyenneAxe</span> <span class="o">+=</span> <span class="n">ListeDesDunes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+					<span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+					<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">NombreDeDunesTotal</span><span class="p">):</span> <span class="c1"># Si nous avons pas atteint la fin du tableau (on incrémente j néanmoins pour sortir du while)</span>
+						<span class="n">IdAxe</span> <span class="o">=</span> <span class="n">ListeDesDunes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># On passe à la dune suivante dans le tableau</span>
+				<span class="n">LongueurOndeMoyenneAxe</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">LongueurOndeMoyenneAxe</span><span class="o">/</span><span class="n">NombreDuneAxe</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+				<span class="n">HauteurMoyenneAxe</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">HauteurMoyenneAxe</span><span class="o">/</span><span class="n">NombreDuneAxe</span><span class="p">)</span>
+				
+				<span class="n">TableauBilanParAxe</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">NombreDuneAxe</span><span class="p">,</span> <span class="n">LongueurOndeMoyenneAxe</span><span class="p">,</span> <span class="n">HauteurMoyenneAxe</span><span class="p">])</span>
+	<span class="c1"># Si aucune dune n&#39;est détecté, on ajoute alors des données nulles pour chacun des axes</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">NombreAxes</span><span class="p">):</span>
+			<span class="n">TableauBilanParAxe</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+		
+	<span class="k">return</span> <span class="n">TableauBilanParAxe</span></div>
+			
+<div class="viewcode-block" id="DetectionDunes"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.DetectionDunes">[docs]</a><span class="k">def</span> <span class="nf">DetectionDunes</span><span class="p">(</span><span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">ListeTouteDunes</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()):</span>
+		<span class="n">DetectionDunesAxe</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">MonImage</span><span class="p">,</span> <span class="n">LesAxes</span><span class="p">,</span> <span class="n">ImageAffichage</span><span class="p">,</span> <span class="n">SeuilDetectionDune</span><span class="p">,</span> <span class="n">ListeTouteDunes</span><span class="p">)</span>
+					
+	<span class="c1">#ListeTouteDunes = array([[0,0,10,15],[0,1,2,4],[1,2,3,4]])    # valeur test pour des résultats sur 2 tracés</span>
+	<span class="k">return</span> <span class="n">ListeTouteDunes</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ProjetDunes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Autodoc.html">Page d’autodocumentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ecalle_Rebillard_Lastennet_Goudon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

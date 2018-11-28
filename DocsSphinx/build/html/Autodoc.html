@@ -358,6 +358,114 @@ Le bug ne gène pas la fonction qui lance l’algorithme de la LPE avec le premi
 </dd></dl>
 
 </div>
+<div class="section" id="module-TraitementImage.AlgorithmeAxe">
+<span id="projetdunes-traitementimage"></span><h2>ProjetDunes TraitementImage<a class="headerlink" href="#module-TraitementImage.AlgorithmeAxe" title="Lien permanent vers ce titre">¶</a></h2>
+<dl class="function">
+<dt id="TraitementImage.AlgorithmeAxe.BilanDunesParAxe">
+<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">BilanDunesParAxe</code><span class="sig-paren">(</span><em>ListeDesDunes=[]</em>, <em>NombreAxes=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#BilanDunesParAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.BilanDunesParAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction permettant de regrouper ensemble les resultats de tous les axes tracés.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>ListeDesDunes</strong> (<em>liste d'objets Dune ?</em>) – <p>?</p>
+</li>
+<li><strong>NombreAxes</strong> (<em>int</em>) – Nombre d’axes tracés par l’utilisateur.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first last">liste des informations sur les dunes par axe.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="TraitementImage.AlgorithmeAxe.DetectionDunes">
+<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunes</code><span class="sig-paren">(</span><em>MonImage=None, LesAxes=None, ImageAffichage=[0], SeuilDetectionDune=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="TraitementImage.AlgorithmeAxe.DetectionDunesAxe">
+<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunesAxe</code><span class="sig-paren">(</span><em>NumeroAxe, MonImage=None, LesAxes=None, ImageAffichage=[0], SeuilDetectionDune=0, ListeDune=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunesAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Algorithme de detection des dunes sur l’axe sélectionné par l’utilisateur parmis les axes tracés par l’utilisateur.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>NumeroAxe</strong> (<em>int</em>) – Axe sélectionné par l’utilisateur.</li>
+<li><strong>MonImage</strong> – <p>?</p>
+</li>
+<li><strong>LesAxes</strong> (<em>liste d'objets Arc</em>) – Liste des arcs tracés par l’utilisateur.</li>
+<li><strong>ImageAffichage</strong> – <p>?</p>
+</li>
+<li><strong>SeuilDetectionDune</strong> – </li>
+<li><strong>ListeDune</strong> (<em>liste d'objets Dune ?</em>) – <p>?</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="TraitementImage.AlgorithmeAxe.TableauAltitudeDistance">
+<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">TableauAltitudeDistance</code><span class="sig-paren">(</span><em>NumeroAxe, MonImage=None, LesAxes=None, ImageAffichage=[0]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#TableauAltitudeDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.TableauAltitudeDistance" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction donnant les listes ListeDistance et ListeAltitude utilisé dans l’algorithme : <a class="reference internal" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="TraitementImage.AlgorithmeAxe.DetectionDunesAxe"><code class="xref py py-func docutils literal notranslate"><span class="pre">DetectionDunesAxe()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>NumeroAxe</strong> (<em>int</em>) – Indice de l’axe devant être traité.</li>
+<li><strong>MonImage</strong> – </li>
+<li><strong>LesAxes</strong> (<em>Liste d'objets axes</em>) – Liste contenant tous les axes tracés par l’utilisateur.</li>
+<li><strong>ImageAffichage</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first last">ListeDistance, ListeAltitude : liste des hauteurs en cm pour chaque pixel de l’axe, liste des distances entre le point de départ de l’axe et chaque pixel de l’axe</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="module-TraitementImage.AlgorithmeImageComplete"></span><dl class="function">
+<dt id="TraitementImage.AlgorithmeImageComplete.FiltrageLaplacien">
+<code class="descclassname">TraitementImage.AlgorithmeImageComplete.</code><code class="descname">FiltrageLaplacien</code><span class="sig-paren">(</span><em>Image=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeImageComplete.html#FiltrageLaplacien"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeImageComplete.FiltrageLaplacien" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>?</p>
+</dd></dl>
+
+<span class="target" id="module-TraitementImage.Axe"></span><dl class="class">
+<dt id="TraitementImage.Axe.Axe">
+<em class="property">class </em><code class="descclassname">TraitementImage.Axe.</code><code class="descname">Axe</code><span class="sig-paren">(</span><em>XpointDepart</em>, <em>YpointDepart</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Axe.html#Axe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Axe.Axe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe de création d’objet axe.
+Contient les coordonnées en pixel du point de départ et d’arrivé de l’axe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>XpointDepart</strong> (<em>int</em>) – Coordonées en abscisse du point de départ de l’axe en pixel sur l’image.</li>
+<li><strong>YpointDepart</strong> (<em>int</em>) – Coordonées en ordonnée du point de départ de l’axe en pixel sur l’image.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="TraitementImage.Axe.Axe.AjoutPointArrive">
+<code class="descname">AjoutPointArrive</code><span class="sig-paren">(</span><em>Xpoint</em>, <em>Ypoint</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Axe.html#Axe.AjoutPointArrive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Axe.Axe.AjoutPointArrive" title="Lien permanent vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-TraitementImage.Coupure"></span><span class="target" id="module-TraitementImage.ExportTXT"></span><span class="target" id="module-TraitementImage.GestionAxes"></span><span class="target" id="module-TraitementImage.ImageDune"></span><span class="target" id="module-TraitementImage.Point"></span></div>
 <div class="section" id="module-Algorithme.LPE">
 <span id="projetdunes-algorithme"></span><h2>ProjetDunes Algorithme<a class="headerlink" href="#module-Algorithme.LPE" title="Lien permanent vers ce titre">¶</a></h2>
 </div>
@@ -384,6 +492,7 @@ Le bug ne gène pas la fonction qui lance l’algorithme de la LPE avec le premi
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Page d’autodocumentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#projetdunes-interfaces">ProjetDunes Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-TraitementImage.AlgorithmeAxe">ProjetDunes TraitementImage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-Algorithme.LPE">ProjetDunes Algorithme</a></li>
 </ul>
 </li>
