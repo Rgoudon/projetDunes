@@ -36,7 +36,7 @@ class ImageDune():
     def setImage(self, image):
         self.Image = image
 
-    def setResolution(self, resolution):V
+    def setResolution(self, resolution):
         self.ResolutionAltitude = resolution
             
     def getCheminImage(self):
