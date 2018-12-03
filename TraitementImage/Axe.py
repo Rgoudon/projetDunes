@@ -18,23 +18,59 @@ class Axe():
 		
 	def AjoutPointArrive(self, Xpoint, Ypoint):
 		"""
-		
+		Setter du point d'arrivé de l'axe.
+			
+		:param XPoint: coordonnée en abscisse du point d'arrivé à ajouter.
+		:type Xpoint: int
+			
+		:param Ypoint: coordonnée en ordonnée du point d'arrivé à ajouter.
+		:type Ypoint: int
+			
 		"""
 		self.PointArrive = Point.Point(Xpoint, Ypoint)
 			
 	def getPointDepart(self):
+		"""
+		Getter du point de départ de l'axe.
+		
+		:return: Objet de la classe point correspondant au point de départ de l'axe.
+		
+		"""
 		return self.PointDepart
 	
 	def getCoordonneesPointDepart(self):
+		"""
+			Getter des coordonnées du point de départ de l'axe.
+			
+			:return: couple de coordonnées (X,Y) du point de départ de l'axe.
+		
+		"""
 		return self.PointDepart.getCoordonnees()
 	
 	def getPointArrive(self):
+		"""
+		Getter du point d'arrivée de l'axe.
+			
+		:return: Objet de la classe point correspondant au point d'arrivée de l'axe.
+		
+		"""
 		return self.PointArrive
 	
 	def getCoordonneesPointArrive(self):
+		"""
+		Getter des coordonnées du point d'arrivée de l'axe.
+			
+		:return: couple de coordonnées (X,Y) du point d'arrivée de l'axe.
+		
+		"""
 		return self.PointArrive.getCoordonnees()
 	
 	def getCoordonneesAxe(self):
+		"""
+		Getter des coordonnées des points de départ et d'arrivée de l'axe.
+			
+		:return: couple de coordonnées ((X,Y),(X,Y)) respectivement des points de départ et d'arrivé de l'axe.
+		"""
 		return self.getCoordonneesPointDepart(), self.getCoordonneesPointArrive()
 	
 	def VecteurXaxe(self):

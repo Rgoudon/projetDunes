@@ -1,15 +1,32 @@
-#Classe pour connaitre les coordonnées du rectangle de la nouvelle image
 class coupure():
+	"""Classe de gestion de la coupure sur l'image originale.
+	L'objet prendra des valeurs par défaut à la création en attendant que l'utilisateur finisse le tracé de la coupure.
+	
+	"""
+	
 	def __init__(self):
+		"""
+		Constructeur de la classe coupure.
+		Donne des valeurs par défaut à l'objet coupure.
+		
+		"""
 		self.x = -1
 		self.y = -1
 		self.bX = False
 		self.bY = False
 
-	#Initialise la classe avec les coordonnées du premiers coins du rectangle
-	#@param x : int
-	#@param y : int 
+	
 	def setValues(self, x, y):
+		"""
+		Setter des valeurs du premier coin du rectangle
+		
+		:param x: coordonnée en abscisse du premier coin du rectangle tracé par l'utilisateur.
+		:type x: int
+		
+		:param y: coordonnée en ordonnée du premier coin du rectangle tracé par l'utilisateur.
+		:type y: int
+		
+		"""
 		self.x = x
 		self.y = y
 		self.bX = True
@@ -20,6 +37,16 @@ class coupure():
 	#@param y : int
 	#@return x, y
 	def coordonnees(self, x, y):
+		"""
+		Fonction de verification des coordonnées d'un coin.
+		
+		:param x: coordonnée en abscisse du coin à ajouter.
+		:type x: int
+		
+		:param y: coordonnée en ordonnée du coin à ajouter.
+		:type y: int
+		
+		"""
 		if(self.bX == False and self.bY == False):
 			self.setValues(x, y)
 			return x, y

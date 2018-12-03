@@ -10,14 +10,14 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
 	:param NumeroAxe: Indice de l'axe devant être traité.
 	:type NumeroAxe: int
 	
-	:param MonImage:
-	:type MonImage:
+	:param MonImage: Objet de la classe ImageDune contenant le fichier image.
+	:type MonImage: ImageDune
 	
 	:param LesAxes: Liste contenant tous les axes tracés par l'utilisateur.
 	:type LesAxes: Liste d'objets axes
 	
-	:param ImageAffichage:
-	:type ImageAffichage:
+	:param ImageAffichage: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l'image à afficher dans la fenetre principale.
+	:type ImageAffichage: PhotoImage
 	
 	:return: ListeDistance, ListeAltitude : liste des hauteurs en cm pour chaque pixel de l'axe, liste des distances entre le point de départ de l'axe et chaque pixel de l'axe
 	"""
@@ -126,7 +126,7 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
 		if(PointDepart[1] > PointArrive[1]):
 			DirectionBoucle = -1
 		
-		# Si le sens du courant est de la droite vers la gauche, c'est que horizontalement les pixels choisi aurant des valeurs de + en + faible
+		# Si le sens du courant est de la droite vers la gauche, c'est que horizontalement les pixels choisi auront des valeurs de + en + faible
 		# pour tester la position horizon du pixel à prendre, on effectue une décrémentation
 		if(MonImage.getSensCourantGauche() == True):
 			DirectionIncremet = -1
@@ -154,25 +154,37 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
 	
 def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage = [0], SeuilDetectionDune = 0, ListeDune = []):
 	"""
-	Algorithme de detection des dunes sur l'axe sélectionné par l'utilisateur parmis les axes tracés par l'utilisateur.
+	Algorithme de detection des dunes sur l'axe sélectionné.
 	
 	:param NumeroAxe: Axe sélectionné par l'utilisateur.
 	:type NumeroAxe: int
 	
-	:param MonImage: ?
-	:type MonImage: ?
+	:param MonImage: Objet de la classe ImageDune contenant le fichier image.
+	:type MonImage: ImageDune
 	
 	:param LesAxes: Liste des arcs tracés par l'utilisateur.
 	:type LesAxes: liste d'objets Arc
 	
-	:param ImageAffichage: ?
-	:type ImageAffichage: ?
+	:param ImageAffichage: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l'image à afficher dans la fenetre principale.
+	:type ImageAffichage: PhotoImage
 	
-	:param SeuilDetectionDune: 
-	:type SeuilDetectionDune:
+	:param SeuilDetectionDune: Seuil de détection des petites dunes.
+	:param SeuilDetectionDune: int
 	
-	:param ListeDune: ?
-	:type ListeDune: liste d'objets Dune ?
+	:param ListeDune: Liste où stocker les resultats.
+	:type ListeDune: liste
+	
+	:return: Liste des dunes reperes sur l'axe au format [IdAxe, IdDune, LongueurOnde, Hauteur, Profondeur1, PicDune, Profondeur2, DistPic, PicDune].
+	
+	
+	.. note:: 
+		Principe de l'algorithme :  \n
+		Parcourt sur la liste des hauteurs des pixels de l'axe jusqu'à trouver une valeur minimale (qui correspondra au premier creux de la dunes) \n
+		Parcourt ensuite jusqu'à trouver une valeur haute (qui correspondra au pic de la dune) \n
+		Parcourt ensuite jusqu'à trouver une deuxième valeur minimale (qui correspondra au deuxième creux) \n
+		Grâce à ces trois points, l'algorithme décide s'il s'agit ou non d'une dune : \n
+		-Soit la différence pic-premierCreux est supérieur au seuil de détection de dune : alors c'est une dune \n
+		-Soit ce n'est pas une dune
 	
 	"""
 	AltitudeMinimum = MonImage.getAltitudeMin()
@@ -250,26 +262,27 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
 				
 			if(HauteurDune >= SeuilDetection):
 				# * 100 pour mettre en cm
-				ListeDune.append([NumeroAxe, IdDune, round(LongeurOnde,2), round(HauteurDune * 100, 2), round(ProfondeurDune1,2), round(PicDune,2), round(ProfondeurDune2,2)])
+				ListeDune.append([NumeroAxe, IdDune, round(LongeurOnde,2), round(HauteurDune * 100, 2), round(ProfondeurDune1,2), round(PicDune,2), round(ProfondeurDune2,2), DistPic, PicDune])
 				IdDune += 1 # On incrémente l'identifiant de la dune
 					
 	return ListeDune
 
 def BilanDunesParAxe(ListeDesDunes = [], NombreAxes = 1):
 	"""
-	Fonction permettant de regrouper ensemble les resultats de tous les axes tracés.
+	Fonction permettant de regrouper l'ensemble des resultats de tous les axes tracés.
+	L'indice i du tableau correspond aux dunes de l'axe i.
 	
-	:param ListeDesDunes: ?
-	:type ListeDesDunes: liste d'objets Dune ?
+	:param ListeDesDunes: Liste d'information sur les dunes.
+	:type ListeDesDunes: liste au format [IdAxe, IdDune, LongueurOnde, Hauteur, Profondeur1, PicDune, Profondeur2, DistPic, PicDune]
 	
 	:param NombreAxes: Nombre d'axes tracés par l'utilisateur.
 	:type NombreAxes: int
 	
-	:return: liste des informations sur les dunes par axe.
+	:return: liste des informations sur les dunes par axe au format [IdAxe, NombreDuneAxe, LongueurOndeMoyenneAxe, HauteurMoyenneAxe].
 	
 	"""
 	# Si il y a au moins une dune de référencé dans le tableau
-	TableauBilanParAxe = [] # Tableau qui contiendra le nombre de dunes, la longeur d'onde et la hauteur moyenne des dunes par par axe
+	TableauBilanParAxe = [] # Tableau qui contiendra le nombre de dunes, la longeur d'onde et la hauteur moyenne des dunes par axe
 	
 	NombreDeDunesTotal = len(ListeDesDunes)
 	j = 0 # Indice de la dune que l'on lit dans le tableau
@@ -291,7 +304,7 @@ def BilanDunesParAxe(ListeDesDunes = [], NombreAxes = 1):
 					LongueurOndeMoyenneAxe += ListeDesDunes[j][2]
 					HauteurMoyenneAxe += ListeDesDunes[j][3]
 					j += 1;
-					if (j < NombreDeDunesTotal): # Si nous avons pas atteint la fin du tableau (on incrémente j néanmoins pour sortir du while)
+					if (j < NombreDeDunesTotal): # Si nous avons pas atteint la fin du tableau (on incrémente j néanmoins 	aqpour sortir du while)
 						IdAxe = ListeDesDunes[j][0] # On passe à la dune suivante dans le tableau
 				LongueurOndeMoyenneAxe = round(LongueurOndeMoyenneAxe/NombreDuneAxe, 2)
 				HauteurMoyenneAxe = round(HauteurMoyenneAxe/NombreDuneAxe)
@@ -306,8 +319,21 @@ def BilanDunesParAxe(ListeDesDunes = [], NombreAxes = 1):
 			
 def DetectionDunes(MonImage = None, LesAxes = None, ImageAffichage = [0], SeuilDetectionDune = 0):
 	"""
+	Fonction qui appelle la fonction :func:`DetectionDunesAxe` sur tous les axes tracés.
 	
+	:param MonImage: Objet de la classe ImageDune contenant le fichier image.
+	:type MonImage: ImageDune
 	
+	:param LesAxes: Liste contenant tous les axes tracés par l'utilisateur.
+	:type LesAxes: Liste d'objets axes
+	
+	:param ImageAffichage: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l'image à afficher dans la fenetre principale.
+	:type ImageAffichage: PhotoImage
+	
+	:param SeuilDetectionDune: Seuil de détection des petites dunes.
+	:param SeuilDetectionDune: int
+	
+	:return: Liste des informations sur tous les axes
 	"""
 	ListeTouteDunes = []
 	for i in range (0, LesAxes.NombreAxes()):
