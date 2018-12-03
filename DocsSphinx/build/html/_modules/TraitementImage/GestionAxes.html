@@ -1,0 +1,249 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>TraitementImage.GestionAxes &#8212; Documentation ProjetDunes 1.3</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de TraitementImage.GestionAxes</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">TraitementImage</span> <span class="k">import</span> <span class="n">Axe</span>
+
+<div class="viewcode-block" id="GestionAxes"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes">[docs]</a><span class="k">class</span> <span class="nc">GestionAxes</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;Classe pour la gestion des axes tracés par l&#39;utilisateur. \n</span>
+<span class="sd">	Contient la liste des axes tracés par l&#39;utilisateur.</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Constructeur de la classe GestionAxes \n</span>
+<span class="sd">		</span>
+<span class="sd">		**Paramètres d&#39;instance :**</span>
+<span class="sd">		</span>
+<span class="sd">		:param ListeAxes: Liste des axes tracés, l&#39;indice i du tableau correspond au ième axe tracé.</span>
+<span class="sd">		:type ListeAxes: Liste  d&#39;objets Axe.</span>
+<span class="sd">		</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span> <span class="o">=</span> <span class="p">[]</span>
+			
+<div class="viewcode-block" id="GestionAxes.getListeAxes"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.getListeAxes">[docs]</a>	<span class="k">def</span> <span class="nf">getListeAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Getter de la liste des axes.</span>
+<span class="sd">		</span>
+<span class="sd">		:return: Liste des axes tracés.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span></div>
+	
+	
+<div class="viewcode-block" id="GestionAxes.InfosAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.InfosAxe">[docs]</a>	<span class="k">def</span> <span class="nf">InfosAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NumeroAxe</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Getter de l&#39;axe NumeroAxe dans la liste des axes.</span>
+<span class="sd">		</span>
+<span class="sd">		:param NumeroAxe: Numero de l&#39;axe dont on souhaite récuperer les informations</span>
+<span class="sd">		:type NumeroAxe: int</span>
+<span class="sd">		</span>
+<span class="sd">		:return: Objet Axe seléctionné.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="n">NumeroAxe</span><span class="p">]</span></div>
+			
+<div class="viewcode-block" id="GestionAxes.AjouterPoint"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.AjouterPoint">[docs]</a>	<span class="k">def</span> <span class="nf">AjouterPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xpoint</span><span class="p">,</span> <span class="n">Ypoint</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">PointAjoute</span> <span class="o">=</span> <span class="kc">True</span>
+		<span class="c1"># Si aucun axe n&#39;est créé ou que le dernier axe créé est complet (possède son point d&#39;arrivé), alors on créé un nouvel axe et on lui met son point de départ</span>
+		<span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span>  <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getPointArrive</span><span class="p">()</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Axe</span><span class="o">.</span><span class="n">Axe</span><span class="p">(</span><span class="n">Xpoint</span><span class="p">,</span> <span class="n">Ypoint</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span> <span class="c1"># Sinon, c&#39;est que le point que l&#39;on va rajouter va correspondre au point d&#39;arrivé du dernier axe de la liste (celui qui n&#39;est pas complété)</span>
+			<span class="n">PointDepartAxe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PositionDernierPointDepart</span><span class="p">()</span>
+			<span class="c1"># Si le point que l&#39;on s&#39;apprête a ajouter est le deuxième d&#39;un axe, et qu&#39;il se trouve au même endroit que le premier</span>
+			<span class="c1"># Alors on empêche la création de ce point</span>
+			<span class="k">if</span> <span class="n">PointDepartAxe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">Xpoint</span> <span class="ow">and</span> <span class="n">PointDepartAxe</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">Ypoint</span><span class="p">:</span>
+				<span class="n">PointAjoute</span> <span class="o">=</span> <span class="kc">False</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">AjoutPointArrive</span><span class="p">(</span><span class="n">Xpoint</span><span class="p">,</span> <span class="n">Ypoint</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">PointAjoute</span></div>
+	
+	
+<div class="viewcode-block" id="GestionAxes.PositionDernierPointDepart"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.PositionDernierPointDepart">[docs]</a>	<span class="k">def</span> <span class="nf">PositionDernierPointDepart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction utilisé pour connaître les coordonnees du dernier point que l&#39;utilisateur a placé pour effectuer une duplication d&#39;axe (donc forcement un axe qui ne possède pas de point d&#39;arrivée).</span>
+<span class="sd">				</span>
+<span class="sd">		:return: couple de coordonnees (X,Y) du dernier point placé.</span>
+<span class="sd">		</span>
+<span class="sd">		.. note:: 28/11 : &quot;donc forcement un axe qui ne possède pas de point d&#39;arrivée&quot;, verification ?	</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonneesPointDepart</span><span class="p">();</span></div>
+		
+<div class="viewcode-block" id="GestionAxes.NombreAxes"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.NombreAxes">[docs]</a>	<span class="k">def</span> <span class="nf">NombreAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Getter du nombre d&#39;axe enregistrés.</span>
+<span class="sd">		</span>
+<span class="sd">		:return: nombre d&#39;axe dans la liste.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">)</span></div>
+		
+		
+<div class="viewcode-block" id="GestionAxes.DernierAxeComplet"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.DernierAxeComplet">[docs]</a>	<span class="k">def</span> <span class="nf">DernierAxeComplet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction permettant de savoir si le dernier axe dans la liste est complet (les points de départ ET surtout d&#39;arrivés sont définis).</span>
+<span class="sd">	</span>
+<span class="sd">		:return: Booleen indiquant si l&#39;axe est complet.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">EstIlComplet</span> <span class="o">=</span> <span class="kc">True</span>
+		<span class="c1"># Si le point d&#39;arrivé du dernier axe n&#39;existe pas, c&#39;est qu&#39;il n&#39;est pas complet</span>
+		<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getPointArrive</span><span class="p">()</span> <span class="o">==</span> <span class="kc">None</span><span class="p">):</span>
+			<span class="n">EstIlComplet</span> <span class="o">=</span> <span class="kc">False</span>
+		
+		<span class="k">return</span> <span class="n">EstIlComplet</span></div>
+		
+		
+<div class="viewcode-block" id="GestionAxes.CoordonneesAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.CoordonneesAxe">[docs]</a>	<span class="k">def</span> <span class="nf">CoordonneesAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NumeroAxe</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction qui retourne les coordonnees de l&#39;axe choisi. \n</span>
+<span class="sd">		Si le numéro d&#39;axe indiqué ne correspond pas à la liste, le dernier élément de la liste sera prit</span>
+<span class="sd">		</span>
+<span class="sd">		:param NumeroAxe: Numero de l&#39;axe dont on souhaite récuperer les informations</span>
+<span class="sd">		:type NumeroAxe: int</span>
+<span class="sd">		</span>
+<span class="sd">		:return: Liste des coordonnees de l&#39;axe sous la forme [XDepart, YDepart, XArrive, YArrive].</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">NumeroAxe</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="ow">and</span> <span class="n">NumeroAxe</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="n">NumeroAxe</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonneesAxe</span><span class="p">()</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesDernierAxe</span><span class="p">()</span></div>
+			
+<div class="viewcode-block" id="GestionAxes.CoordonneesDernierAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.CoordonneesDernierAxe">[docs]</a>	<span class="k">def</span> <span class="nf">CoordonneesDernierAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction qui retourne les coordonnees du dernier axe tracé. \n</span>
+<span class="sd">		</span>
+<span class="sd">		:return: Liste des coordonnees de l&#39;axe sous la forme [XDepart, YDepart, XArrive, YArrive].</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesAxe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+	
+	<span class="k">def</span> <span class="nf">VecteurAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NumeroAxe</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="n">NumeroAxe</span><span class="p">]</span><span class="o">.</span><span class="n">VecteurAxe</span><span class="p">();</span>
+	
+	<span class="k">def</span> <span class="nf">VecteurDernierAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DernierAxeComplet</span><span class="p">()):</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">VecteurAxe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># Attention ici on met un -2 !</span>
+			<span class="c1"># le décalage de 1 (la numérotation commence à 0) + le faite d&#39;un axe non terminé (un seul des point est placé) est considéré tout de même comme un axe (dans le nombre d&#39;axes)</span>
+			<span class="c1"># Hors le vecteur ne peux se déterminer que sur un axe complet → -2</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">VecteurAxe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+	
+<div class="viewcode-block" id="GestionAxes.SupprimerAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.SupprimerAxe">[docs]</a>	<span class="k">def</span> <span class="nf">SupprimerAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NumeroAxe</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de suppresion de l&#39;axe sélectionné.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="n">NumeroAxe</span><span class="p">]</span></div>
+		
+<div class="viewcode-block" id="GestionAxes.SupprimerDernierAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.SupprimerDernierAxe">[docs]</a>	<span class="k">def</span> <span class="nf">SupprimerDernierAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de suppresion du dernier axe tracé.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">SupprimerAxe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+		
+<div class="viewcode-block" id="GestionAxes.SupprimerTousAxes"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.GestionAxes.GestionAxes.SupprimerTousAxes">[docs]</a>	<span class="k">def</span> <span class="nf">SupprimerTousAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Fonction de suppresion de tous les axes tracés.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[:]</span></div></div>
+		
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ProjetDunes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Autodoc.html">Page d’autodocumentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ecalle_Rebillard_Lastennet_Goudon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

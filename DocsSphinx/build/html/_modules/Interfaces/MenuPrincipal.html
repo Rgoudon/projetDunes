@@ -443,7 +443,7 @@
 <div class="viewcode-block" id="MenuPrincipal.TraitementAxes"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.TraitementAxes">[docs]</a>	<span class="k">def</span> <span class="nf">TraitementAxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Fonction de traitement des axes. </span>
-<span class="sd">		Appelle la foncion de traitement, cf ci-après : :func:`ResultatsAxes.ResultatsAxes`.</span>
+<span class="sd">		Appelle la foncion de traitement, cf ci-après : :func:`TraitementImage.AlgorithmeAxe.DetectionDunes`.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1"># Si il y a un point non utilisé pour un axe on le supprime, avant d&#39;en envoyer le tableau à  la fenêtre suivante</span>
 		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">LesAxes</span><span class="o">.</span><span class="n">DernierAxeComplet</span><span class="p">():</span>
@@ -456,7 +456,7 @@
 <div class="viewcode-block" id="MenuPrincipal.TraitementImage"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.MenuPrincipal.MenuPrincipal.TraitementImage">[docs]</a>	<span class="k">def</span> <span class="nf">TraitementImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Fonction de traitement de l&#39;image complète. </span>
-<span class="sd">		Appelle l&#39;algorithme de la LPE, cf ci-après : :func:`ResultatsAxes.ResultatsAxes`.</span>
+<span class="sd">		Appelle l&#39;algorithme de la LPE, cf ci-après : :func:`Interfaces.CalculLPE.LPE`.</span>
 <span class="sd">		</span>
 <span class="sd">		.. note::</span>
 <span class="sd">			Le traitement de l&#39;image complète peut être long. Il est préférable d&#39;utiliser une coupure sur l&#39;image, cf : :func:`CoupureImage`.</span>

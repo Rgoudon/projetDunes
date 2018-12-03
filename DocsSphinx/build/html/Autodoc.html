@@ -62,7 +62,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
 <li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
-<li><strong>LesAxes</strong> (<em>GestionAxes</em>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur</li>
+<li><strong>LesAxes</strong> (<a class="reference internal" href="#TraitementImage.GestionAxes.GestionAxes" title="TraitementImage.GestionAxes.GestionAxes"><em>GestionAxes</em></a>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur</li>
 <li><strong>ResolutionAltitude</strong> (<em>int</em>) – Correspont à la résolution de l’altitude de l’image (différence d’altitude entre deux niveaux de gris en cm).</li>
 <li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
 <li><strong>PrecedentChoixResolutionImage</strong> (<em>string</em>) – Chaine de caractères permettant de sauvegarder le précédent choix dans la comboBox, pour éventuellement le remettre (si l’utilisateur annule son nouveau choix de résolution d’affichage de l’image).</li>
@@ -162,14 +162,14 @@
 <dt id="Interfaces.MenuPrincipal.MenuPrincipal.TraitementAxes">
 <code class="descname">TraitementAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.TraitementAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.TraitementAxes" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Fonction de traitement des axes. 
-Appelle la foncion de traitement, cf ci-après : <code class="xref py py-func docutils literal notranslate"><span class="pre">ResultatsAxes.ResultatsAxes()</span></code>.</p>
+Appelle la foncion de traitement, cf ci-après : <a class="reference internal" href="#TraitementImage.AlgorithmeAxe.DetectionDunes" title="TraitementImage.AlgorithmeAxe.DetectionDunes"><code class="xref py py-func docutils literal notranslate"><span class="pre">TraitementImage.AlgorithmeAxe.DetectionDunes()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="Interfaces.MenuPrincipal.MenuPrincipal.TraitementImage">
 <code class="descname">TraitementImage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/MenuPrincipal.html#MenuPrincipal.TraitementImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.MenuPrincipal.MenuPrincipal.TraitementImage" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Fonction de traitement de l’image complète. 
-Appelle l’algorithme de la LPE, cf ci-après : <code class="xref py py-func docutils literal notranslate"><span class="pre">ResultatsAxes.ResultatsAxes()</span></code>.</p>
+Appelle l’algorithme de la LPE, cf ci-après : <code class="xref py py-func docutils literal notranslate"><span class="pre">Interfaces.CalculLPE.LPE()</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Le traitement de l’image complète peut être long. Il est préférable d’utiliser une coupure sur l’image, cf : <a class="reference internal" href="#Interfaces.MenuPrincipal.MenuPrincipal.CoupureImage" title="Interfaces.MenuPrincipal.MenuPrincipal.CoupureImage"><code class="xref py py-func docutils literal notranslate"><span class="pre">CoupureImage()</span></code></a>.</p>
@@ -194,7 +194,7 @@ Appelle l’algorithme de la LPE, cf ci-après : <code class="xref py py-func do
 <li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>SeuilDetectionDunes</strong> – Entier correspondant au seuil de detection des petites dunes en cm.</li>
 <li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
-<li><strong>LesAxes</strong> (<em>GestionAxes</em>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur.</li>
+<li><strong>LesAxes</strong> (<a class="reference internal" href="#TraitementImage.GestionAxes.GestionAxes" title="TraitementImage.GestionAxes.GestionAxes"><em>GestionAxes</em></a>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur.</li>
 </ul>
 </td>
 </tr>
@@ -239,18 +239,18 @@ L’utilisateur peut choisir l’emplacement de création du fichier ainsi que s
 <code class="descname">VisualiserProfil</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes.VisualiserProfil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes.VisualiserProfil" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Fonction d’affichage du profil de l’axe sélectionné par l’utilisateur.
 L’utilisateur peut passer la souris sur le profil pour avoir des informations précise sur le point survolé.</p>
-<p>Utilise la classe <code class="xref py py-class docutils literal notranslate"><span class="pre">VisualiserProfil.VisualiserProfil</span></code>.</p>
+<p>Utilise la classe <a class="reference internal" href="#module-Interfaces.VisualiserProfil" title="Interfaces.VisualiserProfil"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interfaces.VisualiserProfil</span></code></a>.</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-Interfaces.VisualiserProfil"></span><dl class="class">
 <dt id="Interfaces.VisualiserProfil.VisualiserProfil">
-<em class="property">class </em><code class="descclassname">Interfaces.VisualiserProfil.</code><code class="descname">VisualiserProfil</code><span class="sig-paren">(</span><em>fenetre</em>, <em>NumeroAxe=0</em>, <em>CouleurAssocie='black'</em>, <em>CoordonneesProfilX=array([0])</em>, <em>CoordonneesProfilY=array([0])</em>, <em>NombreDunes=0</em>, <em>LongeurOndeMoyenne=0</em>, <em>HauteurMoyenne=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/VisualiserProfil.html#VisualiserProfil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.VisualiserProfil.VisualiserProfil" title="Lien permanent vers cette définition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Interfaces.VisualiserProfil.</code><code class="descname">VisualiserProfil</code><span class="sig-paren">(</span><em>fenetre</em>, <em>NumeroAxe=0</em>, <em>CouleurAssocie='black'</em>, <em>CoordonneesProfilX=array([0])</em>, <em>CoordonneesProfilY=array([0])</em>, <em>NombreDunes=0</em>, <em>LongeurOndeMoyenne=0</em>, <em>HauteurMoyenne=0</em>, <em>XDunes=[]</em>, <em>YDunes=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/VisualiserProfil.html#VisualiserProfil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.VisualiserProfil.VisualiserProfil" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Classe de gestion de l’affichage des profils des axes.</p>
 <p>La classe ResultatsAxes hérite de la classe tkinter Frame.</p>
 <p>Cette classe ne peut pas être instancié sans avoir fait un traitement des axes.</p>
-<p>cf ci-après pour des informations sur le traitement des axes : <code class="xref py py-func docutils literal notranslate"><span class="pre">AlgorithmeAxe.DetectionDunes()</span></code>.</p>
+<p>cf ci-après pour des informations sur le traitement des axes : <a class="reference internal" href="#TraitementImage.AlgorithmeAxe.DetectionDunes" title="TraitementImage.AlgorithmeAxe.DetectionDunes"><code class="xref py py-func docutils literal notranslate"><span class="pre">TraitementImage.AlgorithmeAxe.DetectionDunes()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -260,10 +260,10 @@ L’utilisateur peut passer la souris sur le profil pour avoir des informations 
 <li><strong>NumeroAxe</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>CouleurAssocie</strong> (<em>int</em>) – Entier correspondant au seuil de detection des petites dunes en cm.</li>
 <li><strong>CoordonneesProfilX</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
-<li><strong>CoordonneesProfilY</strong> (<em>GestionAxes</em>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur.</li>
-<li><strong>NombreDunes</strong> – </li>
-<li><strong>LongeurOndeMoyenne</strong> – </li>
-<li><strong>HauteurMoyenne</strong> – </li>
+<li><strong>CoordonneesProfilY</strong> (<a class="reference internal" href="#TraitementImage.GestionAxes.GestionAxes" title="TraitementImage.GestionAxes.GestionAxes"><em>GestionAxes</em></a>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur.</li>
+<li><strong>NombreDunes</strong> (<em>int</em>) – Nombre de dunes détectées sur les axes par l’algorithme de détection de dunes.</li>
+<li><strong>LongeurOndeMoyenne</strong> (<em>int</em>) – Longeur d’onde moyenne des dunes détectées sur les axes.</li>
+<li><strong>HauteurMoyenne</strong> (<em>int</em>) – Hauteur moyenne des dunes détectées sur les axes.</li>
 </ul>
 </td>
 </tr>
@@ -273,7 +273,7 @@ L’utilisateur peut passer la souris sur le profil pour avoir des informations 
 <dt id="Interfaces.VisualiserProfil.VisualiserProfil.ExportProfil">
 <code class="descname">ExportProfil</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/VisualiserProfil.html#VisualiserProfil.ExportProfil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.VisualiserProfil.VisualiserProfil.ExportProfil" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Fonction d’export des resultats du profill.
-Ouvre une boite de dialogue à l’utilisateur pour qu’il séléctionne un repertoire où stcoker le fichier.</p>
+Ouvre une boite de dialogue à l’utilisateur pour qu’il sélzctionne un repertoire où stcoker le fichier.</p>
 </dd></dl>
 
 <dl class="method">
@@ -363,19 +363,19 @@ Le bug ne gène pas la fonction qui lance l’algorithme de la LPE avec le premi
 <dl class="function">
 <dt id="TraitementImage.AlgorithmeAxe.BilanDunesParAxe">
 <code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">BilanDunesParAxe</code><span class="sig-paren">(</span><em>ListeDesDunes=[]</em>, <em>NombreAxes=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#BilanDunesParAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.BilanDunesParAxe" title="Lien permanent vers cette définition">¶</a></dt>
-<dd><p>Fonction permettant de regrouper ensemble les resultats de tous les axes tracés.</p>
+<dd><p>Fonction permettant de regrouper l’ensemble des resultats de tous les axes tracés.
+L’indice i du tableau correspond aux dunes de l’axe i.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
-<li><strong>ListeDesDunes</strong> (<em>liste d'objets Dune ?</em>) – <p>?</p>
-</li>
+<li><strong>ListeDesDunes</strong> (<em>liste au format</em><em> [</em><em>IdAxe</em><em>, </em><em>IdDune</em><em>, </em><em>LongueurOnde</em><em>, </em><em>Hauteur</em><em>, </em><em>Profondeur1</em><em>, </em><em>PicDune</em><em>, </em><em>Profondeur2</em><em>, </em><em>DistPic</em><em>, </em><em>PicDune</em><em>]</em>) – Liste d’information sur les dunes.</li>
 <li><strong>NombreAxes</strong> (<em>int</em>) – Nombre d’axes tracés par l’utilisateur.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first last">liste des informations sur les dunes par axe.</p>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first last">liste des informations sur les dunes par axe au format [IdAxe, NombreDuneAxe, LongueurOndeMoyenneAxe, HauteurMoyenneAxe].</p>
 </td>
 </tr>
 </tbody>
@@ -385,31 +385,61 @@ Le bug ne gène pas la fonction qui lance l’algorithme de la LPE avec le premi
 <dl class="function">
 <dt id="TraitementImage.AlgorithmeAxe.DetectionDunes">
 <code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunes</code><span class="sig-paren">(</span><em>MonImage=None, LesAxes=None, ImageAffichage=[0], SeuilDetectionDune=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunes" title="Lien permanent vers cette définition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="TraitementImage.AlgorithmeAxe.DetectionDunesAxe">
-<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunesAxe</code><span class="sig-paren">(</span><em>NumeroAxe, MonImage=None, LesAxes=None, ImageAffichage=[0], SeuilDetectionDune=0, ListeDune=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunesAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="Lien permanent vers cette définition">¶</a></dt>
-<dd><p>Algorithme de detection des dunes sur l’axe sélectionné par l’utilisateur parmis les axes tracés par l’utilisateur.</p>
+<dd><p>Fonction qui appelle la fonction <a class="reference internal" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="TraitementImage.AlgorithmeAxe.DetectionDunesAxe"><code class="xref py py-func docutils literal notranslate"><span class="pre">DetectionDunesAxe()</span></code></a> sur tous les axes tracés.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
-<li><strong>NumeroAxe</strong> (<em>int</em>) – Axe sélectionné par l’utilisateur.</li>
-<li><strong>MonImage</strong> – <p>?</p>
-</li>
-<li><strong>LesAxes</strong> (<em>liste d'objets Arc</em>) – Liste des arcs tracés par l’utilisateur.</li>
-<li><strong>ImageAffichage</strong> – <p>?</p>
-</li>
-<li><strong>SeuilDetectionDune</strong> – </li>
-<li><strong>ListeDune</strong> (<em>liste d'objets Dune ?</em>) – <p>?</p>
-</li>
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>LesAxes</strong> (<em>Liste d'objets axes</em>) – Liste contenant tous les axes tracés par l’utilisateur.</li>
+<li><strong>ImageAffichage</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
+<li><strong>SeuilDetectionDune</strong> – Seuil de détection des petites dunes.</li>
+<li><strong>SeuilDetectionDune</strong> – int</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first last">Liste des informations sur tous les axes</p>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="TraitementImage.AlgorithmeAxe.DetectionDunesAxe">
+<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunesAxe</code><span class="sig-paren">(</span><em>NumeroAxe, MonImage=None, LesAxes=None, ImageAffichage=[0], SeuilDetectionDune=0, ListeDune=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunesAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Algorithme de detection des dunes sur l’axe sélectionné.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>NumeroAxe</strong> (<em>int</em>) – Axe sélectionné par l’utilisateur.</li>
+<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>LesAxes</strong> (<em>liste d'objets Arc</em>) – Liste des arcs tracés par l’utilisateur.</li>
+<li><strong>ImageAffichage</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
+<li><strong>SeuilDetectionDune</strong> – Seuil de détection des petites dunes.</li>
+<li><strong>SeuilDetectionDune</strong> – int</li>
+<li><strong>ListeDune</strong> (<em>liste</em>) – Liste où stocker les resultats.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first last">Liste des dunes reperes sur l’axe au format [IdAxe, IdDune, LongueurOnde, Hauteur, Profondeur1, PicDune, Profondeur2, DistPic, PicDune].</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Principe de l’algorithme :</p>
+<p>Parcourt sur la liste des hauteurs des pixels de l’axe jusqu’à trouver une valeur minimale (qui correspondra au premier creux de la dunes)</p>
+<p>Parcourt ensuite jusqu’à trouver une valeur haute (qui correspondra au pic de la dune)</p>
+<p>Parcourt ensuite jusqu’à trouver une deuxième valeur minimale (qui correspondra au deuxième creux)</p>
+<p>Grâce à ces trois points, l’algorithme décide s’il s’agit ou non d’une dune :</p>
+<p>-Soit la différence pic-premierCreux est supérieur au seuil de détection de dune : alors c’est une dune</p>
+<p class="last">-Soit ce n’est pas une dune</p>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -422,9 +452,9 @@ Le bug ne gène pas la fonction qui lance l’algorithme de la LPE avec le premi
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
 <li><strong>NumeroAxe</strong> (<em>int</em>) – Indice de l’axe devant être traité.</li>
-<li><strong>MonImage</strong> – </li>
+<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>LesAxes</strong> (<em>Liste d'objets axes</em>) – Liste contenant tous les axes tracés par l’utilisateur.</li>
-<li><strong>ImageAffichage</strong> – </li>
+<li><strong>ImageAffichage</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
 </ul>
 </td>
 </tr>
@@ -438,7 +468,12 @@ Le bug ne gène pas la fonction qui lance l’algorithme de la LPE avec le premi
 <span class="target" id="module-TraitementImage.AlgorithmeImageComplete"></span><dl class="function">
 <dt id="TraitementImage.AlgorithmeImageComplete.FiltrageLaplacien">
 <code class="descclassname">TraitementImage.AlgorithmeImageComplete.</code><code class="descname">FiltrageLaplacien</code><span class="sig-paren">(</span><em>Image=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeImageComplete.html#FiltrageLaplacien"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeImageComplete.FiltrageLaplacien" title="Lien permanent vers cette définition">¶</a></dt>
-<dd><p>?</p>
+<dd><div class="admonition warning">
+<p class="first admonition-title">Avertissement</p>
+<p class="last">Module entièrement commenté.
+A ne pas utiliser.
+A supprimer ?</p>
+</div>
 </dd></dl>
 
 <span class="target" id="module-TraitementImage.Axe"></span><dl class="class">
@@ -461,11 +496,286 @@ Contient les coordonnées en pixel du point de départ et d’arrivé de l’axe
 <dl class="method">
 <dt id="TraitementImage.Axe.Axe.AjoutPointArrive">
 <code class="descname">AjoutPointArrive</code><span class="sig-paren">(</span><em>Xpoint</em>, <em>Ypoint</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Axe.html#Axe.AjoutPointArrive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Axe.Axe.AjoutPointArrive" title="Lien permanent vers cette définition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Setter du point d’arrivé de l’axe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>XPoint</strong> – coordonnée en abscisse du point d’arrivé à ajouter.</li>
+<li><strong>Ypoint</strong> (<em>int</em>) – coordonnée en ordonnée du point d’arrivé à ajouter.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.Axe.Axe.getCoordonneesAxe">
+<code class="descname">getCoordonneesAxe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Axe.html#Axe.getCoordonneesAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Axe.Axe.getCoordonneesAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Getter des coordonnées des points de départ et d’arrivée de l’axe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">couple de coordonnées ((X,Y),(X,Y)) respectivement des points de départ et d’arrivé de l’axe.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.Axe.Axe.getCoordonneesPointArrive">
+<code class="descname">getCoordonneesPointArrive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Axe.html#Axe.getCoordonneesPointArrive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Axe.Axe.getCoordonneesPointArrive" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Getter des coordonnées du point d’arrivée de l’axe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">couple de coordonnées (X,Y) du point d’arrivée de l’axe.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.Axe.Axe.getCoordonneesPointDepart">
+<code class="descname">getCoordonneesPointDepart</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Axe.html#Axe.getCoordonneesPointDepart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Axe.Axe.getCoordonneesPointDepart" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Getter des coordonnées du point de départ de l’axe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">couple de coordonnées (X,Y) du point de départ de l’axe.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.Axe.Axe.getPointArrive">
+<code class="descname">getPointArrive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Axe.html#Axe.getPointArrive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Axe.Axe.getPointArrive" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Getter du point d’arrivée de l’axe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">Objet de la classe point correspondant au point d’arrivée de l’axe.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.Axe.Axe.getPointDepart">
+<code class="descname">getPointDepart</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Axe.html#Axe.getPointDepart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Axe.Axe.getPointDepart" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Getter du point de départ de l’axe.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">Objet de la classe point correspondant au point de départ de l’axe.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
-<span class="target" id="module-TraitementImage.Coupure"></span><span class="target" id="module-TraitementImage.ExportTXT"></span><span class="target" id="module-TraitementImage.GestionAxes"></span><span class="target" id="module-TraitementImage.ImageDune"></span><span class="target" id="module-TraitementImage.Point"></span></div>
+<span class="target" id="module-TraitementImage.Coupure"></span><dl class="class">
+<dt id="TraitementImage.Coupure.coupure">
+<em class="property">class </em><code class="descclassname">TraitementImage.Coupure.</code><code class="descname">coupure</code><a class="reference internal" href="_modules/TraitementImage/Coupure.html#coupure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Coupure.coupure" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe de gestion de la coupure sur l’image originale.
+L’objet prendra des valeurs par défaut à la création en attendant que l’utilisateur finisse le tracé de la coupure.</p>
+<dl class="method">
+<dt id="TraitementImage.Coupure.coupure.coordonnees">
+<code class="descname">coordonnees</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Coupure.html#coupure.coordonnees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Coupure.coupure.coordonnees" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de verification des coordonnées d’un coin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>int</em>) – coordonnée en abscisse du coin à ajouter.</li>
+<li><strong>y</strong> (<em>int</em>) – coordonnée en ordonnée du coin à ajouter.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.Coupure.coupure.setValues">
+<code class="descname">setValues</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/Coupure.html#coupure.setValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.Coupure.coupure.setValues" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Setter des valeurs du premier coin du rectangle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>int</em>) – coordonnée en abscisse du premier coin du rectangle tracé par l’utilisateur.</li>
+<li><strong>y</strong> (<em>int</em>) – coordonnée en ordonnée du premier coin du rectangle tracé par l’utilisateur.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-TraitementImage.ExportTXT"></span><dl class="function">
+<dt id="TraitementImage.ExportTXT.ExportResultatsDunesAxe">
+<code class="descclassname">TraitementImage.ExportTXT.</code><code class="descname">ExportResultatsDunesAxe</code><span class="sig-paren">(</span><em>TableauInfoDunes=[0, 0, 0, 0, 0, 0, 0], Image=None, NumeroAxe=0, CoordonneesAxe=None, DonneesBilanAxe=[0, 0, 0, 0], DetectionDune=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/ExportTXT.html#ExportResultatsDunesAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.ExportTXT.ExportResultatsDunesAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’export des resultats d’un seul axe sélectionné par l’utilisateur.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="TraitementImage.ExportTXT.ExportResultatsDunesAxes">
+<code class="descclassname">TraitementImage.ExportTXT.</code><code class="descname">ExportResultatsDunesAxes</code><span class="sig-paren">(</span><em>TableauInfoDunes=[0, 0, 0, 0, 0, 0], Image=None, Axes=None, DonneesBilanAxe=[0, 0, 0, 0], DetectionDune=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/ExportTXT.html#ExportResultatsDunesAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.ExportTXT.ExportResultatsDunesAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction d’export des resultats pour tous les axes.</p>
+</dd></dl>
+
+<span class="target" id="module-TraitementImage.GestionAxes"></span><dl class="class">
+<dt id="TraitementImage.GestionAxes.GestionAxes">
+<em class="property">class </em><code class="descclassname">TraitementImage.GestionAxes.</code><code class="descname">GestionAxes</code><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe pour la gestion des axes tracés par l’utilisateur.</p>
+<p>Contient la liste des axes tracés par l’utilisateur.</p>
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.AjouterPoint">
+<code class="descname">AjouterPoint</code><span class="sig-paren">(</span><em>Xpoint</em>, <em>Ypoint</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.AjouterPoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.AjouterPoint" title="Lien permanent vers cette définition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.CoordonneesAxe">
+<code class="descname">CoordonneesAxe</code><span class="sig-paren">(</span><em>NumeroAxe</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.CoordonneesAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.CoordonneesAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction qui retourne les coordonnees de l’axe choisi.</p>
+<p>Si le numéro d’axe indiqué ne correspond pas à la liste, le dernier élément de la liste sera prit</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>NumeroAxe</strong> (<em>int</em>) – Numero de l’axe dont on souhaite récuperer les informations</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body">Liste des coordonnees de l’axe sous la forme [XDepart, YDepart, XArrive, YArrive].</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.CoordonneesDernierAxe">
+<code class="descname">CoordonneesDernierAxe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.CoordonneesDernierAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.CoordonneesDernierAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction qui retourne les coordonnees du dernier axe tracé.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">Liste des coordonnees de l’axe sous la forme [XDepart, YDepart, XArrive, YArrive].</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.DernierAxeComplet">
+<code class="descname">DernierAxeComplet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.DernierAxeComplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.DernierAxeComplet" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction permettant de savoir si le dernier axe dans la liste est complet (les points de départ ET surtout d’arrivés sont définis).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">Booleen indiquant si l’axe est complet.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.InfosAxe">
+<code class="descname">InfosAxe</code><span class="sig-paren">(</span><em>NumeroAxe</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.InfosAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.InfosAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Getter de l’axe NumeroAxe dans la liste des axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>NumeroAxe</strong> (<em>int</em>) – Numero de l’axe dont on souhaite récuperer les informations</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body">Objet Axe seléctionné.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.NombreAxes">
+<code class="descname">NombreAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.NombreAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.NombreAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Getter du nombre d’axe enregistrés.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">nombre d’axe dans la liste.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.PositionDernierPointDepart">
+<code class="descname">PositionDernierPointDepart</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.PositionDernierPointDepart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.PositionDernierPointDepart" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction utilisé pour connaître les coordonnees du dernier point que l’utilisateur a placé pour effectuer une duplication d’axe (donc forcement un axe qui ne possède pas de point d’arrivée).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">couple de coordonnees (X,Y) du dernier point placé.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">28/11 : «&nbsp;donc forcement un axe qui ne possède pas de point d’arrivée&nbsp;», verification ?</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.SupprimerAxe">
+<code class="descname">SupprimerAxe</code><span class="sig-paren">(</span><em>NumeroAxe</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.SupprimerAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.SupprimerAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de suppresion de l’axe sélectionné.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.SupprimerDernierAxe">
+<code class="descname">SupprimerDernierAxe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.SupprimerDernierAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.SupprimerDernierAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de suppresion du dernier axe tracé.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.SupprimerTousAxes">
+<code class="descname">SupprimerTousAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.SupprimerTousAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.SupprimerTousAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Fonction de suppresion de tous les axes tracés.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="TraitementImage.GestionAxes.GestionAxes.getListeAxes">
+<code class="descname">getListeAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/GestionAxes.html#GestionAxes.getListeAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.GestionAxes.GestionAxes.getListeAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Getter de la liste des axes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Renvoie:</th><td class="field-body">Liste des axes tracés.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-TraitementImage.ImageDune"></span><span class="target" id="module-TraitementImage.Point"></span></div>
 <div class="section" id="module-Algorithme.LPE">
 <span id="projetdunes-algorithme"></span><h2>ProjetDunes Algorithme<a class="headerlink" href="#module-Algorithme.LPE" title="Lien permanent vers ce titre">¶</a></h2>
 </div>

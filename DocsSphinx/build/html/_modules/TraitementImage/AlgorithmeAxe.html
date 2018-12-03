@@ -45,14 +45,14 @@
 <span class="sd">	:param NumeroAxe: Indice de l&#39;axe devant être traité.</span>
 <span class="sd">	:type NumeroAxe: int</span>
 <span class="sd">	</span>
-<span class="sd">	:param MonImage:</span>
-<span class="sd">	:type MonImage:</span>
+<span class="sd">	:param MonImage: Objet de la classe ImageDune contenant le fichier image.</span>
+<span class="sd">	:type MonImage: ImageDune</span>
 <span class="sd">	</span>
 <span class="sd">	:param LesAxes: Liste contenant tous les axes tracés par l&#39;utilisateur.</span>
 <span class="sd">	:type LesAxes: Liste d&#39;objets axes</span>
 <span class="sd">	</span>
-<span class="sd">	:param ImageAffichage:</span>
-<span class="sd">	:type ImageAffichage:</span>
+<span class="sd">	:param ImageAffichage: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l&#39;image à afficher dans la fenetre principale.</span>
+<span class="sd">	:type ImageAffichage: PhotoImage</span>
 <span class="sd">	</span>
 <span class="sd">	:return: ListeDistance, ListeAltitude : liste des hauteurs en cm pour chaque pixel de l&#39;axe, liste des distances entre le point de départ de l&#39;axe et chaque pixel de l&#39;axe</span>
 <span class="sd">	&quot;&quot;&quot;</span>
@@ -161,7 +161,7 @@
 		<span class="k">if</span><span class="p">(</span><span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">PointArrive</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
 			<span class="n">DirectionBoucle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 		
-		<span class="c1"># Si le sens du courant est de la droite vers la gauche, c&#39;est que horizontalement les pixels choisi aurant des valeurs de + en + faible</span>
+		<span class="c1"># Si le sens du courant est de la droite vers la gauche, c&#39;est que horizontalement les pixels choisi auront des valeurs de + en + faible</span>
 		<span class="c1"># pour tester la position horizon du pixel à prendre, on effectue une décrémentation</span>
 		<span class="k">if</span><span class="p">(</span><span class="n">MonImage</span><span class="o">.</span><span class="n">getSensCourantGauche</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
 			<span class="n">DirectionIncremet</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -189,25 +189,37 @@
 	
 <div class="viewcode-block" id="DetectionDunesAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.DetectionDunesAxe">[docs]</a><span class="k">def</span> <span class="nf">DetectionDunesAxe</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ListeDune</span> <span class="o">=</span> <span class="p">[]):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Algorithme de detection des dunes sur l&#39;axe sélectionné par l&#39;utilisateur parmis les axes tracés par l&#39;utilisateur.</span>
+<span class="sd">	Algorithme de detection des dunes sur l&#39;axe sélectionné.</span>
 <span class="sd">	</span>
 <span class="sd">	:param NumeroAxe: Axe sélectionné par l&#39;utilisateur.</span>
 <span class="sd">	:type NumeroAxe: int</span>
 <span class="sd">	</span>
-<span class="sd">	:param MonImage: ?</span>
-<span class="sd">	:type MonImage: ?</span>
+<span class="sd">	:param MonImage: Objet de la classe ImageDune contenant le fichier image.</span>
+<span class="sd">	:type MonImage: ImageDune</span>
 <span class="sd">	</span>
 <span class="sd">	:param LesAxes: Liste des arcs tracés par l&#39;utilisateur.</span>
 <span class="sd">	:type LesAxes: liste d&#39;objets Arc</span>
 <span class="sd">	</span>
-<span class="sd">	:param ImageAffichage: ?</span>
-<span class="sd">	:type ImageAffichage: ?</span>
+<span class="sd">	:param ImageAffichage: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l&#39;image à afficher dans la fenetre principale.</span>
+<span class="sd">	:type ImageAffichage: PhotoImage</span>
 <span class="sd">	</span>
-<span class="sd">	:param SeuilDetectionDune: </span>
-<span class="sd">	:type SeuilDetectionDune:</span>
+<span class="sd">	:param SeuilDetectionDune: Seuil de détection des petites dunes.</span>
+<span class="sd">	:param SeuilDetectionDune: int</span>
 <span class="sd">	</span>
-<span class="sd">	:param ListeDune: ?</span>
-<span class="sd">	:type ListeDune: liste d&#39;objets Dune ?</span>
+<span class="sd">	:param ListeDune: Liste où stocker les resultats.</span>
+<span class="sd">	:type ListeDune: liste</span>
+<span class="sd">	</span>
+<span class="sd">	:return: Liste des dunes reperes sur l&#39;axe au format [IdAxe, IdDune, LongueurOnde, Hauteur, Profondeur1, PicDune, Profondeur2, DistPic, PicDune].</span>
+<span class="sd">	</span>
+<span class="sd">	</span>
+<span class="sd">	.. note:: </span>
+<span class="sd">		Principe de l&#39;algorithme :  \n</span>
+<span class="sd">		Parcourt sur la liste des hauteurs des pixels de l&#39;axe jusqu&#39;à trouver une valeur minimale (qui correspondra au premier creux de la dunes) \n</span>
+<span class="sd">		Parcourt ensuite jusqu&#39;à trouver une valeur haute (qui correspondra au pic de la dune) \n</span>
+<span class="sd">		Parcourt ensuite jusqu&#39;à trouver une deuxième valeur minimale (qui correspondra au deuxième creux) \n</span>
+<span class="sd">		Grâce à ces trois points, l&#39;algorithme décide s&#39;il s&#39;agit ou non d&#39;une dune : \n</span>
+<span class="sd">		-Soit la différence pic-premierCreux est supérieur au seuil de détection de dune : alors c&#39;est une dune \n</span>
+<span class="sd">		-Soit ce n&#39;est pas une dune</span>
 <span class="sd">	</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">AltitudeMinimum</span> <span class="o">=</span> <span class="n">MonImage</span><span class="o">.</span><span class="n">getAltitudeMin</span><span class="p">()</span>
@@ -285,26 +297,27 @@
 				
 			<span class="k">if</span><span class="p">(</span><span class="n">HauteurDune</span> <span class="o">&gt;=</span> <span class="n">SeuilDetection</span><span class="p">):</span>
 				<span class="c1"># * 100 pour mettre en cm</span>
-				<span class="n">ListeDune</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">IdDune</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">LongeurOnde</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">HauteurDune</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">ProfondeurDune1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">PicDune</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">ProfondeurDune2</span><span class="p">,</span><span class="mi">2</span><span class="p">)])</span>
+				<span class="n">ListeDune</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">IdDune</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">LongeurOnde</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">HauteurDune</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">ProfondeurDune1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">PicDune</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">ProfondeurDune2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">DistPic</span><span class="p">,</span> <span class="n">PicDune</span><span class="p">])</span>
 				<span class="n">IdDune</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># On incrémente l&#39;identifiant de la dune</span>
 					
 	<span class="k">return</span> <span class="n">ListeDune</span></div>
 
 <div class="viewcode-block" id="BilanDunesParAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.BilanDunesParAxe">[docs]</a><span class="k">def</span> <span class="nf">BilanDunesParAxe</span><span class="p">(</span><span class="n">ListeDesDunes</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">NombreAxes</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Fonction permettant de regrouper ensemble les resultats de tous les axes tracés.</span>
+<span class="sd">	Fonction permettant de regrouper l&#39;ensemble des resultats de tous les axes tracés.</span>
+<span class="sd">	L&#39;indice i du tableau correspond aux dunes de l&#39;axe i.</span>
 <span class="sd">	</span>
-<span class="sd">	:param ListeDesDunes: ?</span>
-<span class="sd">	:type ListeDesDunes: liste d&#39;objets Dune ?</span>
+<span class="sd">	:param ListeDesDunes: Liste d&#39;information sur les dunes.</span>
+<span class="sd">	:type ListeDesDunes: liste au format [IdAxe, IdDune, LongueurOnde, Hauteur, Profondeur1, PicDune, Profondeur2, DistPic, PicDune]</span>
 <span class="sd">	</span>
 <span class="sd">	:param NombreAxes: Nombre d&#39;axes tracés par l&#39;utilisateur.</span>
 <span class="sd">	:type NombreAxes: int</span>
 <span class="sd">	</span>
-<span class="sd">	:return: liste des informations sur les dunes par axe.</span>
+<span class="sd">	:return: liste des informations sur les dunes par axe au format [IdAxe, NombreDuneAxe, LongueurOndeMoyenneAxe, HauteurMoyenneAxe].</span>
 <span class="sd">	</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="c1"># Si il y a au moins une dune de référencé dans le tableau</span>
-	<span class="n">TableauBilanParAxe</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Tableau qui contiendra le nombre de dunes, la longeur d&#39;onde et la hauteur moyenne des dunes par par axe</span>
+	<span class="n">TableauBilanParAxe</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Tableau qui contiendra le nombre de dunes, la longeur d&#39;onde et la hauteur moyenne des dunes par axe</span>
 	
 	<span class="n">NombreDeDunesTotal</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ListeDesDunes</span><span class="p">)</span>
 	<span class="n">j</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Indice de la dune que l&#39;on lit dans le tableau</span>
@@ -326,7 +339,7 @@
 					<span class="n">LongueurOndeMoyenneAxe</span> <span class="o">+=</span> <span class="n">ListeDesDunes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
 					<span class="n">HauteurMoyenneAxe</span> <span class="o">+=</span> <span class="n">ListeDesDunes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
 					<span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-					<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">NombreDeDunesTotal</span><span class="p">):</span> <span class="c1"># Si nous avons pas atteint la fin du tableau (on incrémente j néanmoins pour sortir du while)</span>
+					<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">NombreDeDunesTotal</span><span class="p">):</span> <span class="c1"># Si nous avons pas atteint la fin du tableau (on incrémente j néanmoins 	aqpour sortir du while)</span>
 						<span class="n">IdAxe</span> <span class="o">=</span> <span class="n">ListeDesDunes</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># On passe à la dune suivante dans le tableau</span>
 				<span class="n">LongueurOndeMoyenneAxe</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">LongueurOndeMoyenneAxe</span><span class="o">/</span><span class="n">NombreDuneAxe</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 				<span class="n">HauteurMoyenneAxe</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">HauteurMoyenneAxe</span><span class="o">/</span><span class="n">NombreDuneAxe</span><span class="p">)</span>
@@ -341,8 +354,21 @@
 			
 <div class="viewcode-block" id="DetectionDunes"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.DetectionDunes">[docs]</a><span class="k">def</span> <span class="nf">DetectionDunes</span><span class="p">(</span><span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Fonction qui appelle la fonction :func:`DetectionDunesAxe` sur tous les axes tracés.</span>
 <span class="sd">	</span>
+<span class="sd">	:param MonImage: Objet de la classe ImageDune contenant le fichier image.</span>
+<span class="sd">	:type MonImage: ImageDune</span>
 <span class="sd">	</span>
+<span class="sd">	:param LesAxes: Liste contenant tous les axes tracés par l&#39;utilisateur.</span>
+<span class="sd">	:type LesAxes: Liste d&#39;objets axes</span>
+<span class="sd">	</span>
+<span class="sd">	:param ImageAffichage: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l&#39;image à afficher dans la fenetre principale.</span>
+<span class="sd">	:type ImageAffichage: PhotoImage</span>
+<span class="sd">	</span>
+<span class="sd">	:param SeuilDetectionDune: Seuil de détection des petites dunes.</span>
+<span class="sd">	:param SeuilDetectionDune: int</span>
+<span class="sd">	</span>
+<span class="sd">	:return: Liste des informations sur tous les axes</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">ListeTouteDunes</span> <span class="o">=</span> <span class="p">[]</span>
 	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()):</span>

@@ -45,7 +45,7 @@
 	<span class="sd">&quot;&quot;&quot;Classe de gestion de l&#39;affichage des profils des axes. \n</span>
 <span class="sd">	La classe ResultatsAxes hérite de la classe tkinter Frame. \n</span>
 <span class="sd">	Cette classe ne peut pas être instancié sans avoir fait un traitement des axes. \n</span>
-<span class="sd">	cf ci-après pour des informations sur le traitement des axes : :func:`AlgorithmeAxe.DetectionDunes`. \n</span>
+<span class="sd">	cf ci-après pour des informations sur le traitement des axes : :func:`TraitementImage.AlgorithmeAxe.DetectionDunes`. \n</span>
 <span class="sd">	</span>
 <span class="sd">	:param fenetre: Objet de la classe frame, fenetre affiché à l&#39;utilisateur. </span>
 <span class="sd">	:type fenetre: Frame</span>
@@ -62,22 +62,24 @@
 <span class="sd">	:param CoordonneesProfilY: Objet de la classe gestionAxes contenant les axes tracés par l&#39;utilisateur.</span>
 <span class="sd">	:type CoordonneesProfilY: GestionAxes</span>
 <span class="sd">	</span>
-<span class="sd">	:param NombreDunes: </span>
-<span class="sd">	:type NombreDunes: </span>
+<span class="sd">	:param NombreDunes: Nombre de dunes détectées sur les axes par l&#39;algorithme de détection de dunes.</span>
+<span class="sd">	:type NombreDunes: int</span>
 <span class="sd">	</span>
-<span class="sd">	:param LongeurOndeMoyenne: </span>
-<span class="sd">	:type LongeurOndeMoyenne: </span>
+<span class="sd">	:param LongeurOndeMoyenne: Longeur d&#39;onde moyenne des dunes détectées sur les axes.</span>
+<span class="sd">	:type LongeurOndeMoyenne: int</span>
 <span class="sd">	</span>
-<span class="sd">	:param HauteurMoyenne: </span>
-<span class="sd">	:type HauteurMoyenne: </span>
+<span class="sd">	:param HauteurMoyenne: Hauteur moyenne des dunes détectées sur les axes.</span>
+<span class="sd">	:type HauteurMoyenne: int </span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
-	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fenetre</span><span class="p">,</span> <span class="n">NumeroAxe</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">CouleurAssocie</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">CoordonneesProfilX</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">CoordonneesProfilY</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">NombreDunes</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LongeurOndeMoyenne</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">HauteurMoyenne</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fenetre</span><span class="p">,</span> <span class="n">NumeroAxe</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">CouleurAssocie</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">CoordonneesProfilX</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">CoordonneesProfilY</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]),</span> <span class="n">NombreDunes</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LongeurOndeMoyenne</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">HauteurMoyenne</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">XDunes</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">YDunes</span> <span class="o">=</span> <span class="p">[]):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">window</span> <span class="o">=</span> <span class="n">fenetre</span>
 		
 		<span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilX</span> <span class="o">=</span> <span class="n">CoordonneesProfilX</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilY</span> <span class="o">=</span> <span class="n">CoordonneesProfilY</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxe</span> <span class="o">=</span> <span class="n">NumeroAxe</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">XDunes</span> <span class="o">=</span> <span class="n">XDunes</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">YDunes</span> <span class="o">=</span> <span class="n">YDunes</span>
 		
 		<span class="c1"># Cette donnée est sauvegardée pour éviter de la recalculer à chaque fois</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">MaxX</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CoordonneesProfilX</span><span class="p">)</span>
@@ -95,10 +97,14 @@
 		<span class="c1"># https://python4astronomers.github.io/plotting/advanced.html</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">CoordonneesProfilX</span><span class="p">,</span> <span class="n">CoordonneesProfilY</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">CoordonneesProfilX</span><span class="p">,</span> <span class="n">CoordonneesProfilY</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Profil&#39;</span><span class="p">)</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">XDunes</span><span class="p">,</span><span class="n">YDunes</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Dunes&#39;</span><span class="p">)</span>
+		
 		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Distance (m)&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Altitude (m)&quot;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Vue de profil axe &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NumeroAxe</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 		
 		<span class="c1"># On change les valeurs min/max pour la légende du graphique afin d&#39;éviter d&#39;occuper de la place pour des valeurs qui ne sont pas atteinte (comme 0m d&#39;altitude par exemple)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">CoordonneesProfilY</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">CoordonneesProfilY</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">)</span>
@@ -150,7 +156,7 @@
 <div class="viewcode-block" id="VisualiserProfil.ExportProfil"><a class="viewcode-back" href="../../Autodoc.html#Interfaces.VisualiserProfil.VisualiserProfil.ExportProfil">[docs]</a>	<span class="k">def</span> <span class="nf">ExportProfil</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">		Fonction d&#39;export des resultats du profill.</span>
-<span class="sd">		Ouvre une boite de dialogue à l&#39;utilisateur pour qu&#39;il séléctionne un repertoire où stcoker le fichier.</span>
+<span class="sd">		Ouvre une boite de dialogue à l&#39;utilisateur pour qu&#39;il sélzctionne un repertoire où stcoker le fichier.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">f</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">asksaveasfilename</span><span class="p">()</span>
 		<span class="k">if</span> <span class="n">f</span><span class="p">:</span>

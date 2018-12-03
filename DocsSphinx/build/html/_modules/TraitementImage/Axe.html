@@ -53,24 +53,60 @@
 		
 <div class="viewcode-block" id="Axe.AjoutPointArrive"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.Axe.Axe.AjoutPointArrive">[docs]</a>	<span class="k">def</span> <span class="nf">AjoutPointArrive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xpoint</span><span class="p">,</span> <span class="n">Ypoint</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		</span>
+<span class="sd">		Setter du point d&#39;arrivé de l&#39;axe.</span>
+<span class="sd">			</span>
+<span class="sd">		:param XPoint: coordonnée en abscisse du point d&#39;arrivé à ajouter.</span>
+<span class="sd">		:type Xpoint: int</span>
+<span class="sd">			</span>
+<span class="sd">		:param Ypoint: coordonnée en ordonnée du point d&#39;arrivé à ajouter.</span>
+<span class="sd">		:type Ypoint: int</span>
+<span class="sd">			</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">PointArrive</span> <span class="o">=</span> <span class="n">Point</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">Xpoint</span><span class="p">,</span> <span class="n">Ypoint</span><span class="p">)</span></div>
 			
-	<span class="k">def</span> <span class="nf">getPointDepart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointDepart</span>
+<div class="viewcode-block" id="Axe.getPointDepart"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.Axe.Axe.getPointDepart">[docs]</a>	<span class="k">def</span> <span class="nf">getPointDepart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Getter du point de départ de l&#39;axe.</span>
+<span class="sd">		</span>
+<span class="sd">		:return: Objet de la classe point correspondant au point de départ de l&#39;axe.</span>
+<span class="sd">		</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointDepart</span></div>
 	
-	<span class="k">def</span> <span class="nf">getCoordonneesPointDepart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointDepart</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+<div class="viewcode-block" id="Axe.getCoordonneesPointDepart"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.Axe.Axe.getCoordonneesPointDepart">[docs]</a>	<span class="k">def</span> <span class="nf">getCoordonneesPointDepart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">			Getter des coordonnées du point de départ de l&#39;axe.</span>
+<span class="sd">			</span>
+<span class="sd">			:return: couple de coordonnées (X,Y) du point de départ de l&#39;axe.</span>
+<span class="sd">		</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointDepart</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span></div>
 	
-	<span class="k">def</span> <span class="nf">getPointArrive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointArrive</span>
+<div class="viewcode-block" id="Axe.getPointArrive"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.Axe.Axe.getPointArrive">[docs]</a>	<span class="k">def</span> <span class="nf">getPointArrive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Getter du point d&#39;arrivée de l&#39;axe.</span>
+<span class="sd">			</span>
+<span class="sd">		:return: Objet de la classe point correspondant au point d&#39;arrivée de l&#39;axe.</span>
+<span class="sd">		</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointArrive</span></div>
 	
-	<span class="k">def</span> <span class="nf">getCoordonneesPointArrive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointArrive</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span>
+<div class="viewcode-block" id="Axe.getCoordonneesPointArrive"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.Axe.Axe.getCoordonneesPointArrive">[docs]</a>	<span class="k">def</span> <span class="nf">getCoordonneesPointArrive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Getter des coordonnées du point d&#39;arrivée de l&#39;axe.</span>
+<span class="sd">			</span>
+<span class="sd">		:return: couple de coordonnées (X,Y) du point d&#39;arrivée de l&#39;axe.</span>
+<span class="sd">		</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointArrive</span><span class="o">.</span><span class="n">getCoordonnees</span><span class="p">()</span></div>
 	
-	<span class="k">def</span> <span class="nf">getCoordonneesAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoordonneesPointDepart</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoordonneesPointArrive</span><span class="p">()</span>
+<div class="viewcode-block" id="Axe.getCoordonneesAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.Axe.Axe.getCoordonneesAxe">[docs]</a>	<span class="k">def</span> <span class="nf">getCoordonneesAxe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Getter des coordonnées des points de départ et d&#39;arrivée de l&#39;axe.</span>
+<span class="sd">			</span>
+<span class="sd">		:return: couple de coordonnées ((X,Y),(X,Y)) respectivement des points de départ et d&#39;arrivé de l&#39;axe.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoordonneesPointDepart</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCoordonneesPointArrive</span><span class="p">()</span></div>
 	
 	<span class="k">def</span> <span class="nf">VecteurXaxe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointArrive</span><span class="o">.</span><span class="n">getXpoint</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">PointDepart</span><span class="o">.</span><span class="n">getXpoint</span><span class="p">()</span>
