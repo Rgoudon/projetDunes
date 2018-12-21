@@ -44,11 +44,11 @@ class LPE():
 
 		curlab = 0 #Valeur du label actuel
 
-		pile = [] #Pile dans laquelle on va ajouté les pixels à traiter
+		pile = [] #Pile dans laquelle on va ajouter les pixels à traiter
 
 		for h in range(256):
 
-			pixels = self.sortedPixels.getPixelsByLevel(h) #Obtenir tous les pixels qui ont la valeur qui sont au self.niveau de gris
+			pixels = self.sortedPixels.getPixelsByLevel(h) #Obtenir tous les pixels qui ont la valeur au niveau de gris h.
 			for curPix in pixels:
 				lab.write1(curPix.getX(), curPix.getY(), -2)
 				row = curPix.getX()
