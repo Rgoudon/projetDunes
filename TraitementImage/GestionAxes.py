@@ -61,8 +61,6 @@ class GestionAxes():
 		Fonction utilisé pour connaître les coordonnees du dernier point que l'utilisateur a placé pour effectuer une duplication d'axe (donc forcement un axe qui ne possède pas de point d'arrivée).
 				
 		:return: couple de coordonnees (X,Y) du dernier point placé.
-		
-		.. note:: 28/11 : "donc forcement un axe qui ne possède pas de point d'arrivée", verification ?	
 		"""
 		return self.ListeAxes[self.NombreAxes() - 1].getCoordonneesPointDepart();
 		
@@ -120,7 +118,7 @@ class GestionAxes():
 			return self.VecteurAxe(self.NombreAxes() - 1)
 		else:
 			# Attention ici on met un -2 !
-			# le décalage de 1 (la numérotation commence à 0) + le faite d'un axe non terminé (un seul des point est placé) est considéré tout de même comme un axe (dans le nombre d'axes)
+			# le décalage de 1 (la numérotation commence à 0) + le fait d'un axe non terminé (un seul des point est placé) est considéré tout de même comme un axe (dans le nombre d'axes)
 			# Hors le vecteur ne peux se déterminer que sur un axe complet → -2
 			return self.VecteurAxe(self.NombreAxes() - 2)
 	

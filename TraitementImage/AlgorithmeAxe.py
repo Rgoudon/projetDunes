@@ -1,8 +1,14 @@
+import numpy as np
+from scipy.io.wavfile import write 
 from math import sqrt, ceil
 from numpy import asmatrix
-from TraitementImage import ImageDune, GestionAxes
+from TraitementImage import ImageDune, GestionAxes, Filtrage
 
-def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage = [0]):
+from tkinter import *
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+def TableauAltitudeDistance(NumeroAxe, MonImage = None, MethodeFiltrage="Aucun", LesAxes = None, ImageAffichage = [0]):
 	"""
 	Fonction donnant les listes ListeDistance et ListeAltitude utilisé dans l'algorithme : :func:`DetectionDunesAxe`. \n
 	
@@ -149,10 +155,41 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, LesAxes = None, ImageAff
 			# On ajoute la distance entre le point de départ, et celui du pixel que l'on vient d'ajouter ci-dessus (pythagore)
 			ListeDistance.append(sqrt((PositionPixelHoriChoisi - PointDepart[0]) ** 2 + (Y - PointDepart[1]) ** 2 ))
 	
-	# On retourne les deux listes de données
+	#Export des données sous forme wav pour exploitation sous audacity
+	np_data = np.array(ListeAltitude)
+	data=np.interp(np_data, (np_data.min(), np_data.max()), (-1, +1))
+	scaleAlt = np.int16(data/np.max(np.abs(data))*32767)
+	write('axes.wav', 1, scaleAlt)
+	
+	#TRAITEMENTS SUR AXE : 
+	
+	
+	#Lissage par filtrage passe bas MEILLEUR RESULTAT POUR L'INSTANT
+	if (MethodeFiltrage=="Filtre passe bas"):
+		ListeAltitudePB = Filtrage.passe_bas(ListeAltitude,0.25)
+		#print(ListeAltitudePB)
+		return ListeDistance, ListeAltitudePB
+	
+	#Lissage par moyennage 
+	if (MethodeFiltrage=="Moyenne glissante sur 4 valeurs"):
+		ListeAltitudeMY = Filtrage.moyenne(ListeAltitude)
+		#print(ListeAltitudeMY)
+		return ListeDistance, ListeAltitudeMY
+	
+	
+	#Lissage par mediane
+	if (MethodeFiltrage=="Mediane"):
+		ListeAltitudeMD = Filtrage.mediane(ListeAltitude)
+		#print(ListeAltitudeMD)
+		return ListeDistance, ListeAltitudeMD
+		
+	
+	
+	# On retourne les deux listes de données sans filtrage 
 	return ListeDistance, ListeAltitude
 	
-def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage = [0], SeuilDetectionDune = 0, ListeDune = []):
+	
+def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, MethodeFiltrage="Aucun", ImageAffichage = [0], SeuilDetectionDune = 0, ListeDune = []):
 	"""
 	Algorithme de detection des dunes sur l'axe sélectionné.
 	
@@ -171,7 +208,7 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
 	:param SeuilDetectionDune: Seuil de détection des petites dunes.
 	:param SeuilDetectionDune: int
 	
-	:param ListeDune: Liste où stocker les resultats.
+	:param ListeDune: Liste où stocker les resultats de l'analyse des dunes.
 	:type ListeDune: liste
 	
 	:return: Liste des dunes reperes sur l'axe au format [IdAxe, IdDune, LongueurOnde, Hauteur, Profondeur1, PicDune, Profondeur2, DistPic, PicDune].
@@ -198,7 +235,7 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, ImageAffichage
 	SeuilDetection = ceil(SeuilDetectionDune / ResolutionImage) * ResolutionImage
 	# On calcul la valeur de l'altitude maximum, celle qui signifie que l'on est en surface
 	AltitudeMax = AltitudeMinimum + ResolutionImage * 255
-	ListeDistance, ListeAltitude = TableauAltitudeDistance(NumeroAxe, MonImage, LesAxes, ImageAffichage)
+	ListeDistance, ListeAltitude = TableauAltitudeDistance(NumeroAxe, MonImage, MethodeFiltrage, LesAxes, ImageAffichage)
 		
 	IdDune = 0
 		
@@ -317,7 +354,7 @@ def BilanDunesParAxe(ListeDesDunes = [], NombreAxes = 1):
 		
 	return TableauBilanParAxe
 			
-def DetectionDunes(MonImage = None, LesAxes = None, ImageAffichage = [0], SeuilDetectionDune = 0):
+def DetectionDunes(MonImage = None, LesAxes = None, MethodeFiltrage="Aucun" ,ImageAffichage = [0], SeuilDetectionDune = 0):
 	"""
 	Fonction qui appelle la fonction :func:`DetectionDunesAxe` sur tous les axes tracés.
 	
@@ -337,7 +374,7 @@ def DetectionDunes(MonImage = None, LesAxes = None, ImageAffichage = [0], SeuilD
 	"""
 	ListeTouteDunes = []
 	for i in range (0, LesAxes.NombreAxes()):
-		DetectionDunesAxe(i, MonImage, LesAxes, ImageAffichage, SeuilDetectionDune, ListeTouteDunes)
+		DetectionDunesAxe(i, MonImage, LesAxes, MethodeFiltrage, ImageAffichage, SeuilDetectionDune, ListeTouteDunes)
 					
 	#ListeTouteDunes = array([[0,0,10,15],[0,1,2,4],[1,2,3,4]])    # valeur test pour des résultats sur 2 tracés
 	return ListeTouteDunes
