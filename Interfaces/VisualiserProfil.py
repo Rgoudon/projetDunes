@@ -10,7 +10,7 @@ class VisualiserProfil(Frame):
 	"""Classe de gestion de l'affichage des profils des axes. \n
 	La classe ResultatsAxes hérite de la classe tkinter Frame. \n
 	Cette classe ne peut pas être instancié sans avoir fait un traitement des axes. \n
-	cf ci-après pour des informations sur le traitement des axes : :func:`AlgorithmeAxe.DetectionDunes`. \n
+	cf ci-après pour des informations sur le traitement des axes : :func:`TraitementImage.AlgorithmeAxe.DetectionDunes`. \n
 	
 	:param fenetre: Objet de la classe frame, fenetre affiché à l'utilisateur. 
 	:type fenetre: Frame
@@ -27,22 +27,24 @@ class VisualiserProfil(Frame):
 	:param CoordonneesProfilY: Objet de la classe gestionAxes contenant les axes tracés par l'utilisateur.
 	:type CoordonneesProfilY: GestionAxes
 	
-	:param NombreDunes: 
-	:type NombreDunes: 
+	:param NombreDunes: Nombre de dunes détectées sur les axes par l'algorithme de détection de dunes.
+	:type NombreDunes: int
 	
-	:param LongeurOndeMoyenne: 
-	:type LongeurOndeMoyenne: 
+	:param LongeurOndeMoyenne: Longeur d'onde moyenne des dunes détectées sur les axes.
+	:type LongeurOndeMoyenne: int
 	
-	:param HauteurMoyenne: 
-	:type HauteurMoyenne: 
+	:param HauteurMoyenne: Hauteur moyenne des dunes détectées sur les axes.
+	:type HauteurMoyenne: int 
 	"""
 
-	def __init__(self, fenetre, NumeroAxe = 0, CouleurAssocie = 'black', CoordonneesProfilX = array([0]), CoordonneesProfilY = array([0]), NombreDunes = 0, LongeurOndeMoyenne = 0, HauteurMoyenne = 0):
+	def __init__(self, fenetre, NumeroAxe = 0, CouleurAssocie = 'black', CoordonneesProfilX = array([0]), CoordonneesProfilY = array([0]), NombreDunes = 0, LongeurOndeMoyenne = 0, HauteurMoyenne = 0, XDunes = [], YDunes = []):
 		self.window = fenetre
 		
 		self.CoordonneesProfilX = CoordonneesProfilX
 		self.CoordonneesProfilY = CoordonneesProfilY
 		self.NumeroAxe = NumeroAxe
+		self.XDunes = XDunes
+		self.YDunes = YDunes
 		
 		# Cette donnée est sauvegardée pour éviter de la recalculer à chaque fois
 		self.MaxX = max(self.CoordonneesProfilX)
@@ -60,10 +62,12 @@ class VisualiserProfil(Frame):
 		# https://python4astronomers.github.io/plotting/advanced.html
 		self.fig = plt.figure(figsize=(6, 4))
 		self.ax = self.fig.add_subplot(111)
-		self.ax.plot(CoordonneesProfilX, CoordonneesProfilY)
+		self.ax.plot(CoordonneesProfilX, CoordonneesProfilY, label='Profil')
+		self.ax.plot(XDunes,YDunes, 'ro', label='Dunes')
 		self.ax.set_xlabel("Distance (m)")
 		self.ax.set_ylabel("Altitude (m)")
 		self.ax.set_title("Vue de profil axe " + str(self.NumeroAxe))
+		self.ax.legend()
 		
 		# On change les valeurs min/max pour la légende du graphique afin d'éviter d'occuper de la place pour des valeurs qui ne sont pas atteinte (comme 0m d'altitude par exemple)
 		self.ax.set_ylim(min(CoordonneesProfilY) - 0.3, max(CoordonneesProfilY) + 0.3)
@@ -115,7 +119,7 @@ class VisualiserProfil(Frame):
 	def ExportProfil(self):
 		"""
 		Fonction d'export des resultats du profill.
-		Ouvre une boite de dialogue à l'utilisateur pour qu'il séléctionne un repertoire où stcoker le fichier.
+		Ouvre une boite de dialogue à l'utilisateur pour qu'il sélzctionne un repertoire où stcoker le fichier.
 		"""
 		f = filedialog.asksaveasfilename()
 		if f:

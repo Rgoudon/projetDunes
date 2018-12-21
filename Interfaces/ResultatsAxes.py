@@ -25,17 +25,21 @@ class ResultatsAxes(Frame):
 	:param ImageAffiche: Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l'image à afficher dans la fenetre principale.
 	:type ImageAffiche: PhotoImage
 	
+	:param Filtrage: Chaine indiquant la méthode de filtrage à utiliser sur l'axe 
+	:type Filtrage: string
+	
 	:param LesAxes: Objet de la classe gestionAxes contenant les axes tracés par l'utilisateur.
 	:type LesAxes: GestionAxes
 	
 	"""
 
-	def __init__(self, fenetre, MonImage = None, ImageAffiche = [0], SeuilDetectionDune = 0, LesAxes = None):    
-		
+	def __init__(self, fenetre, MonImage = None, ImageAffiche = [0], SeuilDetectionDune = 0, MethodeFiltrage = "Aucun", LesAxes = None):    
+		 
 		self.MonImage = MonImage
 		self.ImageAffichage = ImageAffiche
 		self.DetectionDune = float(SeuilDetectionDune) / 100
 		self.LesAxes = LesAxes
+		self.MethodeFiltrage = MethodeFiltrage
 		self.ImageAAfficher = 0 # variable ne pouvant être une variable locale, sinon l'image n'apparaît pas à l'affichage
 		self.NombreAxes = self.LesAxes.NombreAxes()
 		
@@ -92,19 +96,31 @@ class ResultatsAxes(Frame):
 		self.Canevas.pack(side=RIGHT)
 		
 		# On place les axes sur la miniatures, mais on les colorie d'une couleur différentes afin de les différencier
-		self.PlacementAxes()
+		self.PlacementAxes_Dunes()
 		
 		# On rempli le tableau des résultats par les données obtenues par analyse de tous les axes tracés par l'utilisateur
-		self.TableauAnalyseImageAxe = AlgorithmeAxe.DetectionDunes(self.MonImage, self.LesAxes, self.ImageAffichage, self.DetectionDune)
+		self.TableauAnalyseImageAxe = AlgorithmeAxe.DetectionDunes(self.MonImage, self.LesAxes, self.MethodeFiltrage, self.ImageAffichage, self.DetectionDune)
 		self.BilanDunesAxe = AlgorithmeAxe.BilanDunesParAxe(self.TableauAnalyseImageAxe, self.NombreAxes)
 		self.RemplirTableauResultats()
 		
-	def PlacementAxes(self):
+	def PlacementAxes_Dunes(self):
 		"""
 		Fonction de tracé des axes.
 		"""
 		for i in range (0, self.NombreAxes):
+			#ajout de l'axe
 			self.Canevas.create_line(self.LesAxes.CoordonneesAxe(i), fill=ListeCouleurs[i])
+			#ajout dunes de l'axe	
+			LesDunes = []
+			LesDunes = AlgorithmeAxe.DetectionDunesAxe(i, self.MonImage, self.LesAxes, self.MethodeFiltrage, self.ImageAffichage, self.DetectionDune, LesDunes)
+			XDunes = []
+			YDunes = []
+			for i in range (0,len(LesDunes)):
+				XDunes.append(LesDunes[i][7])
+				YDunes.append(LesDunes[i][8])
+				print(XDunes[i])
+				self.Canevas.create_oval(XDunes[i]-1, YDunes[i]-1, XDunes[i]+1, YDunes[i]+1, width = 100, fill = 'white')
+		
 
 	def ExportTxt(self):
 		"""
@@ -132,16 +148,27 @@ class ResultatsAxes(Frame):
 		Fonction d'affichage du profil de l'axe sélectionné par l'utilisateur.
 		L'utilisateur peut passer la souris sur le profil pour avoir des informations précise sur le point survolé.
 		
-		Utilise la classe :class:`VisualiserProfil.VisualiserProfil`.
+		Utilise la classe :class:`Interfaces.VisualiserProfil`.
 		"""
 		AxeChoisi = int(self.NumeroAxeChoisi.get())
-		XCoordonnee, YCoordonnee = AlgorithmeAxe.TableauAltitudeDistance(AxeChoisi, self.MonImage, self.LesAxes, self.ImageAffichage)
+		XCoordonnee, YCoordonnee = AlgorithmeAxe.TableauAltitudeDistance(AxeChoisi, self.MonImage, self.MethodeFiltrage, self.LesAxes, self.ImageAffichage)
 		NombreDuneAxe = self.BilanDunesAxe[AxeChoisi][1]
 		MoyenneLongeurOndeAxe = self.BilanDunesAxe[AxeChoisi][2]
 		MoyenneHauteurAxe = self.BilanDunesAxe[AxeChoisi][3]
+		
+		
+		LesDunes = []
+		LesDunes = AlgorithmeAxe.DetectionDunesAxe(AxeChoisi, self.MonImage, self.LesAxes, self.MethodeFiltrage, self.ImageAffichage, self.DetectionDune, LesDunes)
+		XDunes = []
+		YDunes = []
+		for i in range (0,len(LesDunes)):
+			XDunes.append(LesDunes[i][7])
+			YDunes.append(LesDunes[i][8])
+		
+		
 		fenVisualiseAxe = Toplevel()
 		fenVisualiseAxe.title("Profil de l'axe " + str(AxeChoisi) + " - Analyse dunes 2018")
-		VisualiserProfil.VisualiserProfil(fenVisualiseAxe, AxeChoisi, ListeCouleurs[AxeChoisi], XCoordonnee, YCoordonnee, NombreDuneAxe, MoyenneLongeurOndeAxe, MoyenneHauteurAxe)
+		VisualiserProfil.VisualiserProfil(fenVisualiseAxe, AxeChoisi, ListeCouleurs[AxeChoisi], XCoordonnee, YCoordonnee, NombreDuneAxe, MoyenneLongeurOndeAxe, MoyenneHauteurAxe, XDunes, YDunes)
 				   
 	def RemplirTableauResultats(self):
 		"""

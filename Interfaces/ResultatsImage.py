@@ -42,7 +42,7 @@ class ResultatsImage(Frame):
 
 	def __init__(self, fenetre, origine = None, MonImage = None, separation = None, ImageAffiche = [0], SeuilDetectionDune = 0):
 		
-				#ResultatsImage(fenTraitementImage, self.monImage, resultat, bordure, self.miniature, self.seuilDetection)
+		#ResultatsImage(fenTraitementImage, self.monImage, resultat, bordure, self.miniature, self.seuilDetection)
 		self.temps = time.clock()
 		self.MonImage = MonImage
 		self.ImageAffichage = ImageAffiche

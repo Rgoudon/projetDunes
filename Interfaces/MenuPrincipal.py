@@ -34,7 +34,7 @@ class MenuPrincipal(Frame):
 		
 		**Paramètres d'instance :**
 		
-		:param MonImage: Objet de la classe ImageDune contenant le fichier image.
+		:param MonImage: Objet de la classe ImageDune contenant l'image en niveau de gris.
 		:type MonImage: ImageDune	
 		
 		:param LesAxes: Objet de la classe gestionAxes contenant les axes tracés par l'utilisateur
@@ -121,7 +121,7 @@ class MenuPrincipal(Frame):
 		self.SeuilDetectionGrosseDune.delete(0)    # On enlève la valeur par défaut dans la Spinbox (qui est de base la valeur minimum)
 		self.SeuilDetectionGrosseDune.insert(0, "50")  # On place maintenant la valeur 50 comme valeur par défaut
 		# pour récupérer la valeur de la Spinbox, il suffit de faire SeuilDetectionGrosseDune.get()
-		Label(FrameInfoImage, text="cm").grid(row=1, column=2)
+		Label(FrameInfoImage, text="cm").grid(row=1, column=2, columnspan=2)
 		
 		Label(FrameInfoImage, text="Sens du courant").grid(row=2, column=0)
 		self.ChoixSensCourant= ttk.Combobox(FrameInfoImage, state="readonly")
@@ -129,6 +129,13 @@ class MenuPrincipal(Frame):
 		self.ChoixSensCourant.set("Vers la gauche")
 		self.ChoixSensCourant.grid(row=2, column=1, columnspan=2)
 		self.ChoixSensCourant.bind("<<ComboboxSelected>>", lambda event : self.ChoisirSensCourant())
+		
+		#Ajout d'un combo box pour le choix du filtrage avec les valeurs definies dans values
+		Label(FrameInfoImage, text="Choix de la méthode de filtrage").grid(row=3,column=0)
+		self.MethodeFiltrage = ttk.Combobox(FrameInfoImage,width=27,state = 'readonly')
+		self.MethodeFiltrage['values'] = ("Aucun", "Filtre passe bas", "Moyenne glissante sur 4 valeurs", "Mediane")
+		self.MethodeFiltrage.set("Aucun")
+		self.MethodeFiltrage.grid(row=3, column=1, columnspan=2)
 		
 		self.BoutonDupliquerAxe = Button(FrameMenu, text="Dupliquer axe", state=DISABLED, command = lambda : self.DupliquerAxe())
 		self.BoutonDupliquerAxe.pack(side=TOP)
@@ -408,26 +415,26 @@ puis cliquer sur ce même bouton""")
 	def TraitementAxes(self):
 		"""
 		Fonction de traitement des axes. 
-		Appelle la foncion de traitement, cf ci-après : :func:`ResultatsAxes.ResultatsAxes`.
+		Appelle la foncion de traitement, cf ci-après : :func:`TraitementImage.AlgorithmeAxe.DetectionDunes`.
 		"""
 		# Si il y a un point non utilisé pour un axe on le supprime, avant d'en envoyer le tableau à  la fenêtre suivante
 		if not self.LesAxes.DernierAxeComplet():
 			self.SupprimerDernierAxeOuPoint()
 			
 		fenTraitementAxes = Toplevel()
-		fenTraitementAxes.title("Résultats issus des axes - Analyse dunes 2018")
-		ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.MonImage, self.MiniatureImage, self.SeuilDetectionPetiteDune.get(), self.LesAxes)
+		fenTraitementAxes.title("Résultats issus des axes - Analyse dunes 2018 "+ self.MethodeFiltrage.get())
+		ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.MonImage, self.MiniatureImage, self.SeuilDetectionPetiteDune.get(), self.MethodeFiltrage.get(), self.LesAxes)
 
 	def TraitementImage(self):
 		"""
 		Fonction de traitement de l'image complète. 
-		Appelle l'algorithme de la LPE, cf ci-après : :func:`ResultatsAxes.ResultatsAxes`.
+		Appelle l'algorithme de la LPE, cf ci-après : :func:`Interfaces.CalculLPE.LPE`.
 		
 		.. note::
 			Le traitement de l'image complète peut être long. Il est préférable d'utiliser une coupure sur l'image, cf : :func:`CoupureImage`.
 		"""
 		fenTraitementImage = Toplevel()
-		fenTraitementImage.title("Demande des données - Analyse dunes 2018")
+		fenTraitementImage.title("Demande des données - Analyse dunes 2018 ")
 		CalculLPE.CalculLPE(fenTraitementImage, self.MonImage, self.MiniatureImage, self.SeuilDetectionPetiteDune.get(), False)
 
 	def CoupureImage(self):
