@@ -4,6 +4,7 @@ from PIL import ImageTk
 from scipy import shape
 from Interfaces import VisualiserProfil
 from TraitementImage import AlgorithmeAxe, ExportTXT
+from math import sqrt
 
 ListeCouleurs = ["blue", "red", "sienna", "chartreuse", "darkgreen", "deepskyblue", "crimson", "darkorange", "yellow", "purple"]
 
@@ -115,11 +116,17 @@ class ResultatsAxes(Frame):
 			LesDunes = AlgorithmeAxe.DetectionDunesAxe(i, self.MonImage, self.LesAxes, self.MethodeFiltrage, self.ImageAffichage, self.DetectionDune, LesDunes)
 			XDunes = []
 			YDunes = []
+			depart = self.LesAxes.InfosAxe(i).getPointDepart()
+			arrivee = self.LesAxes.InfosAxe(i).getPointArrive()
+			X = arrivee.getXpoint()- depart.getXpoint()
+			Y = arrivee.getYpoint()- depart.getYpoint()
+			longueur = sqrt(X*X + Y*Y)
+			coeffDir = (arrivee.getYpoint() - depart.getYpoint()) / (arrivee.getXpoint() - depart.getXpoint())
+			convAxeGraph =  X / longueur
 			for i in range (0,len(LesDunes)):
-				XDunes.append(LesDunes[i][7])
-				YDunes.append(LesDunes[i][8])
-				print(XDunes[i])
-				self.Canevas.create_oval(XDunes[i]-1, YDunes[i]-1, XDunes[i]+1, YDunes[i]+1, width = 100, fill = 'white')
+				XDunes.append(LesDunes[i][7] * convAxeGraph + depart.getXpoint())
+				YDunes.append(coeffDir * LesDunes[i][7] * convAxeGraph + depart.getYpoint())
+				self.Canevas.create_oval(XDunes[i] -3 , YDunes[i] + 3 , XDunes[i] + 3 , YDunes[i] - 3, width = 1, fill = 'red')
 		
 
 	def ExportTxt(self):
@@ -162,7 +169,7 @@ class ResultatsAxes(Frame):
 		XDunes = []
 		YDunes = []
 		for i in range (0,len(LesDunes)):
-			XDunes.append(LesDunes[i][7])
+			XDunes.append(LesDunes[i][7]) #distance sur l'axe
 			YDunes.append(LesDunes[i][8])
 		
 		
