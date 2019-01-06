@@ -185,7 +185,7 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, MethodeFiltrage="Aucun",
 		
 	
 	
-	# On retourne les deux listes de données sans filtrage 
+	# On retourne les deux listes de données sans filtrage si rien n'est selectionné
 	return ListeDistance, ListeAltitude
 	
 	
