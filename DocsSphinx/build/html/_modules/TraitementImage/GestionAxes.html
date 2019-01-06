@@ -96,8 +96,6 @@
 <span class="sd">		Fonction utilisé pour connaître les coordonnees du dernier point que l&#39;utilisateur a placé pour effectuer une duplication d&#39;axe (donc forcement un axe qui ne possède pas de point d&#39;arrivée).</span>
 <span class="sd">				</span>
 <span class="sd">		:return: couple de coordonnees (X,Y) du dernier point placé.</span>
-<span class="sd">		</span>
-<span class="sd">		.. note:: 28/11 : &quot;donc forcement un axe qui ne possède pas de point d&#39;arrivée&quot;, verification ?	</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ListeAxes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getCoordonneesPointDepart</span><span class="p">();</span></div>
 		
@@ -155,7 +153,7 @@
 			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">VecteurAxe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="c1"># Attention ici on met un -2 !</span>
-			<span class="c1"># le décalage de 1 (la numérotation commence à 0) + le faite d&#39;un axe non terminé (un seul des point est placé) est considéré tout de même comme un axe (dans le nombre d&#39;axes)</span>
+			<span class="c1"># le décalage de 1 (la numérotation commence à 0) + le fait d&#39;un axe non terminé (un seul des point est placé) est considéré tout de même comme un axe (dans le nombre d&#39;axes)</span>
 			<span class="c1"># Hors le vecteur ne peux se déterminer que sur un axe complet → -2</span>
 			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">VecteurAxe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
 	

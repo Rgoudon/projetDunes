@@ -33,11 +33,17 @@
           <div class="body" role="main">
             
   <h1>Code source de TraitementImage.AlgorithmeAxe</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">ceil</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.io.wavfile</span> <span class="k">import</span> <span class="n">write</span> 
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">ceil</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">asmatrix</span>
-<span class="kn">from</span> <span class="nn">TraitementImage</span> <span class="k">import</span> <span class="n">ImageDune</span><span class="p">,</span> <span class="n">GestionAxes</span>
+<span class="kn">from</span> <span class="nn">TraitementImage</span> <span class="k">import</span> <span class="n">ImageDune</span><span class="p">,</span> <span class="n">GestionAxes</span><span class="p">,</span> <span class="n">Filtrage</span>
 
-<div class="viewcode-block" id="TableauAltitudeDistance"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.TableauAltitudeDistance">[docs]</a><span class="k">def</span> <span class="nf">TableauAltitudeDistance</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.backends.backend_tkagg</span> <span class="k">import</span> <span class="n">FigureCanvasTkAgg</span>
+
+<div class="viewcode-block" id="TableauAltitudeDistance"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.TableauAltitudeDistance">[docs]</a><span class="k">def</span> <span class="nf">TableauAltitudeDistance</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">MethodeFiltrage</span><span class="o">=</span><span class="s2">&quot;Aucun&quot;</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Fonction donnant les listes ListeDistance et ListeAltitude utilisé dans l&#39;algorithme : :func:`DetectionDunesAxe`. \n</span>
 <span class="sd">	</span>
@@ -184,10 +190,41 @@
 			<span class="c1"># On ajoute la distance entre le point de départ, et celui du pixel que l&#39;on vient d&#39;ajouter ci-dessus (pythagore)</span>
 			<span class="n">ListeDistance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sqrt</span><span class="p">((</span><span class="n">PositionPixelHoriChoisi</span> <span class="o">-</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">PointDepart</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="p">))</span>
 	
-	<span class="c1"># On retourne les deux listes de données</span>
+	<span class="c1">#Export des données sous forme wav pour exploitation sous audacity</span>
+	<span class="n">np_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ListeAltitude</span><span class="p">)</span>
+	<span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np_data</span><span class="p">,</span> <span class="p">(</span><span class="n">np_data</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">np_data</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+	<span class="n">scaleAlt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="n">data</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">))</span><span class="o">*</span><span class="mi">32767</span><span class="p">)</span>
+	<span class="n">write</span><span class="p">(</span><span class="s1">&#39;axes.wav&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">scaleAlt</span><span class="p">)</span>
+	
+	<span class="c1">#TRAITEMENTS SUR AXE : </span>
+	
+	
+	<span class="c1">#Lissage par filtrage passe bas MEILLEUR RESULTAT POUR L&#39;INSTANT</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">MethodeFiltrage</span><span class="o">==</span><span class="s2">&quot;Filtre passe bas&quot;</span><span class="p">):</span>
+		<span class="n">ListeAltitudePB</span> <span class="o">=</span> <span class="n">Filtrage</span><span class="o">.</span><span class="n">passe_bas</span><span class="p">(</span><span class="n">ListeAltitude</span><span class="p">,</span><span class="mf">0.25</span><span class="p">)</span>
+		<span class="c1">#print(ListeAltitudePB)</span>
+		<span class="k">return</span> <span class="n">ListeDistance</span><span class="p">,</span> <span class="n">ListeAltitudePB</span>
+	
+	<span class="c1">#Lissage par moyennage </span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">MethodeFiltrage</span><span class="o">==</span><span class="s2">&quot;Moyenne glissante sur 4 valeurs&quot;</span><span class="p">):</span>
+		<span class="n">ListeAltitudeMY</span> <span class="o">=</span> <span class="n">Filtrage</span><span class="o">.</span><span class="n">moyenne</span><span class="p">(</span><span class="n">ListeAltitude</span><span class="p">)</span>
+		<span class="c1">#print(ListeAltitudeMY)</span>
+		<span class="k">return</span> <span class="n">ListeDistance</span><span class="p">,</span> <span class="n">ListeAltitudeMY</span>
+	
+	
+	<span class="c1">#Lissage par mediane</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">MethodeFiltrage</span><span class="o">==</span><span class="s2">&quot;Mediane&quot;</span><span class="p">):</span>
+		<span class="n">ListeAltitudeMD</span> <span class="o">=</span> <span class="n">Filtrage</span><span class="o">.</span><span class="n">mediane</span><span class="p">(</span><span class="n">ListeAltitude</span><span class="p">)</span>
+		<span class="c1">#print(ListeAltitudeMD)</span>
+		<span class="k">return</span> <span class="n">ListeDistance</span><span class="p">,</span> <span class="n">ListeAltitudeMD</span>
+		
+	
+	
+	<span class="c1"># On retourne les deux listes de données sans filtrage si rien n&#39;est selectionné</span>
 	<span class="k">return</span> <span class="n">ListeDistance</span><span class="p">,</span> <span class="n">ListeAltitude</span></div>
 	
-<div class="viewcode-block" id="DetectionDunesAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.DetectionDunesAxe">[docs]</a><span class="k">def</span> <span class="nf">DetectionDunesAxe</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ListeDune</span> <span class="o">=</span> <span class="p">[]):</span>
+	
+<div class="viewcode-block" id="DetectionDunesAxe"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.DetectionDunesAxe">[docs]</a><span class="k">def</span> <span class="nf">DetectionDunesAxe</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">MethodeFiltrage</span><span class="o">=</span><span class="s2">&quot;Aucun&quot;</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ListeDune</span> <span class="o">=</span> <span class="p">[]):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Algorithme de detection des dunes sur l&#39;axe sélectionné.</span>
 <span class="sd">	</span>
@@ -206,7 +243,7 @@
 <span class="sd">	:param SeuilDetectionDune: Seuil de détection des petites dunes.</span>
 <span class="sd">	:param SeuilDetectionDune: int</span>
 <span class="sd">	</span>
-<span class="sd">	:param ListeDune: Liste où stocker les resultats.</span>
+<span class="sd">	:param ListeDune: Liste où stocker les resultats de l&#39;analyse des dunes.</span>
 <span class="sd">	:type ListeDune: liste</span>
 <span class="sd">	</span>
 <span class="sd">	:return: Liste des dunes reperes sur l&#39;axe au format [IdAxe, IdDune, LongueurOnde, Hauteur, Profondeur1, PicDune, Profondeur2, DistPic, PicDune].</span>
@@ -233,7 +270,7 @@
 	<span class="n">SeuilDetection</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">SeuilDetectionDune</span> <span class="o">/</span> <span class="n">ResolutionImage</span><span class="p">)</span> <span class="o">*</span> <span class="n">ResolutionImage</span>
 	<span class="c1"># On calcul la valeur de l&#39;altitude maximum, celle qui signifie que l&#39;on est en surface</span>
 	<span class="n">AltitudeMax</span> <span class="o">=</span> <span class="n">AltitudeMinimum</span> <span class="o">+</span> <span class="n">ResolutionImage</span> <span class="o">*</span> <span class="mi">255</span>
-	<span class="n">ListeDistance</span><span class="p">,</span> <span class="n">ListeAltitude</span> <span class="o">=</span> <span class="n">TableauAltitudeDistance</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span><span class="p">,</span> <span class="n">LesAxes</span><span class="p">,</span> <span class="n">ImageAffichage</span><span class="p">)</span>
+	<span class="n">ListeDistance</span><span class="p">,</span> <span class="n">ListeAltitude</span> <span class="o">=</span> <span class="n">TableauAltitudeDistance</span><span class="p">(</span><span class="n">NumeroAxe</span><span class="p">,</span> <span class="n">MonImage</span><span class="p">,</span> <span class="n">MethodeFiltrage</span><span class="p">,</span> <span class="n">LesAxes</span><span class="p">,</span> <span class="n">ImageAffichage</span><span class="p">)</span>
 		
 	<span class="n">IdDune</span> <span class="o">=</span> <span class="mi">0</span>
 		
@@ -352,7 +389,7 @@
 		
 	<span class="k">return</span> <span class="n">TableauBilanParAxe</span></div>
 			
-<div class="viewcode-block" id="DetectionDunes"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.DetectionDunes">[docs]</a><span class="k">def</span> <span class="nf">DetectionDunes</span><span class="p">(</span><span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="DetectionDunes"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.AlgorithmeAxe.DetectionDunes">[docs]</a><span class="k">def</span> <span class="nf">DetectionDunes</span><span class="p">(</span><span class="n">MonImage</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LesAxes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">MethodeFiltrage</span><span class="o">=</span><span class="s2">&quot;Aucun&quot;</span> <span class="p">,</span><span class="n">ImageAffichage</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">SeuilDetectionDune</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Fonction qui appelle la fonction :func:`DetectionDunesAxe` sur tous les axes tracés.</span>
 <span class="sd">	</span>
@@ -372,7 +409,7 @@
 <span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">ListeTouteDunes</span> <span class="o">=</span> <span class="p">[]</span>
 	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">LesAxes</span><span class="o">.</span><span class="n">NombreAxes</span><span class="p">()):</span>
-		<span class="n">DetectionDunesAxe</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">MonImage</span><span class="p">,</span> <span class="n">LesAxes</span><span class="p">,</span> <span class="n">ImageAffichage</span><span class="p">,</span> <span class="n">SeuilDetectionDune</span><span class="p">,</span> <span class="n">ListeTouteDunes</span><span class="p">)</span>
+		<span class="n">DetectionDunesAxe</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">MonImage</span><span class="p">,</span> <span class="n">LesAxes</span><span class="p">,</span> <span class="n">MethodeFiltrage</span><span class="p">,</span> <span class="n">ImageAffichage</span><span class="p">,</span> <span class="n">SeuilDetectionDune</span><span class="p">,</span> <span class="n">ListeTouteDunes</span><span class="p">)</span>
 					
 	<span class="c1">#ListeTouteDunes = array([[0,0,10,15],[0,1,2,4],[1,2,3,4]])    # valeur test pour des résultats sur 2 tracés</span>
 	<span class="k">return</span> <span class="n">ListeTouteDunes</span></div>

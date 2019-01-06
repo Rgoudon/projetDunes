@@ -61,7 +61,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
-<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>MonImage</strong> (<a class="reference internal" href="#TraitementImage.ImageDune.ImageDune" title="TraitementImage.ImageDune.ImageDune"><em>ImageDune</em></a>) – Objet de la classe ImageDune contenant l’image en niveau de gris.</li>
 <li><strong>LesAxes</strong> (<a class="reference internal" href="#TraitementImage.GestionAxes.GestionAxes" title="TraitementImage.GestionAxes.GestionAxes"><em>GestionAxes</em></a>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur</li>
 <li><strong>ResolutionAltitude</strong> (<em>int</em>) – Correspont à la résolution de l’altitude de l’image (différence d’altitude entre deux niveaux de gris en cm).</li>
 <li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
@@ -180,7 +180,7 @@ Appelle l’algorithme de la LPE, cf ci-après : <code class="xref py py-func do
 
 <span class="target" id="module-Interfaces.ResultatsAxes"></span><dl class="class">
 <dt id="Interfaces.ResultatsAxes.ResultatsAxes">
-<em class="property">class </em><code class="descclassname">Interfaces.ResultatsAxes.</code><code class="descname">ResultatsAxes</code><span class="sig-paren">(</span><em>fenetre, MonImage=None, ImageAffiche=[0], SeuilDetectionDune=0, LesAxes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Interfaces.ResultatsAxes.</code><code class="descname">ResultatsAxes</code><span class="sig-paren">(</span><em>fenetre, MonImage=None, ImageAffiche=[0], SeuilDetectionDune=0, MethodeFiltrage='Aucun', LesAxes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Classe de gestion des resultats des axes.</p>
 <p>Gère à la fois l’affichage et le traitement des axes tracés.</p>
 <p>La classe ResultatsAxes hérite de la classe tkinter Frame.</p>
@@ -191,9 +191,10 @@ Appelle l’algorithme de la LPE, cf ci-après : <code class="xref py py-func do
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
 <li><strong>fenetre</strong> (<em>Frame</em>) – Objet de la classe frame, fenetre affiché à l’utilisateur.</li>
-<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>MonImage</strong> (<a class="reference internal" href="#TraitementImage.ImageDune.ImageDune" title="TraitementImage.ImageDune.ImageDune"><em>ImageDune</em></a>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>SeuilDetectionDunes</strong> – Entier correspondant au seuil de detection des petites dunes en cm.</li>
 <li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
+<li><strong>Filtrage</strong> (<em>string</em>) – Chaine indiquant la méthode de filtrage à utiliser sur l’axe</li>
 <li><strong>LesAxes</strong> (<a class="reference internal" href="#TraitementImage.GestionAxes.GestionAxes" title="TraitementImage.GestionAxes.GestionAxes"><em>GestionAxes</em></a>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur.</li>
 </ul>
 </td>
@@ -223,8 +224,8 @@ L’utilisateur peut choisir l’emplacement de création du fichier ainsi que s
 </dd></dl>
 
 <dl class="method">
-<dt id="Interfaces.ResultatsAxes.ResultatsAxes.PlacementAxes">
-<code class="descname">PlacementAxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes.PlacementAxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes.PlacementAxes" title="Lien permanent vers cette définition">¶</a></dt>
+<dt id="Interfaces.ResultatsAxes.ResultatsAxes.PlacementAxes_Dunes">
+<code class="descname">PlacementAxes_Dunes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Interfaces/ResultatsAxes.html#ResultatsAxes.PlacementAxes_Dunes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Interfaces.ResultatsAxes.ResultatsAxes.PlacementAxes_Dunes" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Fonction de tracé des axes.</p>
 </dd></dl>
 
@@ -257,7 +258,7 @@ L’utilisateur peut passer la souris sur le profil pour avoir des informations 
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
 <li><strong>fenetre</strong> (<em>Frame</em>) – Objet de la classe frame, fenetre affiché à l’utilisateur.</li>
-<li><strong>NumeroAxe</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>NumeroAxe</strong> (<a class="reference internal" href="#TraitementImage.ImageDune.ImageDune" title="TraitementImage.ImageDune.ImageDune"><em>ImageDune</em></a>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>CouleurAssocie</strong> (<em>int</em>) – Entier correspondant au seuil de detection des petites dunes en cm.</li>
 <li><strong>CoordonneesProfilX</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
 <li><strong>CoordonneesProfilY</strong> (<a class="reference internal" href="#TraitementImage.GestionAxes.GestionAxes" title="TraitementImage.GestionAxes.GestionAxes"><em>GestionAxes</em></a>) – Objet de la classe gestionAxes contenant les axes tracés par l’utilisateur.</li>
@@ -304,7 +305,7 @@ L’utilisateur peut suivre la courbe du profil afin d’obtenir des information
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first last simple">
 <li><strong>fenetre</strong> (<em>Frame</em>) – Objet de la classe frame, fenetre affiché à l’utilisateur.</li>
-<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>MonImage</strong> (<a class="reference internal" href="#TraitementImage.ImageDune.ImageDune" title="TraitementImage.ImageDune.ImageDune"><em>ImageDune</em></a>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>ImageAffiche</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
 <li><strong>SeuilDetection</strong> – Entier correspondant au seuil de detection des petites dunes en cm.</li>
 </ul>
@@ -384,14 +385,14 @@ L’indice i du tableau correspond aux dunes de l’axe i.</p>
 
 <dl class="function">
 <dt id="TraitementImage.AlgorithmeAxe.DetectionDunes">
-<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunes</code><span class="sig-paren">(</span><em>MonImage=None, LesAxes=None, ImageAffichage=[0], SeuilDetectionDune=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunes" title="Lien permanent vers cette définition">¶</a></dt>
+<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunes</code><span class="sig-paren">(</span><em>MonImage=None, LesAxes=None, MethodeFiltrage='Aucun', ImageAffichage=[0], SeuilDetectionDune=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunes" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Fonction qui appelle la fonction <a class="reference internal" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="TraitementImage.AlgorithmeAxe.DetectionDunesAxe"><code class="xref py py-func docutils literal notranslate"><span class="pre">DetectionDunesAxe()</span></code></a> sur tous les axes tracés.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
-<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>MonImage</strong> (<a class="reference internal" href="#TraitementImage.ImageDune.ImageDune" title="TraitementImage.ImageDune.ImageDune"><em>ImageDune</em></a>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>LesAxes</strong> (<em>Liste d'objets axes</em>) – Liste contenant tous les axes tracés par l’utilisateur.</li>
 <li><strong>ImageAffichage</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
 <li><strong>SeuilDetectionDune</strong> – Seuil de détection des petites dunes.</li>
@@ -408,7 +409,7 @@ L’indice i du tableau correspond aux dunes de l’axe i.</p>
 
 <dl class="function">
 <dt id="TraitementImage.AlgorithmeAxe.DetectionDunesAxe">
-<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunesAxe</code><span class="sig-paren">(</span><em>NumeroAxe, MonImage=None, LesAxes=None, ImageAffichage=[0], SeuilDetectionDune=0, ListeDune=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunesAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="Lien permanent vers cette définition">¶</a></dt>
+<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">DetectionDunesAxe</code><span class="sig-paren">(</span><em>NumeroAxe, MonImage=None, LesAxes=None, MethodeFiltrage='Aucun', ImageAffichage=[0], SeuilDetectionDune=0, ListeDune=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#DetectionDunesAxe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Algorithme de detection des dunes sur l’axe sélectionné.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -416,12 +417,12 @@ L’indice i du tableau correspond aux dunes de l’axe i.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
 <li><strong>NumeroAxe</strong> (<em>int</em>) – Axe sélectionné par l’utilisateur.</li>
-<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>MonImage</strong> (<a class="reference internal" href="#TraitementImage.ImageDune.ImageDune" title="TraitementImage.ImageDune.ImageDune"><em>ImageDune</em></a>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>LesAxes</strong> (<em>liste d'objets Arc</em>) – Liste des arcs tracés par l’utilisateur.</li>
 <li><strong>ImageAffichage</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
 <li><strong>SeuilDetectionDune</strong> – Seuil de détection des petites dunes.</li>
 <li><strong>SeuilDetectionDune</strong> – int</li>
-<li><strong>ListeDune</strong> (<em>liste</em>) – Liste où stocker les resultats.</li>
+<li><strong>ListeDune</strong> (<em>liste</em>) – Liste où stocker les resultats de l’analyse des dunes.</li>
 </ul>
 </td>
 </tr>
@@ -444,7 +445,7 @@ L’indice i du tableau correspond aux dunes de l’axe i.</p>
 
 <dl class="function">
 <dt id="TraitementImage.AlgorithmeAxe.TableauAltitudeDistance">
-<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">TableauAltitudeDistance</code><span class="sig-paren">(</span><em>NumeroAxe, MonImage=None, LesAxes=None, ImageAffichage=[0]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#TableauAltitudeDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.TableauAltitudeDistance" title="Lien permanent vers cette définition">¶</a></dt>
+<code class="descclassname">TraitementImage.AlgorithmeAxe.</code><code class="descname">TableauAltitudeDistance</code><span class="sig-paren">(</span><em>NumeroAxe, MonImage=None, MethodeFiltrage='Aucun', LesAxes=None, ImageAffichage=[0]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TraitementImage/AlgorithmeAxe.html#TableauAltitudeDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.AlgorithmeAxe.TableauAltitudeDistance" title="Lien permanent vers cette définition">¶</a></dt>
 <dd><p>Fonction donnant les listes ListeDistance et ListeAltitude utilisé dans l’algorithme : <a class="reference internal" href="#TraitementImage.AlgorithmeAxe.DetectionDunesAxe" title="TraitementImage.AlgorithmeAxe.DetectionDunesAxe"><code class="xref py py-func docutils literal notranslate"><span class="pre">DetectionDunesAxe()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -452,7 +453,7 @@ L’indice i du tableau correspond aux dunes de l’axe i.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
 <li><strong>NumeroAxe</strong> (<em>int</em>) – Indice de l’axe devant être traité.</li>
-<li><strong>MonImage</strong> (<em>ImageDune</em>) – Objet de la classe ImageDune contenant le fichier image.</li>
+<li><strong>MonImage</strong> (<a class="reference internal" href="#TraitementImage.ImageDune.ImageDune" title="TraitementImage.ImageDune.ImageDune"><em>ImageDune</em></a>) – Objet de la classe ImageDune contenant le fichier image.</li>
 <li><strong>LesAxes</strong> (<em>Liste d'objets axes</em>) – Liste contenant tous les axes tracés par l’utilisateur.</li>
 <li><strong>ImageAffichage</strong> (<em>PhotoImage</em>) – Objet de la classe PhotoImage issue de la bibliothèque Pillow, contenant l’image à afficher dans la fenetre principale.</li>
 </ul>
@@ -735,10 +736,6 @@ L’objet prendra des valeurs par défaut à la création en attendant que l’u
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">28/11 : «&nbsp;donc forcement un axe qui ne possède pas de point d’arrivée&nbsp;», verification ?</p>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -775,7 +772,13 @@ L’objet prendra des valeurs par défaut à la création en attendant que l’u
 
 </dd></dl>
 
-<span class="target" id="module-TraitementImage.ImageDune"></span><span class="target" id="module-TraitementImage.Point"></span></div>
+<span class="target" id="module-TraitementImage.ImageDune"></span><dl class="class">
+<dt id="TraitementImage.ImageDune.ImageDune">
+<em class="property">class </em><code class="descclassname">TraitementImage.ImageDune.</code><code class="descname">ImageDune</code><a class="reference internal" href="_modules/TraitementImage/ImageDune.html#ImageDune"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#TraitementImage.ImageDune.ImageDune" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Classe pour la gestion des images sources du programme.</p>
+</dd></dl>
+
+<span class="target" id="module-TraitementImage.Point"></span></div>
 <div class="section" id="module-Algorithme.LPE">
 <span id="projetdunes-algorithme"></span><h2>ProjetDunes Algorithme<a class="headerlink" href="#module-Algorithme.LPE" title="Lien permanent vers ce titre">¶</a></h2>
 </div>

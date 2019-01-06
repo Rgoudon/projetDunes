@@ -1,0 +1,215 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>TraitementImage.ImageDune &#8212; Documentation ProjetDunes 1.3</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de TraitementImage.ImageDune</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">isfile</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<div class="viewcode-block" id="ImageDune"><a class="viewcode-back" href="../../Autodoc.html#TraitementImage.ImageDune.ImageDune">[docs]</a><span class="k">class</span> <span class="nc">ImageDune</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Classe pour la gestion des images sources du programme.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">CheminImage</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="c1"># chemin indiquant où se trouve l&#39;image sélectionnée</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">NomImage</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="c1"># contient le nom de l&#39;image (qui sera reprit comme indication pour les exports TXT d&#39;informations des dunes trouvées)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Image</span> <span class="o">=</span> <span class="n">Image</span> <span class="c1"># variable pour stocker en mémoire le tableau original de l&#39;image (après passage en noir et blanc 8 bits)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">AltitudeMin</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># L&#39;altitude minimum de l&#39;image</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ResolutionAltitude</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># La résolution de l&#39;altitude de l&#39;image → diffèrence d&#39;altitude (cm) entre 2 niveaux de gris</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">CourantVersLaGauche</span> <span class="o">=</span> <span class="kc">True</span>
+			
+	<span class="k">def</span> <span class="nf">AttribuerImage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Chemin</span><span class="p">):</span>
+		<span class="c1"># par défaut on suppose que l&#39;image ne correspond pas aux contraintes nécessaires pour effectuer un traitement de l&#39;image</span>
+		<span class="n">ImageValide</span> <span class="o">=</span> <span class="kc">False</span>
+	
+		<span class="c1">#print(isfile(Chemin))</span>
+		<span class="c1">#print(self.VerifierImage())</span>
+		<span class="c1"># On vérfie que l&#39;image respecte la convention de nommage et qu&#39;elle existe à l&#39;emplacement indiqué</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">VerifierImage</span><span class="p">(</span><span class="n">Chemin</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isfile</span><span class="p">(</span><span class="n">Chemin</span><span class="p">):</span>
+			<span class="c1"># On modifie le chemin indiquant où se trouve l&#39;image sélectionnée</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">CheminImage</span> <span class="o">=</span> <span class="n">Chemin</span> 
+			<span class="c1"># On Convertie l&#39;image en noir et blanc 8 bits et on la sauvegarde en mémoire</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">Image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CheminImage</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">)</span>
+			
+			<span class="c1"># On signale que la nouvelle image choisie est valide</span>
+			<span class="n">ImageValide</span> <span class="o">=</span> <span class="kc">True</span>        
+		
+		<span class="k">return</span> <span class="n">ImageValide</span>
+
+	<span class="k">def</span> <span class="nf">setImage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Image</span> <span class="o">=</span> <span class="n">image</span>
+
+	<span class="k">def</span> <span class="nf">setResolution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolution</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">ResolutionAltitude</span> <span class="o">=</span> <span class="n">resolution</span>
+			
+	<span class="k">def</span> <span class="nf">getCheminImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CheminImage</span>
+	
+	<span class="k">def</span> <span class="nf">getNomImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NomImage</span>
+	
+	<span class="k">def</span> <span class="nf">CheminValide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CheminImage</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+			
+	<span class="k">def</span> <span class="nf">getImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Image</span>
+	
+	<span class="k">def</span> <span class="nf">getHauteurImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	
+	<span class="k">def</span> <span class="nf">getLargeurImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	
+	<span class="k">def</span> <span class="nf">getAltitudeMin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">AltitudeMin</span>
+	
+	<span class="k">def</span> <span class="nf">getResolutionAltitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ResolutionAltitude</span>
+	
+	<span class="k">def</span> <span class="nf">setSensCourantGauche</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CourantVersGauche</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">CourantVersLaGauche</span> <span class="o">=</span> <span class="n">CourantVersGauche</span>
+	
+	<span class="k">def</span> <span class="nf">getSensCourantGauche</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CourantVersLaGauche</span>
+	
+	<span class="k">def</span> <span class="nf">VerifierImage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Chemin</span><span class="p">):</span>
+		<span class="c1"># par défaut on suppose que l&#39;image ne correspond pas aux contraintes nécessaires pour effectuer un traitement de l&#39;image</span>
+		<span class="n">ImageValide</span> <span class="o">=</span> <span class="kc">False</span>
+	
+		<span class="k">try</span><span class="p">:</span>
+			<span class="c1"># Tout d&#39;abord on comme du chemin complet d&#39;accès comple vers le fichier, par exemple C:/Exemple_8,508_5,029.tif</span>
+			<span class="c1"># On découpe donc suivant le caractère &#39;/&#39; et on récupère le dernier morceau pour obtenir le nom de l&#39;image</span>
+			<span class="c1"># On obtient ainsi Exemple_8,508_5,029.tif</span>
+			<span class="c1"># On le redécoupe donc par le caractère &quot;_&quot;</span>
+			<span class="c1"># Altitude maximum : on en prend l&#39;avant dernier morceau et on remplace la &#39;,&#39; par un &#39;.&#39; → conversion en float</span>
+			<span class="c1"># Altitude minimum : on prend le dernier morceau, </span>
+			<span class="c1">#                    on le coupe par le caractère &#39;.&#39; pour enlever le &#39;.tiff&#39;</span>
+			<span class="c1">#                    on en prend le premier morceau &quot;5,029&quot; et on remplace la &#39;,&#39; par un &#39;.&#39; → conversion en float</span>
+
+			<span class="bp">self</span><span class="o">.</span><span class="n">NomImage</span> <span class="o">=</span> <span class="p">(</span><span class="n">Chemin</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="n">DecoupeNomImage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">NomImage</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">AltitudeMin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">DecoupeNomImage</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span>
+			<span class="n">AltitudeMaximum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">DecoupeNomImage</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span>
+			<span class="c1"># la résolution de l&#39;altitude </span>
+			<span class="c1"># nombre de mètre correspond Ã  la différence d&#39;altitude entre 2 niveaux de gris successif</span>
+			<span class="c1"># 256 niveaux de gris → on divise par 255 la différence entre le min et le max (la 256ème valeur étant le min + 0 * ResolutionAltitude)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">ResolutionAltitude</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">AltitudeMaximum</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">AltitudeMin</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+			
+			<span class="c1">#print(&quot;Altitude Max = &quot; + str(AltitudeMaximum))</span>
+			<span class="c1">#print(&quot;Altitude Min = &quot; + str(self.AltitudeMin))</span>
+			<span class="c1">#print(&quot;Resolution image = &quot; + str(self.ResolutionAltitude))</span>
+
+			<span class="c1"># Si nous somme arrivé jusque ici, c&#39;est que l&#39;image est valide</span>
+			<span class="n">ImageValide</span> <span class="o">=</span> <span class="kc">True</span>
+				
+		<span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">)</span> <span class="p">:</span>
+			<span class="n">ImageValide</span> <span class="o">=</span> <span class="kc">False</span>
+			
+		<span class="k">return</span> <span class="n">ImageValide</span></div>
+	
+	
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ProjetDunes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Autodoc.html">Page d’autodocumentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Ecalle_Rebillard_Lastennet_Goudon.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
