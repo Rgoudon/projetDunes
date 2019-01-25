@@ -133,9 +133,17 @@ class MenuPrincipal(Frame):
 		#Ajout d'un combo box pour le choix du filtrage avec les valeurs definies dans values
 		Label(FrameInfoImage, text="Choix de la méthode de filtrage").grid(row=3,column=0)
 		self.MethodeFiltrage = ttk.Combobox(FrameInfoImage,width=27,state = 'readonly')
-		self.MethodeFiltrage['values'] = ("Aucun", "Filtre passe bas", "Moyenne glissante sur 4 valeurs", "Mediane")
+		self.MethodeFiltrage['values'] = ("Aucun", "Filtre passe bas", "Moyenne glissante", "Mediane")
 		self.MethodeFiltrage.set("Aucun")
 		self.MethodeFiltrage.grid(row=3, column=1, columnspan=2)
+		
+		Label(FrameInfoImage, text="Nombre de valeurs moyenne glissante").grid(row=5, column=0)
+		# L'intervalle de choix de seuil de détection des grandes dunes est un entier entre 0 et 100 (par défaut 50)
+		self.NbValMoy = Spinbox(FrameInfoImage, from_=2, to=50, width = 10)
+		self.NbValMoy.grid(row=5, column=1)
+		self.NbValMoy.delete(0)    # On enlève la valeur par défaut dans la Spinbox (qui est de base la valeur minimum)
+		self.NbValMoy.insert(0, "4")  # On place maintenant la valeur 4 comme valeur par défaut
+		# pour récupérer la valeur de la Spinbox, il suffit de faire NbValMoy.get()
 		
 		self.BoutonDupliquerAxe = Button(FrameMenu, text="Dupliquer axe", state=DISABLED, command = lambda : self.DupliquerAxe())
 		self.BoutonDupliquerAxe.pack(side=TOP)
@@ -423,7 +431,7 @@ puis cliquer sur ce même bouton""")
 			
 		fenTraitementAxes = Toplevel()
 		fenTraitementAxes.title("Résultats issus des axes - Analyse dunes 2018 "+ self.MethodeFiltrage.get())
-		ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.MonImage, self.MiniatureImage, self.SeuilDetectionPetiteDune.get(), self.MethodeFiltrage.get(), self.LesAxes)
+		ResultatsAxes.ResultatsAxes(fenTraitementAxes, self.MonImage, self.MiniatureImage, self.SeuilDetectionPetiteDune.get(), self.MethodeFiltrage.get(), self.NbValMoy.get(), self.LesAxes)
 
 	def TraitementImage(self):
 		"""

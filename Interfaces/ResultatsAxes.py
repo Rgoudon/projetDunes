@@ -34,13 +34,14 @@ class ResultatsAxes(Frame):
 	
 	"""
 
-	def __init__(self, fenetre, MonImage = None, ImageAffiche = [0], SeuilDetectionDune = 0, MethodeFiltrage = "Aucun", LesAxes = None):    
+	def __init__(self, fenetre, MonImage = None, ImageAffiche = [0], SeuilDetectionDune = 0, MethodeFiltrage = "Aucun", NbValMoy=4, LesAxes = None):    
 		 
 		self.MonImage = MonImage
 		self.ImageAffichage = ImageAffiche
 		self.DetectionDune = float(SeuilDetectionDune) / 100
 		self.LesAxes = LesAxes
 		self.MethodeFiltrage = MethodeFiltrage
+		self.NbValMoy = int(NbValMoy)
 		self.ImageAAfficher = 0 # variable ne pouvant être une variable locale, sinon l'image n'apparaît pas à l'affichage
 		self.NombreAxes = self.LesAxes.NombreAxes()
 		
@@ -100,7 +101,7 @@ class ResultatsAxes(Frame):
 		self.PlacementAxes_Dunes()
 		
 		# On rempli le tableau des résultats par les données obtenues par analyse de tous les axes tracés par l'utilisateur
-		self.TableauAnalyseImageAxe = AlgorithmeAxe.DetectionDunes(self.MonImage, self.LesAxes, self.MethodeFiltrage, self.ImageAffichage, self.DetectionDune)
+		self.TableauAnalyseImageAxe = AlgorithmeAxe.DetectionDunes(self.MonImage, self.LesAxes, self.MethodeFiltrage, self.NbValMoy, self.ImageAffichage, self.DetectionDune)
 		self.BilanDunesAxe = AlgorithmeAxe.BilanDunesParAxe(self.TableauAnalyseImageAxe, self.NombreAxes)
 		self.RemplirTableauResultats()
 		
@@ -113,7 +114,7 @@ class ResultatsAxes(Frame):
 			self.Canevas.create_line(self.LesAxes.CoordonneesAxe(i), fill=ListeCouleurs[i])
 			#ajout dunes de l'axe	
 			LesDunes = []
-			LesDunes = AlgorithmeAxe.DetectionDunesAxe(i, self.MonImage, self.LesAxes, self.MethodeFiltrage, self.ImageAffichage, self.DetectionDune, LesDunes)
+			LesDunes = AlgorithmeAxe.DetectionDunesAxe(i, self.MonImage, self.LesAxes, self.MethodeFiltrage, self.NbValMoy, self.ImageAffichage, self.DetectionDune, LesDunes)
 			XDunes = []
 			YDunes = []
 			depart = self.LesAxes.InfosAxe(i).getPointDepart()
@@ -158,14 +159,14 @@ class ResultatsAxes(Frame):
 		Utilise la classe :class:`Interfaces.VisualiserProfil`.
 		"""
 		AxeChoisi = int(self.NumeroAxeChoisi.get())
-		XCoordonnee, YCoordonnee = AlgorithmeAxe.TableauAltitudeDistance(AxeChoisi, self.MonImage, self.MethodeFiltrage, self.LesAxes, self.ImageAffichage)
+		XCoordonnee, YCoordonnee = AlgorithmeAxe.TableauAltitudeDistance(AxeChoisi, self.MonImage, self.MethodeFiltrage, self.NbValMoy, self.LesAxes, self.ImageAffichage)
 		NombreDuneAxe = self.BilanDunesAxe[AxeChoisi][1]
 		MoyenneLongeurOndeAxe = self.BilanDunesAxe[AxeChoisi][2]
 		MoyenneHauteurAxe = self.BilanDunesAxe[AxeChoisi][3]
 		
 		
 		LesDunes = []
-		LesDunes = AlgorithmeAxe.DetectionDunesAxe(AxeChoisi, self.MonImage, self.LesAxes, self.MethodeFiltrage, self.ImageAffichage, self.DetectionDune, LesDunes)
+		LesDunes = AlgorithmeAxe.DetectionDunesAxe(AxeChoisi, self.MonImage, self.LesAxes, self.MethodeFiltrage, self.NbValMoy, self.ImageAffichage, self.DetectionDune, LesDunes)
 		XDunes = []
 		YDunes = []
 		for i in range (0,len(LesDunes)):
