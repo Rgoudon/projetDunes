@@ -1,6 +1,8 @@
 import numpy.fft as npf
 import numpy as np
 import random as rd
+from collections import deque
+import statistics as stats
  
 """
 	Module de filtrage de signaux.
@@ -44,19 +46,42 @@ def decal(signal,D=0):
 	"""
 	return [x+D for x in signal]
 
-def moyenne(signal):
+def moyenneOLD(signal):
 	"""Fonction qui va moyenner le signal sur 4 valeurs glissantes
 	
 	:param signal: Valeurs du signal.
 	:type signal: liste
 	"""
 	long=len(signal)
+	
 	y=[signal[0],(signal[0]+signal[1])/2,(signal[0]+signal[1]+signal[2])/3]
 	for i in range(3,long):
 		y.append((signal[i]+signal[i-1]+signal[i-2]+signal[i-3])/4)
 	return y
 
-
+def moyenne(signal,n=4):
+	"""Fonction qui va moyenner le signal sur n valeurs glissantes
+	
+	:param signal: Valeurs du signal.
+	:type signal: liste
+	
+	:param n: Nombre de valeurs glissantes
+	:type n: int
+	"""
+	print(n)
+	init=[]
+	l=len(signal)
+	y=[]
+	for i in range(0,n):
+		init.append(signal[i])
+	fifo = deque(init, maxlen=n)
+	y.append(stats.mean(fifo))	
+	for i in range(1,l):
+		fifo.extend([signal[i]])
+		y.append(stats.mean(fifo))
+	return y
+	
+	
 def mediane(signal):
 	"""Fonction qui extrait la médiane de 5 valeurs.
 	

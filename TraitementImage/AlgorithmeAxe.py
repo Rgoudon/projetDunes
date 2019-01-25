@@ -8,7 +8,7 @@ from tkinter import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-def TableauAltitudeDistance(NumeroAxe, MonImage = None, MethodeFiltrage="Aucun", LesAxes = None, ImageAffichage = [0]):
+def TableauAltitudeDistance(NumeroAxe, MonImage = None, MethodeFiltrage="Aucun", NbValMoy=4, LesAxes = None, ImageAffichage = [0]):
 	"""
 	Fonction donnant les listes ListeDistance et ListeAltitude utilisé dans l'algorithme : :func:`DetectionDunesAxe`. \n
 	
@@ -171,8 +171,8 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, MethodeFiltrage="Aucun",
 		return ListeDistance, ListeAltitudePB
 	
 	#Lissage par moyennage 
-	if (MethodeFiltrage=="Moyenne glissante sur 4 valeurs"):
-		ListeAltitudeMY = Filtrage.moyenne(ListeAltitude)
+	if (MethodeFiltrage=="Moyenne glissante"):
+		ListeAltitudeMY = Filtrage.moyenne(ListeAltitude,NbValMoy)
 		#print(ListeAltitudeMY)
 		return ListeDistance, ListeAltitudeMY
 	
@@ -189,7 +189,7 @@ def TableauAltitudeDistance(NumeroAxe, MonImage = None, MethodeFiltrage="Aucun",
 	return ListeDistance, ListeAltitude
 	
 	
-def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, MethodeFiltrage="Aucun", ImageAffichage = [0], SeuilDetectionDune = 0, ListeDune = []):
+def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, MethodeFiltrage="Aucun", NbValMoy=4, ImageAffichage = [0], SeuilDetectionDune = 0, ListeDune = []):
 	"""
 	Algorithme de detection des dunes sur l'axe sélectionné.
 	
@@ -235,7 +235,7 @@ def DetectionDunesAxe(NumeroAxe, MonImage = None, LesAxes = None, MethodeFiltrag
 	SeuilDetection = ceil(SeuilDetectionDune / ResolutionImage) * ResolutionImage
 	# On calcul la valeur de l'altitude maximum, celle qui signifie que l'on est en surface
 	AltitudeMax = AltitudeMinimum + ResolutionImage * 255
-	ListeDistance, ListeAltitude = TableauAltitudeDistance(NumeroAxe, MonImage, MethodeFiltrage, LesAxes, ImageAffichage)
+	ListeDistance, ListeAltitude = TableauAltitudeDistance(NumeroAxe, MonImage, MethodeFiltrage, NbValMoy, LesAxes, ImageAffichage)
 		
 	IdDune = 0
 		
@@ -354,7 +354,7 @@ def BilanDunesParAxe(ListeDesDunes = [], NombreAxes = 1):
 		
 	return TableauBilanParAxe
 			
-def DetectionDunes(MonImage = None, LesAxes = None, MethodeFiltrage="Aucun" ,ImageAffichage = [0], SeuilDetectionDune = 0):
+def DetectionDunes(MonImage = None, LesAxes = None, MethodeFiltrage="Aucun", NbValMoy=4, ImageAffichage = [0], SeuilDetectionDune = 0):
 	"""
 	Fonction qui appelle la fonction :func:`DetectionDunesAxe` sur tous les axes tracés.
 	
@@ -374,7 +374,7 @@ def DetectionDunes(MonImage = None, LesAxes = None, MethodeFiltrage="Aucun" ,Ima
 	"""
 	ListeTouteDunes = []
 	for i in range (0, LesAxes.NombreAxes()):
-		DetectionDunesAxe(i, MonImage, LesAxes, MethodeFiltrage, ImageAffichage, SeuilDetectionDune, ListeTouteDunes)
+		DetectionDunesAxe(i, MonImage, LesAxes, MethodeFiltrage, NbValMoy, ImageAffichage, SeuilDetectionDune, ListeTouteDunes)
 					
 	#ListeTouteDunes = array([[0,0,10,15],[0,1,2,4],[1,2,3,4]])    # valeur test pour des résultats sur 2 tracés
 	return ListeTouteDunes
